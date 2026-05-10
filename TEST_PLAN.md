@@ -441,7 +441,14 @@ stream from CP-O4):
   ordering or timestamping - re-arm STP at the latest passing stage
   with a wider window and look for stride-pattern anomalies.
 
-### 4.7 Iterate-on-fail debug loop (the operating loop, with stage hooks)
+### 4.7 Iterate-on-fail debug loop (owned by skill `iterative-debug`)
+
+The full operating loop and timing-relaxation rules are owned by the
+`iterative-debug` skill (canonical body at
+`~/.codex/skills/iterative-debug/SKILL.md`; thin Claude pointer at
+`~/.claude/skills/iterative-debug/SKILL.md`). Read that skill before
+starting any debug iteration. Short form below for in-context
+reference:
 
 ```
 Pick next pending test point (cohort.cohort_member.matrix_id).
