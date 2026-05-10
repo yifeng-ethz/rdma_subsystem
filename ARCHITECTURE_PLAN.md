@@ -84,77 +84,154 @@ dma_engine.writer → AVMM`.
 Control plane (low BW, request/response): `host → csr.SQ_TAIL_DBL → sq_fetcher
 → run_manager → dma_engine → run_manager → cq_pusher → host`.
 
-## 4. Inter-IP handshake contracts
+## 4. Bus protocols (AXI4 throughout)
 
-All inter-IP boundaries are **Avalon-ST** with simple `valid/ready/data`,
-or **simple-pulse req/done** for control. No back-channel-laden bespoke
-buses.
+All inter-IP and external-memory interfaces use **AXI4 family** so the
+supercore can be assembled with non-Merlin / custom (or no) interconnect.
+- **AXI4-Lite** for the BAR1 CSR slave (run_manager).
+- **AXI4 (full)** for masters into host DRAM (sq_fetcher reads,
+  dma_engine writes, cq_pusher writes).
+- **AXI4-Stream** for point-to-point inter-IP streams (SQE bus, CQE bus,
+  OPQ→dma_engine data bus).
 
-### `sq_fetcher → run_manager`
+A thin **AXI4 ↔ Avalon-MM bridge** sits between the IP block and the
+existing PCIe HIP completer (Phase 2 — Altera/Intel A10 HIP exposes
+Avalon-MM; the bridge wraps it as AXI4 for the IP-internal buses). Phase
+1 stubs the AXI4 master with a SV `host_model_pkg.sv` AXI4 completer.
 
-Avalon-ST source, payload = `sqe_t` (128 bits):
-```
-output [127:0] sqe_data;
-output         sqe_valid;
-input          sqe_ready;
-```
-`sqe_data` packs `{opcode_id[31:0], buf_len_bytes[31:0],
-buf_addr_hi[31:0], buf_addr_lo[31:0]}`.
+Default data widths:
+- **Data plane** (OPQ → dma_writer → AXI4 master): `DMA_DATA_W = 256` bits
+  (matches Altera A10 HIP TLP path; one beat = 32 B = ½ cacheline).
+- **WQE plane** (sq_fetcher AXI4-Stream, cq_pusher AXI4-Stream, AXI4
+  master read/write to SQ/CQ rings): `WQE_BUS_W = 512` bits — one beat
+  carries one full 64 B WQE atomically.
+- **CSR**: AXI4-Lite `S_AXIL_DATA_W = 32`, `S_AXIL_ADDR_W = 8` (256-byte
+  aperture).
 
-### `run_manager → dma_engine`
-
-Simple req/done:
-```
-output         dma_req;
-output [63:0]  dma_buf_addr;
-output [31:0]  dma_buf_len_bytes;
-output [15:0]  dma_sqe_id;
-input          dma_done;
-input  [31:0]  dma_bytes_written;
-input  [15:0]  dma_status;
-```
-
-### `run_manager → cq_pusher`
-
-Avalon-ST sink, payload = `cqe_t` (64 bits) + sqe_id sideband:
-```
-output [63:0]  cqe_data;
-output [15:0]  cqe_sqe_id;
-output         cqe_valid;
-input          cqe_ready;
-```
-
-### `OPQ → dma_engine`
-
-Avalon-ST sink, 36-bit (32b data + 4b datak) + sop/eop:
-```
-input  [35:0]  opq_data;
-input          opq_valid;
-input          opq_sop;
-input          opq_eop;
-output         opq_ready;        // tied 1 in Phase 1
-```
-
-## 5. SQE / CQE wire format
-
-### SQE (16 bytes, host endian = little)
+### `sq_fetcher → run_manager` (AXI4-Stream)
 
 ```
-| 31..0          | 31..0          | 31..0          | 31..0          |
-| buf_addr_lo    | buf_addr_hi    | buf_len_bytes  | opcode|sqe_id  |
+output [511:0] m_axis_sqe_tdata;     // one full SQE per beat
+output         m_axis_sqe_tvalid;
+input          m_axis_sqe_tready;
+output         m_axis_sqe_tlast;     // always 1
+output [15:0]  m_axis_sqe_tuser;     // sqe_id sideband (also in tdata)
 ```
-- `opcode_id[15:0]` = `0x0001` = `DRAIN_UNTIL_EOE`
-- `opcode_id[31:16]` = `sqe_id` (host-chosen tag)
 
-### CQE (8 bytes)
+### `run_manager → dma_engine` (job request — simple req/done)
 
 ```
-| 31..0           | 31..0                            |
-| bytes_written   | sqe_id[31..16] | status[15..0]   |
+output         job_req;
+output [63:0]  job_seg0_addr;
+output [63:0]  job_seg0_span;        // bytes, 4 KB multiple
+output [63:0]  job_seg1_addr;        // 0 if unused
+output [63:0]  job_seg1_span;        // 0 if unused
+output [15:0]  job_sqe_id;
+output [15:0]  job_opcode;
+input          job_done;
+input  [63:0]  job_bytes_written_total;
+input  [31:0]  job_seg0_bytes_written;
+input  [31:0]  job_seg1_bytes_written;
+input  [15:0]  job_status;
+input  [15:0]  job_sqe_id_echo;
+input  [31:0]  job_event_count;
+input  [63:0]  job_first_event_ts;
+input  [63:0]  job_last_event_ts;
 ```
-- `status[0]` = EOE (drain ended on end-of-event)
-- `status[1]` = FULL (drain ended because buffer ran out)
-- `status[2]` = HALT (data was dropped to a backpressure halt — should be 0)
+
+### `run_manager → cq_pusher` (AXI4-Stream)
+
+```
+output [511:0] s_axis_cqe_tdata;     // one full CQE per beat
+output         s_axis_cqe_tvalid;
+input          s_axis_cqe_tready;
+output         s_axis_cqe_tlast;     // always 1
+output [15:0]  s_axis_cqe_tuser;     // sqe_id (also in tdata)
+```
+
+### `OPQ → dma_engine` (AXI4-Stream, 36-bit)
+
+```
+input  [35:0]  s_axis_opq_tdata;     // {datak[3:0], data[31:0]}
+input          s_axis_opq_tvalid;
+output         s_axis_opq_tready;    // tied 1 in Phase 1
+input          s_axis_opq_tlast;     // = OPQ eop
+input  [1:0]   s_axis_opq_tuser;     // [0]=sop, [1]=reserved
+```
+
+### Host-DRAM AXI4 masters (sq_fetcher, dma_engine, cq_pusher)
+
+Standard AXI4 (full) signals: AW/W/B, AR/R channels with 64-bit address,
+configurable data width per IP (sq_fetcher 512b, dma_engine 256b,
+cq_pusher 512b). Burst lengths capped to align with PCIe MPS (typically
+4-8 beats at 256 B or 512 B per burst).
+
+## 5. WQE wire format (64 bytes = one host cacheline)
+
+All work-queue entries (SQE and CQE) are exactly **64 bytes** = the host
+PC's L1/L2/L3 cacheline width (verified on the deployment box, AMD
+Ryzen 9 3950X: 64 B coherency line at all levels). One WQE = one
+cacheline = atomic visibility across host/FW with no false sharing.
+
+### SQE (64 B, 8 × 64-bit words, host little-endian)
+
+```
+| word | byte off | name        | width | description |
+|------|---------|-------------|-------|-------------|
+| 0    | 0x00    | seg0_addr   | 64    | host phys addr of segment 0, **4 KB-aligned** |
+| 1    | 0x08    | seg0_span   | 64    | seg-0 span in bytes, **4 KB multiple**, ≥ 4096 |
+| 2    | 0x10    | seg1_addr   | 64    | host phys addr of segment 1, **4 KB-aligned** (0 if unused) |
+| 3    | 0x18    | seg1_span   | 64    | seg-1 span in bytes, **4 KB multiple**, 0 if unused |
+| 4    | 0x20    | opcode_id   | 64    | `[15:0]=opcode`, `[31:16]=sqe_id`, `[63:32]=flags` |
+| 5    | 0x28    | reserved0   | 64    | reserved (timestamps / mr_keys / future) |
+| 6    | 0x30    | reserved1   | 64    | reserved |
+| 7    | 0x38    | reserved2   | 64    | reserved |
+```
+
+**Two-segment scatter semantics.** A single SQE may name 1 or 2
+contiguous host-DRAM segments. The FW fills `seg0` first, and if the
+drain produces more bytes than `seg0_span` AND `seg1_span > 0`, it
+continues into `seg1`. This handles the case where the host's rx_buffer
+pool is non-contiguous and a 4 KB-multiple SQE crosses one boundary,
+without forcing the host to post 2 separate SQEs.
+
+Constraints (FW asserts these, returns `ALIGN_ERR` in CQE if violated):
+- `seg{0,1}_addr & 0xFFF == 0` (4 KB-aligned)
+- `seg{0,1}_span & 0xFFF == 0` AND `seg{0,1}_span ≥ 0x1000` if non-zero
+- Total span (`seg0_span + seg1_span`) ≤ 4 GiB in Phase 1
+
+Opcodes:
+- `0x0001` `DRAIN_UNTIL_EOE` — drain OPQ into the segments until end-of-event
+  arrives or both segments are filled.
+- (Phase 2) `0x0002` `DRAIN_FIXED_BYTES` — drain exactly `seg0_span+seg1_span`
+  regardless of EOE.
+
+### CQE (64 B, 8 × 64-bit words)
+
+```
+| word | byte off | name                  | width      | description |
+|------|---------|-----------------------|------------|-------------|
+| 0    | 0x00    | bytes_written_total   | 64         | total bytes written across both segments |
+| 1    | 0x08    | seg0_bytes_written    | 32 (low)   | bytes actually written into seg0 |
+|      |         | seg1_bytes_written    | 32 (high)  | bytes actually written into seg1 |
+| 2    | 0x10    | status_id             | 64         | `[15:0]=status`, `[31:16]=sqe_id`, `[63:32]=flags` |
+| 3    | 0x18    | event_count           | 64         | # of OPQ end-of-event boundaries observed in this drain |
+| 4    | 0x20    | first_event_ts        | 64         | OPQ-side timestamp of first event in drain (debug) |
+| 5    | 0x28    | last_event_ts         | 64         | OPQ-side timestamp of last event in drain (latency) |
+| 6    | 0x30    | opq_drop_snapshot     | 64         | snapshot of OPQ FT_DROP_HIT counter at retire |
+| 7    | 0x38    | retire_seq            | 64         | per-engine monotonic CQE sequence number |
+```
+
+Status bits (16):
+- `[0]` `EOE`              — drain ended on end-of-event
+- `[1]` `FULL`             — drain ended because both segments exhausted
+- `[2]` `HALT`             — backpressure dropped data; engine should not
+  raise this in steady state, host investigates if seen
+- `[3]` `SEG_BOUNDARY_HIT` — informational; data spanned the seg0→seg1
+  boundary (so host knows to look at both segments)
+- `[4]` `SEG0_ONLY`        — informational; only seg0 was used
+- `[5]` `ALIGN_ERR`        — refused: misaligned addr or non-4 KB span
+- `[6:15]`                 — reserved
 
 ## 6. CSR aperture (BAR1, byte-addressed) — owned by `opq_run_manager`
 
@@ -191,11 +268,13 @@ already serves OPQ CSRs) and via **PCIe BAR1** (production driver).
 
 | Phase | Sub-IPs touched | Validation surface |
 |------:|-----------------|--------------------|
-| Phase 1 — semi-permanent | All four (`dma_engine`, `sq_fetcher`, `cq_pusher`, `run_manager`) implemented with **Avalon-MM master stub** for the host side. Phase-1 cosim host model owns memory and responds to AVMM. | Per-IP unit cosim + subsystem-level cosim under `tb_int/feb_swb_corun_rdma/`. |
-| Phase 2 — permanent / RDMA | Swap the Avalon-MM master in each IP for the real `altera_pcie_a10_hip` AVMM-to-PCIe completer. Add MSI-X in `cq_pusher`. Add SQ prefetch in `sq_fetcher`. Add scatter-gather SQE format in `dma_engine`. | Hardware integration into `swb_block.vhd`. |
+| Phase 1 — semi-permanent | All four (`dma_engine`, `sq_fetcher`, `cq_pusher`, `run_manager`) implemented with **AXI4 master stub** for the host side (SV `host_model_pkg.sv` AXI4 completer in cosim). 64 B WQE, 2-segment SQE, AXI4-Stream inter-IP — all final structural pieces. | Per-IP unit cosim + subsystem-level cosim under `tb_int/feb_swb_corun_rdma/`. |
+| Phase 2 — permanent / RDMA | Insert thin **AXI4 ↔ Avalon-MM bridge** between each IP's AXI4 master and the existing Altera A10 PCIe HIP (Avalon-MM-side completer). Add MSI-X in `cq_pusher`. Add SQ prefetch in `sq_fetcher`. Optional: switch to a Vivado/Versal target by replacing the bridge with a native AXI4-PCIe core — IPs unchanged. | Hardware integration into `swb_block.vhd` (or a new Qsys/AXI subsystem). |
 
 The structural break is Phase 1 → Phase 2 only at the master-side adapter
-of each IP. No core FSM changes between phases.
+shim. No core FSM changes between phases. Because all internal buses are
+AXI4 family, the supercore is portable across Merlin (Qsys), Xilinx
+SmartConnect, ARM AMBA fabrics, or pure RTL stitching.
 
 ## 8. Per-IP delivery checklist
 
