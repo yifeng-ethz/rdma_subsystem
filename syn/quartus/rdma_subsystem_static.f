@@ -18,3 +18,4 @@
 ../../../rdma_run_manager/rtl/rdma_run_manager_fsm.sv
 ../../../rdma_run_manager/rtl/rdma_run_manager.sv
 ../../rtl/rdma_subsystem_top.sv
+rdma_subsystem_standalone_top.sv

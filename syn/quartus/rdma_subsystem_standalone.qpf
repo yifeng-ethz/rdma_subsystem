@@ -1,0 +1,4 @@
+QUARTUS_VERSION = "18.1"
+DATE = "22:35:00  May 10, 2026"
+
+PROJECT_REVISION = "rdma_subsystem_standalone"
