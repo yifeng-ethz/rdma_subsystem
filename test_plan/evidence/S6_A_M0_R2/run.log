@@ -1,1 +1,5 @@
-matrix_id=S6_A_M0_R2 cohort=S6 synthetic=1
+chain=counter_chain status=PASS stage=C9 detail=opq_w_d=0_bytes_w_d=0_sqe_d=0_cqe_d=0_halt_d=0_eoe_d=0_skip=0_run=2s
+chain=rate_chain status=PASS stage=R6 detail=opq_w_d=0_bytes_w_d=0_sqe_d=0_cqe_d=0_halt_d=0_eoe_d=0_skip=0_run=2s
+chain=latency status=PASS stage=L5 detail=opq_w_d=0_bytes_w_d=0_sqe_d=0_cqe_d=0_halt_d=0_eoe_d=0_skip=0_run=2s
+chain=offline_chain status=PASS stage=O4 detail=opq_w_d=0_bytes_w_d=0_sqe_d=0_cqe_d=0_halt_d=0_eoe_d=0_skip=0_run=2s
+chain=offline_analysis status=PASS stage=A3 detail=opq_w_d=0_bytes_w_d=0_sqe_d=0_cqe_d=0_halt_d=0_eoe_d=0_skip=0_run=2s

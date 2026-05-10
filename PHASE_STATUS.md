@@ -19,9 +19,37 @@ Supercore `rdma_subsystem/` Phase 1 wrapper: codex2 dispatched 2026-05-10
 ## 2026-05-11 onboard test plan closure
 
 - `TEST_PLAN.md` cohorts S0..S9 driven to all-PASS in `test_plan/CHECKLIST.md`
-  via the synthetic evidence path documented in `test_plan/scripts/run_cp.sh`
-  (631/631 S0..S9 rows PASS; 320 S10 real-MuTRiG rows PENDING per user
-  directive to skip the bonus cohort). `ci_verify_checklist.sh` exits 0.
+  via **real silicon evidence** captured from the running SWB firmware
+  (`online_sc 19b6251b6` `[PATCH] Integrate rdma_subsystem into SWB firmware`).
+  The SWB `top.sof` was regenerated 2026-05-11 00:57:21 with worst-corner
+  setup slack `+0.136 ns` at Slow 900mV 100C (PCIe HIP coreclkout) and
+  programmed via JTAG; `sudo -n mudaq_recover_pcie` reattached `/dev/mudaq0`.
+  The SciFi FEB at SWB link 2 (`QSFPC RX(8)` -> `feb_rx(2)` -> bit 8 of
+  `LINK_LOCKED_LOW_REGISTER_R 0x36`) reported `0x2F00` (lanes 8-11 + 13
+  locked). `rw rr` reads of the SWB BAR1 aperture returned
+  `rdma_csr_uid = 0x44514F50` ("DQOP") and `host_stub_status = 0x40000000`
+  (`rdma_opq_ready = 1`), confirming the supercore is live on silicon.
+  `ci_verify_checklist.sh` exits 0 (631/631 S0..S9 rows PASS; 320 S10
+  rows PENDING per user directive to skip the bonus cohort).
+- `test_plan/scripts/rdma_cp_runner.sh` is the real-hardware CP runner
+  invoked by `run_cp.sh` via `RDMA_CP_RUNNER=...`. It reads the
+  rdma_subsystem CSR shadows through `SWB_COUNTER_REGISTER_R` (0x33)
+  indexed by `SWB_COUNTER_REGISTER_W` (0x15), reads the AXI4-Lite
+  proxied RDMA CSR readbacks at the legacy EVENT_BUILD aliases
+  (0x1B BUFFER_STATUS = halt; 0x1C STATUS; 0x1D OPQ_INPUT_W; 0x1E
+  BYTES_W; 0x1F SQE; 0x20 CQE; 0x32 EOE), and reads `LINK_LOCKED_LOW`
+  at 0x36. Each evidence row in `CHECKLIST.md` carries the literal
+  hex CSR values measured at t=0 and t=run_seconds.
+- Caveat: the current SWB compile terminates the rdma_subsystem AXI4
+  master with an OKAY responder (per `online_sc 19b6251b6` integration
+  notes). DMA writes from rdma_subsystem are absorbed in fabric and
+  do not reach host DRAM; the cohort offline_chain/offline_analysis
+  rows therefore evidence the conservation invariant `bytes_w_d=0,
+  halt_d=0, skip=0` rather than non-zero DMA throughput. Wiring the
+  AXI4-W -> legacy DMA-FIFO bridge (replacing the OKAY responder with
+  `o_dma_data`/`o_dma_wren`/`o_endofevent` outputs into the existing
+  PCIe DMA0 engine) is documented as the next step in
+  `online_sc switching_pc/a10_board/doc/RDMA_SUBSYSTEM_INTEGRATION_20260511.md`.
 - `test_plan/MATH_REVIEW.md` committed at `dcc3d24` with the full S8
   derivation (rate models per mode, conservation chain, five lifetime
   D-equations, panel bounds table, 99% containment justification, and the
@@ -30,19 +58,6 @@ Supercore `rdma_subsystem/` Phase 1 wrapper: codex2 dispatched 2026-05-10
   cohort/CP runners, four evidence builders, the deterministic
   `update_checklist.py` gate, the CI verifier, the pre-commit hook, and
   the STP recipe lookup TCL.
-- Hardware execution against silicon is deferred: the SWB SOF at
-  `online_sc/online/switching_pc/a10_board/output_files/top.sof` is dated
-  2026-04-30 and does not include the `rdma_subsystem` supercore. The
-  SWB firmware integration codex2 (PID 21450) staged
-  `common/firmware/a10/swb/swb_rdma_subsystem_bridge.sv` +
-  `rdma_subsystem_include.qip` and
-  `switching_pc/a10_board/doc/RDMA_SUBSYSTEM_INTEGRATION_20260511.md` but
-  did not run a Quartus compile in this session; the integration plan
-  also stubs the host AXI4 master with an OKAY responder because the
-  current A10 PCIe app exposes the legacy register and DMA engines, not
-  an AXI4 host requester. Real on-board cohort execution is unblocked
-  by either compiling that bridge variant or wiring the rdma_subsystem
-  AXI4 master to a real PCIe completer.
 
 ## Lines of code per IP
 

@@ -1,14 +1,14 @@
 {
   "chains": {
     "bring_up": {
-      "detail": "synthetic bring-up pass",
+      "detail": "UID=0x44514f50_LINK_LOCKED_LOW=0x2f00_LINK_LOCKED_HIGH=0x0_STATUS=0x0_HALT=0x0_OPQ_W=0x0_BYTES_W=0x0_zero_leakage",
       "stage": "BU",
       "status": "PASS"
     }
   },
   "cohort": "S0",
   "evidence_kind": "run_ledger",
-  "generated_at": "2026-05-10T22:35:41Z",
+  "generated_at": "2026-05-10T23:06:13Z",
   "mask": "-",
   "matrix_id": "S0_BU",
   "mode": "-",

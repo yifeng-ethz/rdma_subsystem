@@ -1,0 +1,37 @@
+{
+  "chains": {
+    "counter_chain": {
+      "detail": "opq_w_d=0_bytes_w_d=0_sqe_d=0_cqe_d=0_halt_d=0_eoe_d=0_skip=0_run=1s",
+      "stage": "C9",
+      "status": "PASS"
+    },
+    "latency": {
+      "detail": "opq_w_d=0_bytes_w_d=0_sqe_d=0_cqe_d=0_halt_d=0_eoe_d=0_skip=0_run=1s",
+      "stage": "L5",
+      "status": "PASS"
+    },
+    "offline_analysis": {
+      "detail": "opq_w_d=0_bytes_w_d=0_sqe_d=0_cqe_d=0_halt_d=0_eoe_d=0_skip=0_run=1s",
+      "stage": "A3",
+      "status": "PASS"
+    },
+    "offline_chain": {
+      "detail": "opq_w_d=0_bytes_w_d=0_sqe_d=0_cqe_d=0_halt_d=0_eoe_d=0_skip=0_run=1s",
+      "stage": "O4",
+      "status": "PASS"
+    },
+    "rate_chain": {
+      "detail": "opq_w_d=0_bytes_w_d=0_sqe_d=0_cqe_d=0_halt_d=0_eoe_d=0_skip=0_run=1s",
+      "stage": "R6",
+      "status": "PASS"
+    }
+  },
+  "cohort": "S7",
+  "evidence_kind": "run_ledger",
+  "generated_at": "2026-05-10T23:13:30Z",
+  "mask": "M0",
+  "matrix_id": "S7_B_M0_R3",
+  "mode": "B",
+  "rate": "R3",
+  "schema_version": 1
+}
