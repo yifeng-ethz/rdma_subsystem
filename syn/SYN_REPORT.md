@@ -4,12 +4,19 @@ Date: 2026-05-10
 
 ## Status
 
-Overall status: **BLOCKED**
+Overall status: **PARTIAL: resource band relaxed; timing pending dma_engine patch**
 
 The wrapper RTL, Qsys package, and standalone Quartus project compile and pass
-static screening. Phase D signoff is not green because final resources are
-below the `RTL_PLAN_INT.md` section 11 subsystem band and the 275 MHz slack is
-below the required 0.364 ns floor.
+static screening. The resource UNDERRUN against the `RTL_PLAN_INT.md` section
+11 subsystem band has been **explicitly authorized by the user (2026-05-10)**:
+ALM 2240 / M20K 9 are accepted as the new measured floor for Phase 1; this is
+recorded as an authorized relaxation rather than silently rewriting section
+11. The 275 MHz timing FAIL is unchanged: the worst setup path lives inside
+the sibling `rdma_dma_engine` IP, and the user has authorized a targeted
+`rdma_dma_engine` RTL timing patch (register-split / pipeline of the FIFO-
+level to burst-selection path) that will be implemented in the dma_engine
+repo and revalidated by re-running the supercore standalone Phase D after
+the dma_engine patch lands.
 
 ## Configuration
 
@@ -46,20 +53,21 @@ Generated Quartus evidence:
 
 | Metric | Estimate | Accepted band | Actual | Status |
 |--------|---------:|--------------:|-------:|--------|
-| ALM | 3750 | 3000 to 5625 | 2240 | **RESOURCE ESTIMATE UNDERRUN** |
-| M20K | 14 | 12 to 21 | 9 | **RESOURCE ESTIMATE UNDERRUN** |
+| ALM | 3750 | 3000 to 5625 | 2240 | **AUTHORIZED RELAX** (was UNDERRUN) |
+| M20K | 14 | 12 to 21 | 9 | **AUTHORIZED RELAX** (was UNDERRUN) |
 | DSP | 0 | 0 | 0 | PASS |
 
 Root cause: the compiled Phase 1 standalone implementation is smaller than the
 aggregate section 11 estimate. The DMA data FIFO is the only inferred M20K RAM
 in the final netlist, and the four sibling IP implementations plus wrapper
-logic synthesize to 2240 ALMs in the standalone host-stub context. This is an
-underrun against the requested band, so the estimate should not be silently
-updated.
+logic synthesize to 2240 ALMs in the standalone host-stub context.
 
-Requested review action: authorize either a resource-band relaxation for the
-current measured Phase 1 standalone implementation or a revised resource
-baseline in `RTL_PLAN_INT.md`.
+**Authorization (2026-05-10 user decision):** the measured 2240 ALM / 9 M20K
+result is accepted as the Phase 1 standalone resource floor. This is recorded
+as an explicit relaxation rather than a silent rewrite of `RTL_PLAN_INT.md`
+section 11; the section 11 estimate is preserved as the original target so
+the relaxation is auditable. Phase 2 (real PCIe HIP integration) will revisit
+both the estimate and the measured result.
 
 ## Timing Result
 
@@ -83,9 +91,15 @@ logic into `writer.beats_remaining[*]`. The committed wrapper only wires the DMA
 engine into the supercore and cannot retime this path without modifying the
 forbidden sibling IP.
 
-Requested review action: authorize a targeted `rdma_dma_engine` timing patch
-that registers or splits the FIFO-level to burst-selection path, or relax the
-0.364 ns slack floor for this Phase 1 standalone signoff.
+**Authorization (2026-05-10 user decision):** the user authorized a targeted
+`rdma_dma_engine` RTL timing patch over the alternative of relaxing the 0.364
+ns slack floor. The fix will register-split / pipeline the FIFO-level to
+burst-selection path inside the dma_engine repo (sibling submodule), be
+gated by the dma_engine repo's own standalone Phase D re-close, and the
+supercore standalone Phase D will be re-run on top of the patched dma_engine
+to confirm the supercore-level setup slack closes above 0.364 ns at 275 MHz.
+Until the dma_engine patch lands and the supercore re-runs, this row remains
+the rate-limiting blocker for full supercore Phase D closure.
 
 ## Notes
 
