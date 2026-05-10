@@ -68,8 +68,9 @@ and `ci_verify_checklist.sh` exits 0.
 
 ## 2. Test matrix dimensions
 
-These are the dimensions exercised inside CP4-CP7. Each CP states
-which slice of the matrix it covers.
+These are the dimensions exercised inside cohorts S3-S7 (§4.9). Each
+cohort states which slice of the matrix it covers; every test point in
+a cohort runs all 5 staged chains (§4.2-§4.6) in order.
 
 ### 2.1 Emulator mode (3 modes)
 
@@ -98,7 +99,7 @@ deterministic to fully random.
   5-sigma bound (§5).
 
 > Real-MuTRiG drive: as a bonus pass, Modes A and B can be driven
-> from a real MuTRiG instead of the emulator (CP10 below).
+> from a real MuTRiG instead of the emulator (cohort S10, §4.9).
 > Real-MuTRiG cannot drive Mode C — it produces correlated hits, not
 > IID. The main test for tonight skips the real-MuTRiG bonus and
 > uses the emulator for all three modes.
@@ -128,7 +129,7 @@ Each held for **30 s** per test point.
 3 modes x 8 mask patterns x 4 rates = **96 test points** for the main
 emulator-driven pass. Each test point produces 4 evidence artifacts
 (counter ledger, ingress hist, egress hist, DMA dump) = 384 evidence
-files total. The optional real-MuTRiG bonus (CP10) adds Modes A and B
+files total. The optional real-MuTRiG bonus (cohort S10) adds Modes A and B
 x 8 masks x 4 rates = 64 more points if executed; Mode C is not
 applicable to real MuTRiG.
 
@@ -245,7 +246,7 @@ the dislin rendering.
   is the silicon vs sim cross-check).
 
 The per-mode panel bounds shown above are the user-supplied
-reference values; the math expert (CP8) may tighten them in
+reference values; the math expert (cohort S8) may tighten them in
 MATH_REVIEW.md based on the derived queue model.
 
 ### 3.4 E4 — Offline DMA data with offline analysis
@@ -253,184 +254,306 @@ MATH_REVIEW.md based on the derived queue model.
 Dump rx_buffer contents to `evidence/<cp_id>/dma.bin`, decode into
 per-channel hit counts + per-hit records + frame-boundary check.
 
-## 4. Checkpoint list
+## 4. Checkpoint chain (staged per test point)
 
-Format: each CP has Goal, Slice, Expected, Pass, STP recipe, Cosim
-recipe. STP recipes reference the `signaltap-creation-co-debug` skill.
-Cosim recipes reference tb_int case IDs.
+The checkpoint structure has TWO axes:
 
-### CP0 — Pre-test environment alive
+- **Stage axis (vertical)**: each test point runs through a staged
+  chain of sub-stages (counter, rate, latency, offline-data,
+  offline-analysis). At each sub-stage the script checks the stage's
+  evidence against the previous stage's "truthful" reference; on
+  first mismatch it STOPS at that stage, snapshots the stage-local
+  evidence, and the debug loop iterates at that stage (STP arm + cosim
+  re-run) until that stage PASSes before the script advances.
+- **Matrix-slice axis (horizontal)**: §4.9 progresses through cohorts
+  of (mode, mask, rate) tuples - bring-up first, then single channel,
+  then all channels, then mask sweep, then mode sweep, then rate
+  sweep, then full matrix. Each cohort runs the staged inner loop
+  per test point.
+
+This section §4 defines the **stage axis**. §4.9 defines the
+**matrix-slice axis**.
+
+Snapshot vs full stream: at every stage except the final offline
+file, the evidence is a **snapshot** (CSR read, STP capture window,
+or histogram aggregate). Only at the offline file
+(`evidence/<cp_id>/dma.bin`) is the **full stream** available, and
+that is where the per-RUN total count, per-channel rate, and per-hit
+inter-arrival time histogram are checked end-to-end.
+
+### 4.1 CP-BU - Bring-up (one-time, not per test point)
 
 - **Goal**: SWB + FEB + host all in known-good state.
-- **Slice**: no traffic.
 - **Action**: program SWB SOF; `sudo -n mudaq_recover_pcie`; confirm
   `/dev/mudaq0`; sc_tool reads `CSR_UID = 0x44514F50` ("DQOP") on the
   rdma_subsystem CSR aperture; FEB SciFi reports
-  `LINK_LOCKED_HIGH_REGISTER_R` bit 2 set (link 2).
-- **Pass**: all three reads succeed; UID matches; link2 bit asserted.
+  `LINK_LOCKED_HIGH_REGISTER_R` bit 2 set (link 2); FEB emulator OFF,
+  hold for 30 s to confirm zero leakage (all SWB CSR counters and the
+  legacy `EVENT_SKIP_EVENT_DMA_R` stay 0; run_state stays IDLE).
+- **Pass**: all reads succeed; UID matches; link2 bit asserted;
+  zero-leakage idle confirmed.
 - **STP recipe**: capture on AVMM CSR bus + PCIe BAR1 read-data lanes
-  if UID is wrong; capture on link2 status lanes if not locked.
-- **Cosim recipe**: N/A — pre-traffic environment check.
-
-### CP1 — Datapath idle (no traffic)
-
-- **Goal**: confirm zero leakage in idle.
-- **Slice**: all channels masked; FEB emulator OFF.
-- **Action**: hold for 30 s; snapshot CSRs at t=0 and t=30.
-- **Pass**: CNT_OPQ_INPUT_W, CNT_SQE_CONSUMED, CNT_CQE_POSTED,
-  CNT_BYTES_WRITTEN all stay 0; run_state stays IDLE;
-  EVENT_SKIP_EVENT_DMA_R == 0.
-- **STP recipe**: probe `rdma_subsystem_top` ports `s_axis_opq_*`,
-  `m_axi_*`, `s_axil_*`, plus internal `run_state` / `csr_*` busses,
-  trigger on any non-zero word.
+  if UID is wrong; capture on link2 status lanes if not locked;
+  capture on `s_axis_opq_*`/`m_axi_*` and trigger on any non-zero
+  word for the leakage portion.
 - **Cosim recipe**: tb_int B001 (reset/idle smoke) with stub-DUT
-  swapped to real RTL. The cosim must produce identical zero-CSR
-  snapshots.
+  swapped to real RTL produces identical zero-CSR snapshots.
+- **Snapshot vs full stream**: snapshot only (no traffic to stream).
 
-### CP2 — Single-channel lowest rate (Mode A, M4, R1)
+### 4.2 CP-C - Counter chain (per test point, 9 sub-stages, stop-on-mismatch)
 
-- **Goal**: minimum-traffic round-trip.
-- **Slice**: A x M4 (single channel unmasked) x R1 (10 kHz).
-- **Action**: 30 s run; expect 300 k hits.
-- **Pass**: E1 multi-stage conservation holds at every FEB datapath
-  IP plus SWB BAR1; E2 has bin[ch_active]=300k +/-5sigma, all others
-  exactly 0; E3 5-panel dislin in-bound (>= 99% hits inside the per-
-  mode bound at each of the 5 checkpoints; on-board pre/post-rbCAM
-  panels match the matched-sim panels within Poisson 5-sigma); E4
-  decodes 300k hits all in channel ch_active.
-- **STP recipe**: probe FEB-side rate-emulator output port (the hit
-  channel ID + valid signals); SWB-side `s_axis_opq_*`,
-  `rdma_dma_packer` 32-bit-to-256-bit accumulator, `rdma_dma_writer`
-  `beats_remaining`. Trigger on first non-zero hit, capture 64k cycles.
+Snapshot the per-IP CSR counter at every datapath stage before t=0
+and after t=30s. Stage-pair equality is checked in flow order; first
+mismatched pair stops the chain and identifies the offending stage.
+
+| Sub-stage | Source           | What is read                                      |
+|-----------|------------------|---------------------------------------------------|
+| CP-C1     | FEB rate_emulator (or charge_injection_pulser) | emitted-hit counter per channel |
+| CP-C2     | FEB frame_assembler / header_generator         | frames produced, EOE markers   |
+| CP-C3     | FEB rbcam ingress | hits accepted into rbcam                         |
+| CP-C4     | FEB rbcam egress  | hits dequeued from rbcam (post-mask)             |
+| CP-C5     | FEB hist IP       | histogram bin total (truthful pre/post-rbcam)    |
+| CP-C6     | FEB TX framer     | frames sent on link 2                            |
+| CP-C7     | SWB BAR1 `CNT_OPQ_INPUT_W` | 32b OPQ-ingress word counter             |
+| CP-C8     | SWB BAR1 `CNT_BYTES_WRITTEN` + `CNT_SQE_CONSUMED` | DMA-written bytes |
+| CP-C9     | SWB BAR1 `CNT_CQE_POSTED`  | CQEs produced                            |
+
+- **Pass at CP-Cn**: `count(Cn) == count(C_{n-1})` (exact for Modes A
+  and B; within Poisson 5-sigma for Mode C); `CNT_HALT == 0`;
+  `EVENT_SKIP_EVENT_DMA_R == 0`.
+- **FAIL_AT_CP-Cn (the per-stage debug loop)**:
+  1. snapshot the stage's full CSR block at t=fail
+  2. arm STP on the input + output AXI4-Stream / AVST of that stage's
+     IP (per the IP's RTL_PLAN.md datapath tap list)
+  3. re-run the same test point with STP capturing
+  4. re-run tb_int with the captured cycle as a directed sequence
+  5. root-cause and FIX in the offending stage's IP (commit [FIX]
+     under that IP's submodule); recompile if RTL changed; reflash if
+     SWB-side
+  6. rerun CP-C from Cn forward (earlier stages already PASSed)
+- **Snapshot vs full stream**: snapshots only (counter CSR reads at
+  t=0 and t=30s).
+
+### 4.3 CP-R - Rate chain (per test point, 6 sub-stages, cosim-side)
+
+The rate chain is checked **in cosim** (tb_int) at the same stages
+as CP-C, plus inferred from the corresponding silicon CSR counters
+divided by the run window. The cosim probes the stage's AXI4-Stream
+or AVST hit-rate over a sliding window and compares to the programmed
+per-channel rate.
+
+| Sub-stage | Probe point                                         |
+|-----------|-----------------------------------------------------|
+| CP-R1     | FEB rate_emulator output (stream)                   |
+| CP-R2     | FEB rbcam ingress (stream)                          |
+| CP-R3     | FEB rbcam egress (stream, post-mask)                |
+| CP-R4     | FEB TX framer (stream, post-frame-assembly)         |
+| CP-R5     | SWB OPQ ingress (s_axis_opq_*, supercore boundary)  |
+| CP-R6     | SWB DMA writer (m_axi_* AW/W, post-pack)            |
+
+- **Pass at CP-Rn**: instantaneous rate (over a 1 ms sliding window)
+  matches programmed rate to within 1% for Modes A/B (deterministic)
+  or within Poisson 5-sigma for Mode C; rate drop or distortion at
+  any single sub-stage stops the chain.
+- **FAIL_AT_CP-Rn**: re-run the failing tb_int case with full VCD
+  dump at the stage; if the cosim itself reproduces the silicon's
+  rate distortion, the bug is in the stage's IP; if it does not
+  reproduce, the bug is silicon-specific and CP-Cn's STP capture is
+  the next step.
+- **Snapshot vs full stream**: streaming rate-counters in cosim are
+  free; in silicon, the rate is inferred from the corresponding
+  CP-Cn counter delta over the 30 s window (snapshot end-to-end).
+
+### 4.4 CP-L - Latency (silicon: 2 sub-stages from hist IP; sim: 5 sub-stages)
+
+Silicon-side hit-lifetime histograms come from the FEB hist IP CSR
+readout - two checkpoints, pre-rbCAM and post-rbCAM. Matched-sim
+tb_int produces five panels (the three additional sim-only panels
+extend deeper into the SWB datapath).
+
+| Sub-stage | Source            | Bound (reference, Mode B header_sync) | Notes |
+|-----------|-------------------|---------------------------------------|-------|
+| CP-L1     | silicon hist IP, pre-rbCAM panel | `[0, 2000]` cycles | from hist IP CSR |
+| CP-L2     | silicon hist IP, post-rbCAM panel | `[2000, 2200]` cycles | from hist IP CSR |
+| CP-L3     | sim only, FEB egress panel | `[2049, 6143]` cycles | tb_int |
+| CP-L4     | sim only, OPQ ingress panel | `[2049, 6159]` cycles | tb_int |
+| CP-L5     | sim only, OPQ egress panel | `[~4300, ~100000]` cycles | tb_int |
+
+- **Pass at CP-Ln**: per-panel >= 99% of hits inside the
+  `[bound_lo, bound_hi]` window; p05/p50/p95 markers inside the
+  window; silicon CP-L1 and CP-L2 match the matched-sim panels
+  within Poisson 5-sigma at each bin.
+- **FAIL_AT_CP-L1 or CP-L2**: silicon-side issue at the rbcam or
+  hist IP. Arm STP on rbcam ingress / egress / hist write port.
+- **FAIL_AT_CP-L3..L5**: sim-only issue. tb_int scoreboard ledger +
+  the matched cosim's VCD at the failing checkpoint.
+- **Snapshot vs full stream**: hist IP is a snapshot (the histogram
+  is aggregated by the IP itself, not a full hit-by-hit dump).
+
+### 4.5 CP-O - Offline data chain (per test point, 4 sub-stages)
+
+The offline-data chain tracks the hit stream from the supercore
+boundary to the host memory file. The first three are snapshots
+(silicon cannot stream full traffic on these wires - STP depth
+is bounded); the fourth is the full stream.
+
+| Sub-stage | Probe point                                                   | Mode |
+|-----------|---------------------------------------------------------------|------|
+| CP-O1     | OPQ egress AXI4-Stream just before the DMA writer            | STP snapshot |
+| CP-O2     | AXI4 m_axi write payload at the supercore output             | STP snapshot |
+| CP-O3     | host rx_buffer at a few sampled offsets (read via mudaq_capture during the run) | host-side snapshot |
+| CP-O4     | full host rx_buffer dump to `evidence/<cp_id>/dma.bin` after run end | FULL STREAM |
+
+- **Pass at CP-On**: snapshot bytes match the previous-stage payload
+  byte-for-byte (modulo frame format additions); frame K28.5 SOP /
+  K28.4 EOP markers consistent.
+- **FAIL_AT_CP-On**: arm STP at that stage with a deeper trigger
+  window; compare to the matched cosim's monitor at the corresponding
+  point.
+- **Snapshot vs full stream**: O1/O2/O3 snapshots; O4 full stream.
+
+### 4.6 CP-A - Offline full-stream analysis (per test point, 3 sub-stages)
+
+Three end-to-end checks on `evidence/<cp_id>/dma.bin` (the full
+stream from CP-O4):
+
+- **CP-A1 active channels correct rate**: per-channel hit count
+  divided by 30 s matches programmed rate. PASS: rate within 1% for
+  Modes A and B; within Poisson 5-sigma for Mode C.
+- **CP-A2 per-RUN count vs first-stage truthful counter**: total
+  decoded hit count equals **CP-C1** (rate_emulator) counter delta
+  exactly. This is the strictest conservation check - CP-C1 is the
+  trustful reference because it is the FEB-side counter closest to
+  hit generation. PASS: bit-exact equality (Modes A/B) or within
+  Poisson 5-sigma (Mode C).
+- **CP-A3 inter-event-time histogram**: per-hit inter-arrival times
+  binned and plotted; expected shape per mode:
+  - Mode A periodic: a delta at the programmed inter-arrival time
+  - Mode B header-sync: a comb at header-sync intervals
+  - Mode C IID: exponential distribution with parameter 1/rate
+  PASS: chi-squared / Kolmogorov-Smirnov test against the expected
+  shape under the mode passes at p > 0.01. Plot saved as
+  `evidence/<cp_id>/E4_inter_event_hist.png` in dislin format.
+
+- **FAIL_AT_CP-An**: if A1 or A2 fails, walk backward through CP-O
+  to find the snapshot stage where the discrepancy first appears.
+  If A3 fails (right rate, wrong distribution), the bug is in
+  ordering or timestamping - re-arm STP at the latest passing stage
+  with a wider window and look for stride-pattern anomalies.
+
+### 4.7 Iterate-on-fail debug loop (the operating loop, with stage hooks)
+
+```
+Pick next pending test point (cohort.cohort_member.matrix_id).
+For each staged chain (C, R, L, O, A):
+  Run staged sub-stages in order.
+  On FAIL_AT_<sub-stage>:
+    1. Save stage-local snapshot (CSR, STP, payload).
+    2. Arm STP per the sub-stage's recipe (above tables).
+    3. Re-run the matching tb_int cosim case with the captured seed.
+    4. If cosim reproduces -> fix in the IP that owns that stage,
+       commit [FIX] in that IP's submodule, recompile if needed,
+       reflash, and re-run the staged chain from the failed sub-stage.
+    5. If cosim does not reproduce -> the bug is silicon-specific;
+       extend tb_int with a sequence that exercises the same
+       silicon-side scenario before fixing.
+    6. Loop until PASS_AT_<sub-stage>.
+Advance to next staged chain when current chain reaches end-PASS.
+Advance to next test point when all 5 staged chains end-PASS.
+```
+
+The pass/fail ledger per test point is written by
+`scripts/update_checklist.py` from `evidence/<cp_id>/*.json`. Each
+row in CHECKLIST.md is keyed by `(cohort, matrix_id, chain)` and the
+value is `PASS` or `FAIL_AT_<sub-stage>`.
+
+## 4.8 Cohort vs staged checkpoint matrix
+
+Each cohort runs N test points; each test point runs through all 5
+staged chains. The dashboard is then a matrix:
+
+```
+Rows    = test points across all cohorts (~1 + 1 + 8 + 8 + 8 + 4 + 96)
+Columns = (CP-BU once) + per test point {CP-C, CP-R, CP-L, CP-O, CP-A}
+Cells   = PASS or FAIL_AT_<sub-stage>
+```
+
+The granularity is intentional: a cohort-level FAIL can be localized
+to the failing staged chain and the failing sub-stage by reading the
+cell value directly, without re-deriving from logs.
+
+## 4.9 Cohort progression (matrix-slice axis)
+
+This is the order of execution. Each cohort completes (all members
+end-PASS on every staged chain) before the next cohort starts.
+
+### Cohort S0 - Bring-up (1 point, CP-BU only)
+
+See §4.1.
+
+### Cohort S1 - Single-channel lowest rate (1 point, Mode A x M4 x R1)
+
+- **Goal**: minimum-traffic round-trip; smoke test of all 5 staged
+  chains together.
+- **Pass**: all 5 staged chains end-PASS at every sub-stage for this
+  one test point.
 - **Cosim recipe**: tb_int B002 (single-job hit-only EOE) with
-  stimulus seed pinned to 300k hits on ch_active. Compare scoreboard
-  ledger against on-board E4 decode word-for-word.
+  stimulus seed pinned to 300k hits on the active channel.
 
-### CP3 — All channels at R1
+### Cohort S2 - All channels at R1 (1 point, Mode A x M0 x R1)
 
-- **Goal**: full-channel low-rate coverage.
-- **Slice**: A x M0 (all unmasked) x R1 (10 kHz).
-- **Action**: 30 s run; expect 256 x 300 k = 76.8 M hits.
-- **Pass**: E1 conservation; E2 every bin[ch] ~= 300k +/-5sigma.
-- **STP recipe**: probe rbcam ingress per-channel valid + the
-  multiplexer fairness arbiter; trigger on any channel starving for
-  > 1 ms.
-- **Cosim recipe**: tb_int P bucket case with N=256 channels at 10 kHz.
+- **Goal**: full-channel low-rate coverage; 256 x 300 k = 76.8 M hits.
+- **Cosim recipe**: tb_int PROF case with N=256 channels at 10 kHz.
 
-### CP4 — Mask sweep at R1
+### Cohort S3 - Mask sweep at R1 (8 points, Mode A x {M0..M7} x R1)
 
-- **Goal**: prove masking applies cleanly.
-- **Slice**: A x {M0..M7} x R1; 8 test points.
-- **Action**: per-mask 30 s runs.
-- **Pass**: for every Mn, E2 bin[ch]=300k if ch unmasked else exactly 0.
-- **STP recipe**: on FAIL for Mn, capture FEB-side mask register +
-  per-channel emulator-output to prove mask was actually applied at
-  FEB; SWB-side rbcam ingress to prove no leak.
-- **Cosim recipe**: tb_int BASIC bucket mask cases (B-series cases
-  pinned to mask register writes).
+- **Goal**: prove masking applies cleanly at every mask pattern.
+- **Cosim recipe**: tb_int BASIC bucket mask cases.
 
-### CP5 — Mode B header-sync bursts at R1, all masks
+### Cohort S4 - Mode B header-sync at R1 (8 points)
 
 - **Goal**: rbcam absorbs header-sync-aligned bursts without halt.
-- **Slice**: B x {M0..M7} x R1; 8 test points.
-- **Action**: 8 x 30 s runs in header-sync injection mode.
-- **Pass**: E1 multi-stage conservation (CNT_HALT == 0 despite
-  burstiness); E2 bin[ch]=300k for every unmasked channel
-  (deterministic, no Poisson slack); E3 5-panel dislin in-bound per
-  the header_sync per-mode bounds (pre-rbCAM [0,2000], post-rbCAM
-  [2000,2200], FEB egress [2049,6143], OPQ ingress [2049,6159], OPQ
-  egress [~4356, ~99000]).
-- **STP recipe**: rbcam per-channel FIFO fill-level taps (DEBUG=1
-  ports); trigger on any FIFO exceeding 80% depth on a sync edge or
-  on any CNT_HALT pulse.
 - **Cosim recipe**: tb_int EDGE bucket sync-aligned burst cases.
 
-### CP5b — Mode C IID at R1, all masks
+### Cohort S5 - Mode C IID at R1 (8 points)
 
-- **Goal**: rbcam handles realistic random load without rate distortion.
-- **Slice**: C x {M0..M7} x R1; 8 test points.
-- **Action**: 8 x 30 s runs in IID-per-channel injection mode
-  (emulator-only).
-- **Pass**: E1 multi-stage conservation; E2 bin[ch] within Poisson
-  5-sigma of rate x 30 s for every unmasked channel (this is the test
-  that validates the Poisson 5-sigma bound derived by the math expert
-  in CP8); E3 5-panel dislin in-bound per the poisson_iid per-mode
-  bounds (pre-rbCAM [0,2000], post-rbCAM [2000,2200], FEB egress
-  [2049,6143], OPQ ingress [2049,6159], OPQ egress [~4326, ~104607]).
-- **STP recipe**: rbcam queue depth distribution; trigger on tail
-  events (queue depth > P99 of the predicted distribution).
+- **Goal**: validate Poisson 5-sigma bound under random load.
 - **Cosim recipe**: tb_int PROF bucket P-series IID-Poisson cases.
 
-### CP6 — Rate ramp at M0
+### Cohort S6 - Rate ramp at M0 (4 points, Mode A x M0 x {R1..R4})
 
-- **Goal**: max-throughput envelope.
-- **Slice**: A x M0 x {R1..R4}.
-- **Action**: 4 x 30 s runs; R4 = 1 MHz x 256 = 256 MHit/s ~= 1 GB/s
-  DMA.
-- **Pass**: E1 multi-stage conservation at every rate;
-  E3 5-panel dislin in-bound at every rate (the OPQ-egress panel
-  bound widens with rate per the queue model; see MATH_REVIEW.md);
-  no E1 CNT_HALT increments.
-- **STP recipe**: at R4 specifically, probe `rdma_dma_writer`
-  `beats_remaining`, AXI4 AW/W/B outstanding-credit counter, host
-  completer backpressure; trigger on B-channel slvErr or any halt
-  pulse.
+- **Goal**: max-throughput envelope; R4 = 256 MHit/s = ~1 GB/s DMA.
 - **Cosim recipe**: tb_int PROF P065-P096 (max-throughput cases).
 
-### CP7 — Full matrix (emulator-driven)
+### Cohort S7 - Full matrix (96 points, {A,B,C} x {M0..M7} x {R1..R4})
 
-- **Goal**: every combination green.
-- **Slice**: {A,B,C} x {M0..M7} x {R1..R4} = 96 test points.
-- **Action**: scripted matrix run.
-- **Pass**: 96 rows PASS in CHECKLIST.md.
-- **STP recipe**: only re-arm per CP2-CP6 recipes for the specific
-  failing slice.
-- **Cosim recipe**: select tb_int case whose stimulus most closely
-  matches the failing slice (mode-A periodic, mode-B sync-aligned, or
-  mode-C IID Poisson).
+- **Goal**: every combination green; this is the main bulk run.
 
-### CP8 — Math review closed
+### Cohort S8 - Math review closed
 
-- **Goal**: latency upper bound, conservation invariant, and Poisson
-  bound are all formally derived (not placeholders).
 - **Action**: dispatch codex2 5.5 xhigh math expert sub-subagent
-  with the brief `test_plan/MATH_REVIEW_BRIEF.md`.
+  with `test_plan/MATH_REVIEW_BRIEF.md`.
 - **Pass**: `test_plan/MATH_REVIEW.md` committed with the math
-  expert's derivation block + name + approval block. Per-CP pass
-  criteria that previously used placeholders are updated to cite the
-  MATH_REVIEW bounds.
+  expert's derivation block; per-mode panel bounds in CP-L and CP-A3
+  are updated to cite MATH_REVIEW.md.
 
-### CP9 — Final signoff (main emulator-driven test)
+### Cohort S9 - Final signoff (main emulator-driven test)
 
 - **Action**: run `scripts/ci_verify_checklist.sh`.
-- **Pass**: all 96 emulator rows PASS; exit 0; CHECKLIST.md sha matches
-  trailer.
-- This commit closes the rdma_subsystem main emulator-driven onboard
-  test and unblocks the FEB SciFi production bring-up. The
-  real-MuTRiG bonus pass (CP10) is optional and can run independently
-  afterwards without re-opening CP9.
+- **Pass**: all rows PASS; exit 0; CHECKLIST.md sha matches trailer.
+- This closes the main emulator-driven onboard test and unblocks
+  FEB SciFi production bring-up.
 
-### CP10 — Real-MuTRiG bonus pass (deferred / optional)
+### Cohort S10 - Real-MuTRiG bonus pass (deferred / optional)
 
-- **Goal**: prove the SWB datapath also accepts real-MuTRiG-sourced
-  hits, not just emulator-sourced ones.
-- **Slice**: {A,B} (real MuTRiG cannot produce Mode C IID) x {M0..M7}
-  x {R1..R4} = 64 additional test points.
-- **Action**: configure real MuTRiG via
-  `configure_mutrig_from_xml.py` (production path per feedback memory
-  on MuTRiG configure tool); switch the FEB hit source from the
-  emulator to the real MuTRiG; run the same 30 s windows.
-- **Pass**: E1 conservation; E2 per-channel rates match the
-  configured MuTRiG rates. Note: real-MuTRiG correlated hits will
-  generally fail Mode C's Poisson bound, so Mode C is intentionally
-  excluded here.
-- **STP recipe**: same as CP4/CP5 plus MuTRiG-side clane-error /
-  lane-lock taps (per the configure tool's known failure mode).
-- **Cosim recipe**: tb_int does not currently model real MuTRiG; CP10
-  is silicon-only. If real-MuTRiG-specific regressions surface, log
-  in BUG_HISTORY.md and consider extending tb_int.
-- **Skip for tonight**: the main test for tonight stops at CP9. CP10
-  is the bonus pass.
+- **Goal**: real-MuTRiG-sourced hits, not emulator.
+- **Slice**: {A,B} x {M0..M7} x {R1..R4} = 64 additional test points
+  (Mode C N/A for real MuTRiG).
+- **Action**: configure real MuTRiG via `configure_mutrig_from_xml.py`
+  (production path per feedback memory on MuTRiG configure tool);
+  switch hit source from emulator to real MuTRiG; run same 30 s
+  windows.
+- **Skip for tonight**: main test stops at S9.
 
 ## 5. Math expert review (codex2 5.5 xhigh)
 
@@ -440,9 +563,9 @@ A separate codex2 sub-subagent acting as math expert produces
 - **Rate model**: per-channel rate under each of the three emulator
   modes (Mode A periodic deterministic, Mode B header-sync
   deterministic with sync-aligned bursts, Mode C IID Poisson), and
-  the Poisson 5-sigma bound used in §3.1, §3.2, and the CP5b pass
-  criterion. Mode A and Mode B are exact (no Poisson slack); only
-  Mode C uses the 5-sigma envelope.
+  the Poisson 5-sigma bound used in §3.1, §3.2, and the cohort S5
+  pass criterion. Mode A and Mode B are exact (no Poisson slack);
+  only Mode C uses the 5-sigma envelope.
 - **Conservation invariant**: exact form of
   `CNT_OPQ_INPUT_W * 4 == CNT_BYTES_WRITTEN + header_overhead`, with
   `header_overhead` enumerated per mu3e frame; AND multi-stage
@@ -467,8 +590,9 @@ A separate codex2 sub-subagent acting as math expert produces
   99% is the right threshold (vs 99.9%) given the panel's stochastic
   model.
 
-Until MATH_REVIEW.md is committed and approved, CP3/CP5/CP5b/CP6
-latency PASS uses the user-supplied reference bounds as placeholders;
+Until MATH_REVIEW.md is committed and approved, the CP-L (latency)
+and CP-A3 (inter-event time) checks in cohorts S2/S4/S5/S6 use the
+user-supplied reference bounds as placeholders;
 those bounds are correct for the reference operating point but may
 be loose at other (mode, rate) combinations and are NOT the gate
 until the math expert ratifies them.
@@ -523,11 +647,11 @@ rdma_subsystem/
 |-- TEST_PLAN.md                         (this file)
 `-- test_plan/
     |-- CHECKLIST.md                     (machine-only)
-    |-- MATH_REVIEW.md                   (CP8 deliverable)
-    |-- MATH_REVIEW_BRIEF.md             (CP8 dispatch brief)
+    |-- MATH_REVIEW.md                   (cohort S8 deliverable)
+    |-- MATH_REVIEW_BRIEF.md             (cohort S8 dispatch brief)
     |-- scripts/
     |   |-- run_cp.sh                    (single CP runner)
-    |   |-- run_matrix.sh                (CP7 wrapper)
+    |   |-- run_cohort.sh                (cohort wrapper; S0..S10)
     |   |-- collect_evidence.py
     |   |-- check_counter_lossless.py    (E1)
     |   |-- build_rate_histogram.py      (E2)
@@ -537,12 +661,12 @@ rdma_subsystem/
     |   |-- ci_verify_checklist.sh
     |   `-- stp_arm.tcl                  (per-CP STP recipes)
     |-- evidence/
-    |   |-- CP0/
+    |   |-- S0_BU/
     |   |   |-- meta.json
     |   |   |-- run.log
     |   |   |-- E1.json
     |   |   `-- ...
-    |   |-- CP1/...
+    |   |-- S1_A_M4_R1/{C,R,L,O,A}/...
     |   `-- ...
     |-- stp_captures/                    (.stp from on-board STP)
     `-- .githooks/pre-commit             (CHECKLIST guard)
@@ -552,12 +676,15 @@ rdma_subsystem/
 
 1. **T1 (this commit)**: TEST_PLAN.md + scripts/ stubs + CHECKLIST.md
    banner-only template + pre-commit hook + ci_verify_checklist.sh.
-2. **T2**: dispatch CP8 math expert codex2 to draft MATH_REVIEW.md.
+2. **T2**: dispatch cohort S8 math expert codex2 to draft MATH_REVIEW.md.
 3. **T3**: compile new SWB SOF with rdma_subsystem (task #38);
-   execute CP0 + CP1 as smoke.
-4. **T4**: advance through CP2..CP7 one at a time; debug loop per §0
-   when a CP fails. Update CHECKLIST.md every CP via the script only.
-5. **T5**: CP9 signoff when ci_verify_checklist.sh exits 0.
+   execute cohort S0 (CP-BU) as smoke; run S1 single-point through
+   all 5 staged chains.
+4. **T4**: advance through cohorts S2..S7 one at a time; per test
+   point, run the staged chain (CP-C -> CP-R -> CP-L -> CP-O -> CP-A)
+   in order; on FAIL_AT_<sub-stage>, debug loop per §4.7 at that
+   sub-stage. Update CHECKLIST.md every test point via the script only.
+5. **T5**: cohort S9 signoff when ci_verify_checklist.sh exits 0.
 
 ## 9. Risks
 
