@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# Reject hand-edited CHECKLIST.md. It must match update_checklist.py output.
+set -euo pipefail
+
+repo_root="$(git rev-parse --show-toplevel)"
+checklist_path="test_plan/CHECKLIST.md"
+
+if ! git diff --cached --name-only -- "${checklist_path}" | grep -qx "${checklist_path}"; then
+  exit 0
+fi
+
+tmp_generated="${TMPDIR:-/tmp}/rdma_checklist_hook_generated.$$.md"
+tmp_staged="${TMPDIR:-/tmp}/rdma_checklist_hook_staged.$$.md"
+
+python3 "${repo_root}/test_plan/scripts/update_checklist.py" \
+  --out "${tmp_generated}" \
+  --evidence "${repo_root}/test_plan/evidence"
+
+git show ":${checklist_path}" > "${tmp_staged}"
+
+if ! diff -u "${tmp_generated}" "${tmp_staged}" >&2; then
+  printf '%s\n' "ERROR: test_plan/CHECKLIST.md is generated. Run:" >&2
+  printf '%s\n' "  python3 test_plan/scripts/update_checklist.py --out test_plan/CHECKLIST.md --evidence test_plan/evidence" >&2
+  exit 1
+fi
