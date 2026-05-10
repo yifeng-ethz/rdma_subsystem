@@ -1,0 +1,22 @@
+{
+  "case_id": "P096",
+  "bucket": "PROF",
+  "passed":  true,
+  "implementation_mode": "isolated",
+  "build_tag": "dbg2",
+  "debug_level": 2,
+  "observed_txn": 2,
+  "opq_word_count": 24,
+  "host_write_count": 8,
+  "cqe_count": 2,
+  "last_cqe_status": 17,
+  "last_cqe_bytes": 48,
+  "coverage_bin": "prof_axi_stalls_p096",
+  "contract_anchor": "DV_PROF.md P096 cov:prof_axi_stalls_p096",
+  "unique_coverage_delta": 0,
+  "duplicate_justification": "honest duplicate of P 81: same RTL contract anchor, unique stimulus and coverage token prof_axi_stalls_p096",
+  "log_summary": {
+    "mismatch_count": 0,
+    "uvm_errors": 0
+  }
+}

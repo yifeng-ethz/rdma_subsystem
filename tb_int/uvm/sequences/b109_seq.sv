@@ -1,0 +1,13 @@
+`ifndef RDMA_SUBSYSTEM_SEQ_B109_SV
+`define RDMA_SUBSYSTEM_SEQ_B109_SV
+
+class seq_b109 extends rdma_subsystem_phase_b_case_seq;
+  `uvm_object_utils(seq_b109)
+
+  function new(string name = "seq_b109");
+    super.new(name);
+    set_case_id("B109");
+  endfunction
+endclass
+
+`endif

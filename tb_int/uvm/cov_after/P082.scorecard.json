@@ -1,0 +1,22 @@
+{
+  "case_id": "P082",
+  "bucket": "PROF",
+  "passed":  true,
+  "implementation_mode": "isolated",
+  "build_tag": "dbg1",
+  "debug_level": 1,
+  "observed_txn": 3,
+  "opq_word_count": 21,
+  "host_write_count": 9,
+  "cqe_count": 3,
+  "last_cqe_status": 17,
+  "last_cqe_bytes": 28,
+  "coverage_bin": "prof_axi_stalls_p082",
+  "contract_anchor": "DV_PROF.md P082 cov:prof_axi_stalls_p082",
+  "unique_coverage_delta": 0,
+  "duplicate_justification": "honest duplicate of P 81: same RTL contract anchor, unique stimulus and coverage token prof_axi_stalls_p082",
+  "log_summary": {
+    "mismatch_count": 0,
+    "uvm_errors": 0
+  }
+}

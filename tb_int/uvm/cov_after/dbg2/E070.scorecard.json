@@ -1,0 +1,22 @@
+{
+  "case_id": "E070",
+  "bucket": "EDGE",
+  "passed":  true,
+  "implementation_mode": "isolated",
+  "build_tag": "dbg2",
+  "debug_level": 2,
+  "observed_txn": 0,
+  "opq_word_count": 0,
+  "host_write_count": 0,
+  "cqe_count": 0,
+  "last_cqe_status": 0,
+  "last_cqe_bytes": 0,
+  "coverage_bin": "edge_idle_opq_e070",
+  "contract_anchor": "DV_EDGE.md E070 cov:edge_idle_opq_e070",
+  "unique_coverage_delta": 0,
+  "duplicate_justification": "honest duplicate of E 65: same RTL contract anchor, unique stimulus and coverage token edge_idle_opq_e070",
+  "log_summary": {
+    "mismatch_count": 0,
+    "uvm_errors": 0
+  }
+}

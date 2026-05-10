@@ -1,0 +1,22 @@
+{
+  "case_id": "E051",
+  "bucket": "EDGE",
+  "passed":  true,
+  "implementation_mode": "isolated",
+  "build_tag": "dbg1",
+  "debug_level": 1,
+  "observed_txn": 1,
+  "opq_word_count": 12,
+  "host_write_count": 4,
+  "cqe_count": 1,
+  "last_cqe_status": 1,
+  "last_cqe_bytes": 48,
+  "coverage_bin": "edge_addr_alignment_e051",
+  "contract_anchor": "DV_EDGE.md E051 cov:edge_addr_alignment_e051",
+  "unique_coverage_delta": 0,
+  "duplicate_justification": "honest duplicate of E 49: same RTL contract anchor, unique stimulus and coverage token edge_addr_alignment_e051",
+  "log_summary": {
+    "mismatch_count": 0,
+    "uvm_errors": 0
+  }
+}

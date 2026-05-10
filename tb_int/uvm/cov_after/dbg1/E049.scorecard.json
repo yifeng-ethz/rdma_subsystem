@@ -1,0 +1,22 @@
+{
+  "case_id": "E049",
+  "bucket": "EDGE",
+  "passed":  true,
+  "implementation_mode": "isolated",
+  "build_tag": "dbg1",
+  "debug_level": 1,
+  "observed_txn": 1,
+  "opq_word_count": 10,
+  "host_write_count": 4,
+  "cqe_count": 1,
+  "last_cqe_status": 1,
+  "last_cqe_bytes": 40,
+  "coverage_bin": "edge_addr_alignment_e049",
+  "contract_anchor": "DV_EDGE.md E049 cov:edge_addr_alignment_e049",
+  "unique_coverage_delta": 1,
+  "duplicate_justification": "",
+  "log_summary": {
+    "mismatch_count": 0,
+    "uvm_errors": 0
+  }
+}

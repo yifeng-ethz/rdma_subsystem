@@ -1,0 +1,22 @@
+{
+  "case_id": "X043",
+  "bucket": "ERROR",
+  "passed":  true,
+  "implementation_mode": "isolated",
+  "build_tag": "dbg1",
+  "debug_level": 1,
+  "observed_txn": 1,
+  "opq_word_count": 13,
+  "host_write_count": 2,
+  "cqe_count": 1,
+  "last_cqe_status": 48,
+  "last_cqe_bytes": 0,
+  "coverage_bin": "error_align_x043",
+  "contract_anchor": "DV_ERROR.md X043 cov:error_align_x043",
+  "unique_coverage_delta": 0,
+  "duplicate_justification": "honest duplicate of X 33: same RTL contract anchor, unique stimulus and coverage token error_align_x043",
+  "log_summary": {
+    "mismatch_count": 0,
+    "uvm_errors": 0
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "case_id": "P120",
+  "bucket": "PROF",
+  "passed":  true,
+  "implementation_mode": "isolated",
+  "build_tag": "dbg1",
+  "debug_level": 1,
+  "observed_txn": 2,
+  "opq_word_count": 18,
+  "host_write_count": 8,
+  "cqe_count": 2,
+  "last_cqe_status": 1,
+  "last_cqe_bytes": 36,
+  "coverage_bin": "prof_long_soak_p120",
+  "contract_anchor": "DV_PROF.md P120 cov:prof_long_soak_p120",
+  "unique_coverage_delta": 0,
+  "duplicate_justification": "honest duplicate of P113: same RTL contract anchor, unique stimulus and coverage token prof_long_soak_p120",
+  "log_summary": {
+    "mismatch_count": 0,
+    "uvm_errors": 0
+  }
+}

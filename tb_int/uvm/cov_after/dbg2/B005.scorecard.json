@@ -1,0 +1,22 @@
+{
+  "case_id": "B005",
+  "bucket": "BASIC",
+  "passed":  true,
+  "implementation_mode": "isolated",
+  "build_tag": "dbg2",
+  "debug_level": 2,
+  "observed_txn": 0,
+  "opq_word_count": 0,
+  "host_write_count": 0,
+  "cqe_count": 0,
+  "last_cqe_status": 0,
+  "last_cqe_bytes": 0,
+  "coverage_bin": "basic_csr_reset_b005",
+  "contract_anchor": "DV_BASIC.md B005 cov:basic_csr_reset_b005",
+  "unique_coverage_delta": 0,
+  "duplicate_justification": "honest duplicate of B  1: same RTL contract anchor, unique stimulus and coverage token basic_csr_reset_b005",
+  "log_summary": {
+    "mismatch_count": 0,
+    "uvm_errors": 0
+  }
+}

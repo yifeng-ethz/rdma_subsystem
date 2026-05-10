@@ -1,0 +1,22 @@
+{
+  "case_id": "B039",
+  "bucket": "BASIC",
+  "passed":  true,
+  "implementation_mode": "isolated",
+  "build_tag": "dbg2",
+  "debug_level": 2,
+  "observed_txn": 1,
+  "opq_word_count": 1052,
+  "host_write_count": 130,
+  "cqe_count": 1,
+  "last_cqe_status": 18,
+  "last_cqe_bytes": 4096,
+  "coverage_bin": "basic_full_term_b039",
+  "contract_anchor": "DV_BASIC.md B039 cov:basic_full_term_b039",
+  "unique_coverage_delta": 0,
+  "duplicate_justification": "honest duplicate of B 33: same RTL contract anchor, unique stimulus and coverage token basic_full_term_b039",
+  "log_summary": {
+    "mismatch_count": 0,
+    "uvm_errors": 0
+  }
+}

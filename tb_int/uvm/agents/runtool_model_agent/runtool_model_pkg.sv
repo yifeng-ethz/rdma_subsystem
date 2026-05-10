@@ -119,7 +119,7 @@ package runtool_model_pkg;
     endtask
 
     function bit [511:0] make_sqe(input subsystem_case_cfg case_cfg,
-                                  input int unsigned idx);
+                                  input int unsigned sqe_id);
       bit [511:0] sqe;
       bit [63:0] seg0_addr;
       bit [63:0] seg1_addr;
@@ -127,11 +127,11 @@ package runtool_model_pkg;
       bit [63:0] seg1_span;
       sqe = '0;
       seg0_addr = 64'h0000_4000_0000_0000
-                  + (longint'(idx) << 20)
+                  + (longint'(sqe_id) << 20)
                   + (longint'(case_cfg.case_num) << 12);
       seg1_addr = seg0_addr + 64'h0000_0000_0001_0000;
-      seg0_span = (case_cfg.term_mode == TERM_FULL) ? 64'd16 : 64'h1000;
-      seg1_span = case_cfg.seg1_used ? ((case_cfg.term_mode == TERM_FULL) ? 64'd16 : 64'h1000) : 64'h0;
+      seg0_span = 64'h1000;
+      seg1_span = case_cfg.seg1_used ? 64'h1000 : 64'h0;
       if (case_cfg.force_align_error)
         seg0_addr[3:0] = 4'h4;
       if (case_cfg.force_malformed_sqe)
@@ -140,8 +140,8 @@ package runtool_model_pkg;
       sqe[127:64] = seg0_span;
       sqe[191:128] = seg1_addr;
       sqe[255:192] = seg1_span;
-      sqe[319:256] = {32'h0, idx[15:0], case_cfg.force_malformed_sqe ? 16'h0 : 16'h0001};
-      sqe[383:320] = 64'h5255_4e54_4f4f_4c00 | idx;
+      sqe[319:256] = {32'h0, sqe_id[15:0], case_cfg.force_malformed_sqe ? 16'h0 : 16'h0001};
+      sqe[383:320] = 64'h5255_4e54_4f4f_4c00 | sqe_id;
       sqe[447:384] = 64'h5351_455f_494e_5400 | case_cfg.case_num;
       sqe[511:448] = 64'h0000_0000_0000_0000;
       return sqe;
@@ -179,7 +179,7 @@ package runtool_model_pkg;
                    input int unsigned count);
       bit [511:0] sqe;
       for (int unsigned idx = 0; idx < count; idx++) begin
-        sqe = make_sqe(case_cfg, idx + 1);
+        sqe = make_sqe(case_cfg, idx);
         cfg.mem.write_wqe512(sq_base + (longint'(idx) << 6), sqe);
       end
       axil_write(CSR_SQ_TAIL_DBL_CONST, count[31:0]);
@@ -195,10 +195,11 @@ package runtool_model_pkg;
       timeout = 20000 + expected_count * 5000;
       while (timeout > 0 && observed_count < expected_count) begin
         axil_read(CSR_CQ_TAIL_CONST, tail_data);
-        while (last_cq_tail != tail_data && observed_count < expected_count) begin
-          cqe = read_cqe(cq_base + (longint'(last_cq_tail % case_cfg.cq_depth) << 6));
+        while (last_cq_tail[15:0] != tail_data[15:0] && observed_count < expected_count) begin
+          repeat (2) @(posedge cfg.vif.clk);
+          cqe = read_cqe(cq_base + (longint'(last_cq_tail) << 6));
           cqe_ap.write(cqe);
-          last_cq_tail++;
+          last_cq_tail = (last_cq_tail + 1) % case_cfg.cq_depth;
           observed_count++;
           cq_head = last_cq_tail;
           if (!case_cfg.cq_credit_stall || observed_count == expected_count)
@@ -224,12 +225,24 @@ package runtool_model_pkg;
         ; // The host agent records injected responses; final error policy is DUT-owned.
       if (!case_cfg.idle_only)
         post_sqes(case_cfg, sqe_count);
-      axil_write(CSR_CTRL_CONST, case_cfg.force_halt ? 32'h0000_0005 : 32'h0000_0001);
+      if (case_cfg.ctrl_halt_reenable)
+        axil_write(CSR_CTRL_CONST, 32'h0000_0005);
+      else
+        axil_write(CSR_CTRL_CONST, 32'h0000_0001);
       set_state(RUN_RUNNING);
+      if (case_cfg.ctrl_halt_reenable) begin
+        repeat (case_cfg.poll_cycles) @(posedge cfg.vif.clk);
+        axil_write(CSR_CTRL_CONST, 32'h0000_0001);
+      end
       if (!case_cfg.idle_only) begin
-        for (int unsigned idx = 0; idx < sqe_count; idx++)
+        int unsigned one_observed;
+        repeat (64) @(posedge cfg.vif.clk);
+        for (int unsigned idx = 0; idx < sqe_count; idx++) begin
           cfg.opq.enqueue_frame(case_cfg.frame_words, case_cfg.opq_gap_cycles, idx + case_cfg.case_num);
-        poll_cq(case_cfg, sqe_count, observed_txn);
+          repeat (case_cfg.opq_gap_cycles + case_cfg.frame_words + 8) @(posedge cfg.vif.clk);
+          poll_cq(case_cfg, 1, one_observed);
+          observed_txn += one_observed;
+        end
       end else begin
         repeat (64) @(posedge cfg.vif.clk);
         observed_txn = 0;

@@ -1,0 +1,22 @@
+{
+  "case_id": "E105",
+  "bucket": "EDGE",
+  "passed":  true,
+  "implementation_mode": "isolated",
+  "build_tag": "dbg2",
+  "debug_level": 2,
+  "observed_txn": 2,
+  "opq_word_count": 24,
+  "host_write_count": 8,
+  "cqe_count": 2,
+  "last_cqe_status": 1,
+  "last_cqe_bytes": 48,
+  "coverage_bin": "edge_doorbell_race_e105",
+  "contract_anchor": "DV_EDGE.md E105 cov:edge_doorbell_race_e105",
+  "unique_coverage_delta": 0,
+  "duplicate_justification": "honest duplicate of E 97: same RTL contract anchor, unique stimulus and coverage token edge_doorbell_race_e105",
+  "log_summary": {
+    "mismatch_count": 0,
+    "uvm_errors": 0
+  }
+}

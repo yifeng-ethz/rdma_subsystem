@@ -234,9 +234,9 @@ package host_axi_completer_pkg;
             cfg.vif.m_axi_rresp <= resp;
             cfg.vif.m_axi_rlast <= (beat == len);
             cfg.vif.m_axi_rvalid <= 1'b1;
-            while (cfg.vif.reset_n && !cfg.vif.m_axi_rready)
+            do begin
               @(posedge cfg.vif.clk);
-            @(posedge cfg.vif.clk);
+            end while (cfg.vif.reset_n && !cfg.vif.m_axi_rready);
             cfg.vif.m_axi_rvalid <= 1'b0;
             cfg.vif.m_axi_rlast <= 1'b0;
             if (!cfg.vif.reset_n)

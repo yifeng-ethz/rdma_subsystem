@@ -1,0 +1,22 @@
+{
+  "case_id": "E096",
+  "bucket": "EDGE",
+  "passed":  true,
+  "implementation_mode": "isolated",
+  "build_tag": "dbg1",
+  "debug_level": 1,
+  "observed_txn": 2,
+  "opq_word_count": 24,
+  "host_write_count": 8,
+  "cqe_count": 2,
+  "last_cqe_status": 17,
+  "last_cqe_bytes": 48,
+  "coverage_bin": "edge_concurrent_ops_e096",
+  "contract_anchor": "DV_EDGE.md E096 cov:edge_concurrent_ops_e096",
+  "unique_coverage_delta": 0,
+  "duplicate_justification": "honest duplicate of E 81: same RTL contract anchor, unique stimulus and coverage token edge_concurrent_ops_e096",
+  "log_summary": {
+    "mismatch_count": 0,
+    "uvm_errors": 0
+  }
+}

@@ -72,7 +72,7 @@ class subsystem_scoreboard extends uvm_component;
 
   function longint unsigned seg0_addr_for(input int unsigned sqe_id);
     return 64'h0000_4000_0000_0000
-           + (longint'(sqe_id - 1) << 20)
+           + (longint'(sqe_id) << 20)
            + (longint'(cfg.case_num) << 12);
   endfunction
 

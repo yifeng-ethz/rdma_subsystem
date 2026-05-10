@@ -1,0 +1,22 @@
+{
+  "case_id": "X120",
+  "bucket": "ERROR",
+  "passed":  true,
+  "implementation_mode": "isolated",
+  "build_tag": "dbg1",
+  "debug_level": 1,
+  "observed_txn": 1,
+  "opq_word_count": 2298,
+  "host_write_count": 130,
+  "cqe_count": 1,
+  "last_cqe_status": 23,
+  "last_cqe_bytes": 4096,
+  "coverage_bin": "error_forced_halt_x120",
+  "contract_anchor": "DV_ERROR.md X120 cov:error_forced_halt_x120",
+  "unique_coverage_delta": 0,
+  "duplicate_justification": "honest duplicate of X113: same RTL contract anchor, unique stimulus and coverage token error_forced_halt_x120",
+  "log_summary": {
+    "mismatch_count": 0,
+    "uvm_errors": 0
+  }
+}

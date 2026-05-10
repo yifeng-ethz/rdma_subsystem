@@ -1,0 +1,22 @@
+{
+  "case_id": "X010",
+  "bucket": "ERROR",
+  "passed":  true,
+  "implementation_mode": "isolated",
+  "build_tag": "dbg1",
+  "debug_level": 1,
+  "observed_txn": 1,
+  "opq_word_count": 7,
+  "host_write_count": 3,
+  "cqe_count": 1,
+  "last_cqe_status": 65,
+  "last_cqe_bytes": 28,
+  "coverage_bin": "error_bresp_x010",
+  "contract_anchor": "DV_ERROR.md X010 cov:error_bresp_x010",
+  "unique_coverage_delta": 0,
+  "duplicate_justification": "honest duplicate of X  1: same RTL contract anchor, unique stimulus and coverage token error_bresp_x010",
+  "log_summary": {
+    "mismatch_count": 0,
+    "uvm_errors": 0
+  }
+}

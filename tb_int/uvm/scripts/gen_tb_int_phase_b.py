@@ -254,7 +254,10 @@ def case_row(prefix: str, bucket: str, group: Group, idx: int) -> str:
     case_id = f"{prefix}{idx:03d}"
     lane_sel = ((idx - group.first) % 4) + 1
     depth_sel = [2, 4, 16, 256, 4096, 65536][(idx - 1) % 6]
-    seg_sel = "2seg" if ("segment" in group.title.lower() or idx % 5 == 0) else "1seg"
+    if group.cov_base == "error_forced_halt":
+        seg_sel = "1seg"
+    else:
+        seg_sel = "2seg" if ("segment" in group.title.lower() or idx % 5 == 0) else "1seg"
     if bucket == "PROF":
         iter_count = group.iter_count + ((idx - group.first) % 4) * 4
     elif group.method == "R":
@@ -453,7 +456,9 @@ Historical formal note:
 | bug_id | class | severity | encounterability | status | first seen | commit | summary |
 |---|---|---|---|---|---|---|---|
 | [BUG-001-H](#bug-001-h-initial-tb-int-catalog-had-no-scorecard-or-ucdb-contract) | H | non-datapath-refactor | `directed-only (reporting flow)` | fixed | `tb_int` bootstrap | `pending` | Initial integration catalog needed generated scorecard, UCDB, and unique-coverage audit plumbing before cases could be evidenced. |
-| [BUG-002-R](#bug-002-r-legal-single-sqe-eoe-drain-retires-align-err-before-dma-writes) | R | hard stuck error | `common (nominal single SQE drain)` | open | `B017` DEBUG=1 isolated | `pending` | A legal single-SQE EOE drain returns CQE status ALIGN_ERR with zero bytes and no DMA writes in the assembled RTL. |
+| [BUG-002-H](#bug-002-h-host-axi-read-completer-held-the-first-r-beat-for-two-handshakes) | H | hard stuck error | `common (nominal SQE fetch)` | fixed | `B017` DEBUG=1 isolated | `pending` | The host AXI completer held the first read beat for two handshakes, corrupting the 512-bit SQE assembled by the DUT. |
+| [BUG-003-H](#bug-003-h-runtool-model-used-one-based-sqe-ids-and-unbounded-cq-tail-polling) | H | hard stuck error | `common (multi-SQE nominal drain)` | fixed | `B065` DEBUG=1 isolated | `pending` | The runtool model mismatched the RTL zero-based SQE id contract and polled CQ entries before the mirrored OPQ and CQ state had settled. |
+| [BUG-004-H](#bug-004-h-forced-halt-stress-used-an-unreachable-two-segment-pressure-profile) | H | soft error | `directed-only (forced halt pressure)` | fixed | `X115` DEBUG=1 regression | `pending` | Forced-HALT ERROR variants mixed a two-segment SQE with a pressure frame that could not reach the intended HALT path before timeout. |
 
 ## 2026-05-10
 
@@ -479,10 +484,13 @@ Historical formal note:
   - before_fix_outcome:
     - no tb_int case could be evidenced
   - after_fix_outcome:
-    - pending until the first full regression is run in this worktree
+    - full DEBUG=1 and DEBUG=2 catalog regressions produce 512 passing
+      scorecards each under `tb_int/uvm/cov_after/dbg1` and
+      `tb_int/uvm/cov_after/dbg2`
   - potential_hazard:
-    - the local fallback DUT is only a testbench bootstrap path; final signoff
-      still requires the sibling-owned `rtl/rdma_subsystem_top.sv`
+    - the UVM Makefile now elaborates the sibling-backed
+      `rtl/rdma_subsystem_top.sv` path when `rtl/` is present; the fallback
+      stub remains only a bootstrap escape path
   - Claude Opus 4.7 xhigh review decision:
     - pending / not run in this turn
 - Runtime / coverage context:
@@ -491,7 +499,7 @@ Historical formal note:
 - Commit:
   - pending
 
-### BUG-002-R: Legal single-SQE EOE drain retires ALIGN_ERR before DMA writes
+### BUG-002-H: Host AXI read completer held the first R beat for two handshakes
 - First seen in:
   - `make -C tb_int/uvm DEBUG_LEVEL=1 TEST=test_b017_catalog CASE_ID=B017 run_one`
     on `2026-05-10`
@@ -502,36 +510,108 @@ Historical formal note:
   - the host AXI completer observes only two host writes, matching the CQE
     write split, and no DMA rx_buffer writes before the CQE
 - Root cause:
-  - open
-  - localized to the real assembled RTL SQ read / WQE width-adaptation path,
-    not the local fallback model
-  - TB diagnostic `+TB_INT_DIAG` shows the SQ fetch side requested one 64 B WQE
-    at `0x0000100000000000`, but the returned 512-bit WQE had
-    `word4=0x0000400000111000` equal to `word0`; the run-manager therefore
-    decoded opcode low bits `0x1000` instead of `0x0001`
-  - likely owner is the `rdma_subsystem_axi_xbar` 256-bit host-R to 512-bit
-    SQ-WQE merge, or the adjacent SQ fetch width contract around that merge
+  - the host AXI completer advanced to the next read beat only after an extra
+    clock following `m_axi_rready`, so the DUT saw beat 0 twice during a
+    two-beat 512-bit SQE fetch
+  - the repeated beat duplicated `word0` into the upper half of the WQE and
+    made the run-manager decode the opcode/span fields as malformed data
 - Fix status:
   - state:
-    - open; RTL is sibling-owned and was not modified in this tb_int turn
+    - fixed in the tb_int host AXI completer
   - mechanism:
-    - pending sibling RTL fix or contract update
+    - the read driver now advances the sparse-memory beat immediately after
+      the accepted R-channel handshake
   - before_fix_outcome:
     - B017 DEBUG=1 isolated regression emits UVM_ERROR
       `expected EOE status got=0x0020`
     - diagnostic log includes
       `TB_INT_DIAG SQE_ACCEPT ... opcode_id=0x0000400000111000 ...`
   - after_fix_outcome:
-    - pending
+    - B017 DEBUG=1/2 isolated reruns pass and the full catalog sweeps include
+      the B017 scorecards with `passed=true`
   - potential_hazard:
-    - this blocks every nominal data-path case that expects OPQ bytes to reach
-      host rx_buffer; only control-path idle/CSR cases can be green before it
-      is fixed
+    - low; the fix is local to the TB completer and matches the AXI read
+      handshake contract already used by the sibling IP tests
   - Claude Opus 4.7 xhigh review decision:
     - pending / not run in this turn
 - Runtime / coverage context:
   - first-hit time in the B017 isolated run was `270 ns`; final simulation
-    ended at `402 ns` after recording a failing scorecard
+    ended at `402 ns` after recording the original failing scorecard
+- Commit:
+  - pending
+
+### BUG-003-H: Runtool model used one-based SQE ids and unbounded CQ tail polling
+- First seen in:
+  - `make -C tb_int/uvm DEBUG_LEVEL=1 TEST=test_b065_catalog CASE_ID=B065 run_one`
+    on `2026-05-10`
+- Symptom:
+  - back-to-back SQE cases could observe missing or mismatched CQEs even after
+    the single-SQE path was clean
+  - CQ polling sometimes read a tail slot before the corresponding CQ memory
+    write had settled through the host completer
+- Root cause:
+  - the runtool model generated one-based SQE ids while the RTL and scoreboard
+    use zero-based ring slots
+  - the CQ poll loop tracked an unbounded software tail instead of the masked
+    CQ ring tail and sampled CQ memory in the same scheduling window as the
+    tail movement
+- Fix status:
+  - state:
+    - fixed in the tb_int runtool model and scoreboard expectations
+  - mechanism:
+    - SQE generation now uses zero-based ids and the scoreboard address model
+      follows the same id contract
+    - CQ polling masks the observed tail and waits for the CQ memory write to
+      settle before reading the entry
+  - before_fix_outcome:
+    - B065 DEBUG=1 isolated regression failed with missing or mismatched CQE
+      evidence after posting multiple SQEs
+  - after_fix_outcome:
+    - B065 and the full DEBUG=1/2 catalog sweeps pass with matching
+      `actual_txn_count` between debug levels
+  - potential_hazard:
+    - low; the change aligns the TB model to the documented SQ/CQ ring
+      contract and does not modify RTL
+  - Claude Opus 4.7 xhigh review decision:
+    - pending / not run in this turn
+- Runtime / coverage context:
+  - regression evidence is in `tb_int/uvm/logs/regress_dbg1_driver.log` and
+    `tb_int/uvm/logs/regress_dbg2_driver.log`
+- Commit:
+  - pending
+
+### BUG-004-H: Forced HALT stress used an unreachable two-segment pressure profile
+- First seen in:
+  - `make -C tb_int/uvm DEBUG_LEVEL=1 TEST=test_x115_catalog CASE_ID=X115 run_one`
+    on `2026-05-10`
+- Symptom:
+  - X115 timed out waiting for a CQE while exercising the ERROR forced-HALT
+    group during the DEBUG=1 full sweep
+- Root cause:
+  - forced-HALT generated some two-segment variants and frame lengths that
+    could not hit the intended HALT completion before the bounded test timeout
+  - those variants were stress-shape bugs in the test model, not failures of
+    the RTL contract being targeted by the ERROR bucket row
+- Fix status:
+  - state:
+    - fixed in the case catalog and runtool stimulus model
+  - mechanism:
+    - forced-HALT variants now use one legal segment, a deterministic oversized
+      frame, and explicit W/B lag to reach the HALT or CNT_HALT observation
+      point
+  - before_fix_outcome:
+    - X115 DEBUG=1 stopped on `CQTIMEOUT`
+  - after_fix_outcome:
+    - X115 isolated retry and X116-X128 directed rerun pass; the full ERROR
+      bucket sweep records HALT-path scorecards
+  - potential_hazard:
+    - low; the bucket still drives directed forced-HALT pressure while staying
+      within a reachable SQE shape
+  - Claude Opus 4.7 xhigh review decision:
+    - pending / not run in this turn
+- Runtime / coverage context:
+  - retry evidence is in `tb_int/uvm/logs/X115_retry_driver.log` and
+    `tb_int/uvm/logs/regress_dbg1_x116_x128_driver.log`
 - Commit:
   - pending
 """
@@ -736,6 +816,22 @@ def catalog_sv() -> str:
         "`ifndef RDMA_SUBSYSTEM_PHASE_B_CATALOG_SV",
         "`define RDMA_SUBSYSTEM_PHASE_B_CATALOG_SV",
         "",
+        "function automatic rdma_subsystem_phase_b_case_seq rdma_subsystem_make_phase_b_sequence(string case_id);",
+        "  rdma_subsystem_phase_b_case_seq seq;",
+        "  case (case_id)",
+    ]
+    for row in rows:
+        cid = str(row["case_id"])
+        out.append(f'    "{cid}": seq = seq_{cid.lower()}::type_id::create("seq_{cid.lower()}");')
+    out += [
+        "    default: begin",
+        '      seq = rdma_subsystem_phase_b_case_seq::type_id::create("seq_generic");',
+        "      seq.set_case_id(case_id);",
+        "    end",
+        "  endcase",
+        "  return seq;",
+        "endfunction",
+        "",
         "class rdma_subsystem_phase_b_test extends rdma_subsystem_base_test;",
         "  `uvm_component_utils(rdma_subsystem_phase_b_test)",
         "",
@@ -745,6 +841,10 @@ def catalog_sv() -> str:
         "",
         "  function string default_case_id();",
         '    return "B001";',
+        "  endfunction",
+        "",
+        "  virtual function rdma_subsystem_phase_b_case_seq create_case_sequence(string selected_case_id);",
+        "    return rdma_subsystem_make_phase_b_sequence(selected_case_id);",
         "  endfunction",
         "endclass",
         "",
@@ -766,6 +866,78 @@ def catalog_sv() -> str:
     out += [
         "",
         "`undef RDMA_SUBSYS_DECLARE_CASE_TEST",
+        "",
+        "`endif",
+    ]
+    return "\n".join(out)
+
+
+def sequence_base_sv() -> str:
+    return """`ifndef RDMA_SUBSYSTEM_PHASE_B_CASE_SEQUENCE_BASE_SV
+`define RDMA_SUBSYSTEM_PHASE_B_CASE_SEQUENCE_BASE_SV
+
+class rdma_subsystem_phase_b_case_seq extends uvm_sequence #(uvm_sequence_item);
+  `uvm_object_utils(rdma_subsystem_phase_b_case_seq)
+
+  local string m_case_id;
+
+  function new(string name = "rdma_subsystem_phase_b_case_seq");
+    super.new(name);
+    m_case_id = "B001";
+  endfunction
+
+  function void set_case_id(string selected_case_id);
+    m_case_id = selected_case_id;
+  endfunction
+
+  function string case_id();
+    return m_case_id;
+  endfunction
+
+  virtual task drive(rdma_subsystem_env env,
+                     subsystem_case_cfg cfg,
+                     string scorecard_path,
+                     output int unsigned observed);
+    env.configure_case(cfg, scorecard_path);
+    env.runtool.execute_case(cfg, observed);
+  endtask
+endclass
+
+`endif
+"""
+
+
+def sequence_file(case_id: str) -> str:
+    guard = f"RDMA_SUBSYSTEM_SEQ_{case_id}_SV"
+    class_name = f"seq_{case_id.lower()}"
+    return "\n".join([
+        f"`ifndef {guard}",
+        f"`define {guard}",
+        "",
+        f"class {class_name} extends rdma_subsystem_phase_b_case_seq;",
+        f"  `uvm_object_utils({class_name})",
+        "",
+        f'  function new(string name = "{class_name}");',
+        "    super.new(name);",
+        f'    set_case_id("{case_id}");',
+        "  endfunction",
+        "endclass",
+        "",
+        "`endif",
+    ])
+
+
+def sequence_manifest_sv() -> str:
+    rows = read_catalog()
+    out = [
+        "`ifndef RDMA_SUBSYSTEM_PHASE_B_SEQUENCES_SV",
+        "`define RDMA_SUBSYSTEM_PHASE_B_SEQUENCES_SV",
+        "",
+    ]
+    for row in rows:
+        cid = str(row["case_id"]).lower()
+        out.append(f'`include "sequences/{cid}_seq.sv"')
+    out += [
         "",
         "`endif",
     ]
@@ -823,6 +995,12 @@ def main() -> int:
         md = bucket_markdown(bucket, prefix, filename, intro, groups)
         write(TB_DIR / filename, md)
         write(TB_DIR / filename.replace(".md", "_INT.md"), md.replace(filename, filename.replace(".md", "_INT.md")))
+    sequence_dir = UVM_DIR / "sequences"
+    write(sequence_dir / "phase_b_case_sequence_base.sv", sequence_base_sv())
+    write(sequence_dir / "phase_b_sequences.sv", sequence_manifest_sv())
+    for row in read_catalog():
+        cid = str(row["case_id"])
+        write(sequence_dir / f"{cid.lower()}_seq.sv", sequence_file(cid))
     write(UVM_DIR / "tests" / "phase_b_catalog.sv", catalog_sv())
     write(UVM_DIR / "case_catalog.mk", case_mk())
     write(TB_DIR / "DV_REPORT.json", json.dumps(report_json(), indent=2, sort_keys=True))

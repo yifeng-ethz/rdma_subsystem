@@ -12,6 +12,8 @@ package subsystem_env_pkg;
   `include "subsystem_coverage.sv"
   `include "subsystem_scoreboard.sv"
   `include "subsystem_env.sv"
+  `include "sequences/phase_b_case_sequence_base.sv"
+  `include "sequences/phase_b_sequences.sv"
   `include "base_test.sv"
   `include "tests/phase_b_catalog.sv"
 endpackage

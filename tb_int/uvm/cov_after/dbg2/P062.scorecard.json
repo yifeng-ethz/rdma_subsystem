@@ -1,0 +1,22 @@
+{
+  "case_id": "P062",
+  "bucket": "PROF",
+  "passed":  true,
+  "implementation_mode": "isolated",
+  "build_tag": "dbg2",
+  "debug_level": 2,
+  "observed_txn": 4,
+  "opq_word_count": 56,
+  "host_write_count": 16,
+  "cqe_count": 4,
+  "last_cqe_status": 1,
+  "last_cqe_bytes": 56,
+  "coverage_bin": "prof_full_sq_depth_p062",
+  "contract_anchor": "DV_PROF.md P062 cov:prof_full_sq_depth_p062",
+  "unique_coverage_delta": 0,
+  "duplicate_justification": "honest duplicate of P 49: same RTL contract anchor, unique stimulus and coverage token prof_full_sq_depth_p062",
+  "log_summary": {
+    "mismatch_count": 0,
+    "uvm_errors": 0
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "case_id": "E011",
+  "bucket": "EDGE",
+  "passed":  true,
+  "implementation_mode": "isolated",
+  "build_tag": "dbg2",
+  "debug_level": 2,
+  "observed_txn": 1,
+  "opq_word_count": 8,
+  "host_write_count": 3,
+  "cqe_count": 1,
+  "last_cqe_status": 17,
+  "last_cqe_bytes": 32,
+  "coverage_bin": "edge_sq_wrap_e011",
+  "contract_anchor": "DV_EDGE.md E011 cov:edge_sq_wrap_e011",
+  "unique_coverage_delta": 0,
+  "duplicate_justification": "honest duplicate of E  1: same RTL contract anchor, unique stimulus and coverage token edge_sq_wrap_e011",
+  "log_summary": {
+    "mismatch_count": 0,
+    "uvm_errors": 0
+  }
+}

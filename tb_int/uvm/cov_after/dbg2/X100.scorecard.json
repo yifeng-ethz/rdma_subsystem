@@ -1,0 +1,22 @@
+{
+  "case_id": "X100",
+  "bucket": "ERROR",
+  "passed":  true,
+  "implementation_mode": "isolated",
+  "build_tag": "dbg2",
+  "debug_level": 2,
+  "observed_txn": 3,
+  "opq_word_count": 21,
+  "host_write_count": 9,
+  "cqe_count": 3,
+  "last_cqe_status": 1,
+  "last_cqe_bytes": 28,
+  "coverage_bin": "error_cq_full_x100",
+  "contract_anchor": "DV_ERROR.md X100 cov:error_cq_full_x100",
+  "unique_coverage_delta": 0,
+  "duplicate_justification": "honest duplicate of X 97: same RTL contract anchor, unique stimulus and coverage token error_cq_full_x100",
+  "log_summary": {
+    "mismatch_count": 0,
+    "uvm_errors": 0
+  }
+}

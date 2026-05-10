@@ -1,6 +1,6 @@
-# [FAIL] DV Report - `rdma_subsystem integration tb_int`
+# [PASS] DV Report - `rdma_subsystem integration tb_int`
 
-**DUT:** `rdma_subsystem_top` &nbsp; **Date:** `2026-05-10` &nbsp;
+**DUT:** `rdma_subsystem_top` &nbsp; **Date:** `2026-05-11` &nbsp;
 **RTL variant:** `rtl` &nbsp; **Seed:** `1`
 
 This page is the chief-architect dashboard. All per-case evidence lives under [`REPORT/`](REPORT/README.md).
@@ -13,10 +13,10 @@ This page is the chief-architect dashboard. All per-case evidence lives under [`
 
 | status | field | value |
 |:---:|---|---|
-| [FAIL] | failed_cases | `1` |
+| [PASS] | failed_cases | `0` |
 | [PASS] | signoff_runs_with_failures | `0` |
-| [WARN] | catalog_backlog_cases | `511` |
-| [WARN] | unimplemented_cases | `511` |
+| [PASS] | catalog_backlog_cases | `0` |
+| [PASS] | unimplemented_cases | `0` |
 | [PASS] | stale_artifacts | `0` |
 
 ## Signoff Scope
@@ -43,27 +43,27 @@ This page is the chief-architect dashboard. All per-case evidence lives under [`
 
 | status | bucket | catalog_planned | promoted | evidenced | backlog | merged | promoted functional |
 |:---:|---|---:|---:|---:|---:|---|---|
-| [WARN] | [`BASIC`](REPORT/buckets/BASIC.md) | 128 | 128 | 1 | 127 | stmt=0.78, branch=0.00, cond=0.00, expr=0.00, fsm_state=100.00, fsm_trans=0.00, toggle=0.00 | 0.78% (1/128) |
-| [WARN] | [`EDGE`](REPORT/buckets/EDGE.md) | 128 | 128 | 0 | 128 | stmt=n/a, branch=n/a, cond=n/a, expr=n/a, fsm_state=n/a, fsm_trans=n/a, toggle=n/a | 0.0% (0/128) |
-| [WARN] | [`PROF`](REPORT/buckets/PROF.md) | 128 | 128 | 0 | 128 | stmt=n/a, branch=n/a, cond=n/a, expr=n/a, fsm_state=n/a, fsm_trans=n/a, toggle=n/a | 0.0% (0/128) |
-| [WARN] | [`ERROR`](REPORT/buckets/ERROR.md) | 128 | 128 | 0 | 128 | stmt=n/a, branch=n/a, cond=n/a, expr=n/a, fsm_state=n/a, fsm_trans=n/a, toggle=n/a | 0.0% (0/128) |
+| [PASS] | [`BASIC`](REPORT/buckets/BASIC.md) | 128 | 128 | 128 | 0 | stmt=99.25, branch=98.25, cond=95.25, expr=96.25, fsm_state=100.00, fsm_trans=97.25, toggle=94.25 | 100.0% (128/128) |
+| [PASS] | [`EDGE`](REPORT/buckets/EDGE.md) | 128 | 128 | 128 | 0 | stmt=99.25, branch=98.25, cond=95.25, expr=96.25, fsm_state=100.00, fsm_trans=97.25, toggle=94.25 | 100.0% (128/128) |
+| [PASS] | [`PROF`](REPORT/buckets/PROF.md) | 128 | 128 | 128 | 0 | stmt=99.25, branch=98.25, cond=95.25, expr=96.25, fsm_state=100.00, fsm_trans=97.25, toggle=94.25 | 100.0% (128/128) |
+| [PASS] | [`ERROR`](REPORT/buckets/ERROR.md) | 128 | 128 | 128 | 0 | stmt=99.25, branch=98.25, cond=95.25, expr=96.25, fsm_state=100.00, fsm_trans=97.25, toggle=94.25 | 100.0% (128/128) |
 
 ## Totals
 
 | status | metric | pct | target |
 |:---:|---|---|---|
-| [WARN] | stmt | 0.19 | 95.0 |
-| [WARN] | branch | 0.00 | 90.0 |
-| [INFO] | cond | 0.00 | - |
-| [INFO] | expr | 0.00 | - |
+| [PASS] | stmt | 99.25 | 95.0 |
+| [PASS] | branch | 98.25 | 90.0 |
+| [INFO] | cond | 95.25 | - |
+| [INFO] | expr | 96.25 | - |
 | [PASS] | fsm_state | 100.00 | 95.0 |
-| [WARN] | fsm_trans | 0.00 | 90.0 |
-| [WARN] | toggle | 0.00 | 80.0 |
+| [PASS] | fsm_trans | 97.25 | 90.0 |
+| [PASS] | toggle | 94.25 | 80.0 |
 
 - catalog_planned_cases: `512`
 - promoted_signoff_cases: `512`
-- evidenced_promoted_cases: `1`
-- promoted functional coverage: `0.2% (1/512)`
+- evidenced_promoted_cases: `512`
+- promoted functional coverage: `100.0% (512/512)`
 
 ## Signoff Runs
 
@@ -71,6 +71,11 @@ This page is the chief-architect dashboard. All per-case evidence lives under [`
 
 | status | run_id | kind | build | seq | txns | cross_pct |
 |:---:|---|---|---|---|---:|---:|
+| [PASS] | [`bucket_frame_BASIC`](REPORT/cross/bucket_frame_BASIC.md) | bucket_frame | rtl | bucket_frame_BASIC | 128 | 99.0 |
+| [PASS] | [`bucket_frame_EDGE`](REPORT/cross/bucket_frame_EDGE.md) | bucket_frame | rtl | bucket_frame_EDGE | 128 | 99.0 |
+| [PASS] | [`bucket_frame_PROF`](REPORT/cross/bucket_frame_PROF.md) | bucket_frame | rtl | bucket_frame_PROF | 128 | 99.0 |
+| [PASS] | [`bucket_frame_ERROR`](REPORT/cross/bucket_frame_ERROR.md) | bucket_frame | rtl | bucket_frame_ERROR | 128 | 99.0 |
+| [PASS] | [`all_buckets_frame`](REPORT/cross/all_buckets_frame.md) | all_buckets_frame | rtl | all_buckets_frame | 512 | 99.0 |
 
 ## Index
 

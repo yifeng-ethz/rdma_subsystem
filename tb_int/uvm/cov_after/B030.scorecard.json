@@ -1,0 +1,22 @@
+{
+  "case_id": "B030",
+  "bucket": "BASIC",
+  "passed":  true,
+  "implementation_mode": "isolated",
+  "build_tag": "dbg1",
+  "debug_level": 1,
+  "observed_txn": 1,
+  "opq_word_count": 9,
+  "host_write_count": 4,
+  "cqe_count": 1,
+  "last_cqe_status": 1,
+  "last_cqe_bytes": 36,
+  "coverage_bin": "basic_single_eoe_b030",
+  "contract_anchor": "DV_BASIC.md B030 cov:basic_single_eoe_b030",
+  "unique_coverage_delta": 0,
+  "duplicate_justification": "honest duplicate of B 17: same RTL contract anchor, unique stimulus and coverage token basic_single_eoe_b030",
+  "log_summary": {
+    "mismatch_count": 0,
+    "uvm_errors": 0
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "case_id": "X104",
+  "bucket": "ERROR",
+  "passed":  true,
+  "implementation_mode": "isolated",
+  "build_tag": "dbg1",
+  "debug_level": 1,
+  "observed_txn": 4,
+  "opq_word_count": 44,
+  "host_write_count": 16,
+  "cqe_count": 4,
+  "last_cqe_status": 17,
+  "last_cqe_bytes": 44,
+  "coverage_bin": "error_cq_full_x104",
+  "contract_anchor": "DV_ERROR.md X104 cov:error_cq_full_x104",
+  "unique_coverage_delta": 0,
+  "duplicate_justification": "honest duplicate of X 97: same RTL contract anchor, unique stimulus and coverage token error_cq_full_x104",
+  "log_summary": {
+    "mismatch_count": 0,
+    "uvm_errors": 0
+  }
+}

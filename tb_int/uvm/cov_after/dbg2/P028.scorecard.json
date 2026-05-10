@@ -1,0 +1,22 @@
+{
+  "case_id": "P028",
+  "bucket": "PROF",
+  "passed":  true,
+  "implementation_mode": "isolated",
+  "build_tag": "dbg2",
+  "debug_level": 2,
+  "observed_txn": 3,
+  "opq_word_count": 21,
+  "host_write_count": 9,
+  "cqe_count": 3,
+  "last_cqe_status": 17,
+  "last_cqe_bytes": 28,
+  "coverage_bin": "prof_sustained_opq_p028",
+  "contract_anchor": "DV_PROF.md P028 cov:prof_sustained_opq_p028",
+  "unique_coverage_delta": 0,
+  "duplicate_justification": "honest duplicate of P 17: same RTL contract anchor, unique stimulus and coverage token prof_sustained_opq_p028",
+  "log_summary": {
+    "mismatch_count": 0,
+    "uvm_errors": 0
+  }
+}

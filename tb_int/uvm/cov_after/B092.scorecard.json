@@ -1,0 +1,22 @@
+{
+  "case_id": "B092",
+  "bucket": "BASIC",
+  "passed":  true,
+  "implementation_mode": "isolated",
+  "build_tag": "dbg1",
+  "debug_level": 1,
+  "observed_txn": 4,
+  "opq_word_count": 32,
+  "host_write_count": 12,
+  "cqe_count": 4,
+  "last_cqe_status": 17,
+  "last_cqe_bytes": 32,
+  "coverage_bin": "basic_state_traversal_b092",
+  "contract_anchor": "DV_BASIC.md B092 cov:basic_state_traversal_b092",
+  "unique_coverage_delta": 0,
+  "duplicate_justification": "honest duplicate of B 81: same RTL contract anchor, unique stimulus and coverage token basic_state_traversal_b092",
+  "log_summary": {
+    "mismatch_count": 0,
+    "uvm_errors": 0
+  }
+}

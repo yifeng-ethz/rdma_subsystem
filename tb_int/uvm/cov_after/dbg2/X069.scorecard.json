@@ -1,0 +1,22 @@
+{
+  "case_id": "X069",
+  "bucket": "ERROR",
+  "passed":  true,
+  "implementation_mode": "isolated",
+  "build_tag": "dbg2",
+  "debug_level": 2,
+  "observed_txn": 2,
+  "opq_word_count": 24,
+  "host_write_count": 8,
+  "cqe_count": 2,
+  "last_cqe_status": 17,
+  "last_cqe_bytes": 48,
+  "coverage_bin": "error_midrun_reset_x069",
+  "contract_anchor": "DV_ERROR.md X069 cov:error_midrun_reset_x069",
+  "unique_coverage_delta": 0,
+  "duplicate_justification": "honest duplicate of X 65: same RTL contract anchor, unique stimulus and coverage token error_midrun_reset_x069",
+  "log_summary": {
+    "mismatch_count": 0,
+    "uvm_errors": 0
+  }
+}

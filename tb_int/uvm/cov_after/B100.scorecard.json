@@ -1,0 +1,22 @@
+{
+  "case_id": "B100",
+  "bucket": "BASIC",
+  "passed":  true,
+  "implementation_mode": "isolated",
+  "build_tag": "dbg1",
+  "debug_level": 1,
+  "observed_txn": 3,
+  "opq_word_count": 21,
+  "host_write_count": 9,
+  "cqe_count": 3,
+  "last_cqe_status": 1,
+  "last_cqe_bytes": 28,
+  "coverage_bin": "basic_doorbell_coalesce_b100",
+  "contract_anchor": "DV_BASIC.md B100 cov:basic_doorbell_coalesce_b100",
+  "unique_coverage_delta": 0,
+  "duplicate_justification": "honest duplicate of B 97: same RTL contract anchor, unique stimulus and coverage token basic_doorbell_coalesce_b100",
+  "log_summary": {
+    "mismatch_count": 0,
+    "uvm_errors": 0
+  }
+}

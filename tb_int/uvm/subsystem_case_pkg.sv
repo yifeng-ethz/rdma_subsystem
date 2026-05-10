@@ -62,6 +62,7 @@ package subsystem_case_pkg;
     bit force_align_error;
     bit force_malformed_sqe;
     bit force_halt;
+    bit ctrl_halt_reenable;
     bit inject_reset;
     bit cq_credit_stall;
     bit inject_bresp_error;
@@ -95,6 +96,7 @@ package subsystem_case_pkg;
       force_align_error = 1'b0;
       force_malformed_sqe = 1'b0;
       force_halt = 1'b0;
+      ctrl_halt_reenable = 1'b0;
       inject_reset = 1'b0;
       cq_credit_stall = 1'b0;
       inject_bresp_error = 1'b0;
@@ -211,17 +213,30 @@ package subsystem_case_pkg;
     cfg.random_case = (case_id.getc(0) == "P") || (n > 64 && n <= 112);
     cfg.iter_count = cfg.random_case ? (4 + (n % 8)) : 1;
     cfg.actual_txn_count = cfg.random_case ? (2 + (n % 3)) : 1;
+    if (cfg.actual_txn_count > cfg.sq_depth)
+      cfg.actual_txn_count = cfg.sq_depth;
     cfg.seg1_used = (n % 5 == 0) || (n >= 49 && n <= 64);
-    cfg.term_mode = ((n >= 33 && n <= 48) || (case_id.getc(0) == "X" && n >= 97 && n <= 112)) ? TERM_FULL : TERM_EOE;
+    cfg.term_mode = (case_id.getc(0) == "B" && n >= 33 && n <= 48) ? TERM_FULL : TERM_EOE;
     cfg.idle_only = (case_id.getc(0) == "B" && n <= 16) ||
                     (case_id.getc(0) == "E" && n >= 65 && n <= 80);
     cfg.force_align_error = (case_id.getc(0) == "X" && n >= 33 && n <= 48);
     cfg.force_malformed_sqe = (case_id.getc(0) == "X" && n >= 49 && n <= 64);
     cfg.inject_reset = (case_id.getc(0) == "X" && n >= 65 && n <= 80);
-    cfg.force_halt = (case_id.getc(0) == "X" && (n >= 81 && n <= 96 || n >= 113));
+    cfg.ctrl_halt_reenable = (case_id.getc(0) == "X" && n >= 81 && n <= 96);
+    cfg.force_halt = (case_id.getc(0) == "X" && n >= 113);
     cfg.cq_credit_stall = (case_id.getc(0) == "X" && n >= 97 && n <= 112);
     cfg.inject_bresp_error = (case_id.getc(0) == "X" && n <= 16);
     cfg.inject_rresp_error = (case_id.getc(0) == "X" && n >= 17 && n <= 32);
+    if (cfg.term_mode == TERM_FULL) begin
+      cfg.frame_words = 1050;
+      cfg.seg1_used = 1'b0;
+    end
+    if (cfg.force_halt) begin
+      cfg.seg1_used = 1'b0;
+      cfg.frame_words = 2200 + ((n - 113) % 4) * 32;
+      cfg.w_lag = 128;
+      cfg.b_lag = 8;
+    end
     if (case_id.getc(0) == "P" && n >= 65 && n <= 96) begin
       cfg.aw_lag = n % 5;
       cfg.w_lag = (n + 1) % 5;

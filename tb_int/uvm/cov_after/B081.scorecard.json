@@ -1,0 +1,22 @@
+{
+  "case_id": "B081",
+  "bucket": "BASIC",
+  "passed":  true,
+  "implementation_mode": "isolated",
+  "build_tag": "dbg1",
+  "debug_level": 1,
+  "observed_txn": 2,
+  "opq_word_count": 12,
+  "host_write_count": 6,
+  "cqe_count": 2,
+  "last_cqe_status": 17,
+  "last_cqe_bytes": 24,
+  "coverage_bin": "basic_state_traversal_b081",
+  "contract_anchor": "DV_BASIC.md B081 cov:basic_state_traversal_b081",
+  "unique_coverage_delta": 1,
+  "duplicate_justification": "",
+  "log_summary": {
+    "mismatch_count": 0,
+    "uvm_errors": 0
+  }
+}

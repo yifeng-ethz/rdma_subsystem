@@ -1,0 +1,22 @@
+{
+  "case_id": "P106",
+  "bucket": "PROF",
+  "passed":  true,
+  "implementation_mode": "isolated",
+  "build_tag": "dbg1",
+  "debug_level": 1,
+  "observed_txn": 3,
+  "opq_word_count": 39,
+  "host_write_count": 12,
+  "cqe_count": 3,
+  "last_cqe_status": 17,
+  "last_cqe_bytes": 52,
+  "coverage_bin": "prof_long_soak_p106",
+  "contract_anchor": "DV_PROF.md P106 cov:prof_long_soak_p106",
+  "unique_coverage_delta": 0,
+  "duplicate_justification": "honest duplicate of P 97: same RTL contract anchor, unique stimulus and coverage token prof_long_soak_p106",
+  "log_summary": {
+    "mismatch_count": 0,
+    "uvm_errors": 0
+  }
+}

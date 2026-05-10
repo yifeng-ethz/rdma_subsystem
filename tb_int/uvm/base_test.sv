@@ -20,6 +20,13 @@ class rdma_subsystem_base_test extends uvm_test;
     return "B001";
   endfunction
 
+  virtual function rdma_subsystem_phase_b_case_seq create_case_sequence(string selected_case_id);
+    rdma_subsystem_phase_b_case_seq seq;
+    seq = rdma_subsystem_phase_b_case_seq::type_id::create("seq_generic");
+    seq.set_case_id(selected_case_id);
+    return seq;
+  endfunction
+
   function void build_phase(uvm_phase phase);
     super.build_phase(phase);
     env = rdma_subsystem_env::type_id::create("env", this);
@@ -40,11 +47,12 @@ class rdma_subsystem_base_test extends uvm_test;
 
   task run_case();
     int unsigned observed;
+    rdma_subsystem_phase_b_case_seq seq;
     cfg = make_case_cfg(case_id);
-    env.configure_case(cfg, scorecard_path);
+    seq = create_case_sequence(case_id);
     `uvm_info("CASE", $sformatf("Starting %s bucket=%s cov=%s",
-                                cfg.case_id, cfg.bucket, cfg.coverage_bin), UVM_LOW)
-    env.runtool.execute_case(cfg, observed);
+                                seq.case_id(), cfg.bucket, cfg.coverage_bin), UVM_LOW)
+    seq.drive(env, cfg, scorecard_path, observed);
     repeat (20) @(posedge vif.clk);
     env.scb.final_check();
     env.scb.write_scorecard();

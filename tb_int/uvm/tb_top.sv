@@ -89,6 +89,15 @@ module tb_top;
         $display("TB_INT_DIAG SQ_AR t=%0t addr=0x%016h len=%0d size=%0d",
                  $time, dut.sq_axi_araddr, dut.sq_axi_arlen, dut.sq_axi_arsize);
       end
+      if (dut.m_axi_arvalid && dut.m_axi_arready) begin
+        $display("TB_INT_DIAG HOST_AR t=%0t addr=0x%016h len=%0d size=%0d",
+                 $time, dut.m_axi_araddr, dut.m_axi_arlen, dut.m_axi_arsize);
+      end
+      if (dut.m_axi_rvalid && dut.m_axi_rready) begin
+        $display("TB_INT_DIAG HOST_R t=%0t last=%0b xbar_idx=%0d word1=0x%016h word0=0x%016h",
+                 $time, dut.m_axi_rlast, dut.axi_xbar_i.read.beat_index,
+                 dut.m_axi_rdata[127:64], dut.m_axi_rdata[63:0]);
+      end
       if (dut.sq_axi_rvalid && dut.sq_axi_rready) begin
         $display("TB_INT_DIAG SQ_R t=%0t last=%0b word4=0x%016h word0=0x%016h",
                  $time, dut.sq_axi_rlast, dut.sq_axi_rdata[319:256],

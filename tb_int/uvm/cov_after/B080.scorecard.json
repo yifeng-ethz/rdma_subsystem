@@ -1,0 +1,22 @@
+{
+  "case_id": "B080",
+  "bucket": "BASIC",
+  "passed":  true,
+  "implementation_mode": "isolated",
+  "build_tag": "dbg1",
+  "debug_level": 1,
+  "observed_txn": 4,
+  "opq_word_count": 56,
+  "host_write_count": 16,
+  "cqe_count": 4,
+  "last_cqe_status": 1,
+  "last_cqe_bytes": 56,
+  "coverage_bin": "basic_back_to_back_b080",
+  "contract_anchor": "DV_BASIC.md B080 cov:basic_back_to_back_b080",
+  "unique_coverage_delta": 0,
+  "duplicate_justification": "honest duplicate of B 65: same RTL contract anchor, unique stimulus and coverage token basic_back_to_back_b080",
+  "log_summary": {
+    "mismatch_count": 0,
+    "uvm_errors": 0
+  }
+}
