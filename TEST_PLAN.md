@@ -71,21 +71,37 @@ and `ci_verify_checklist.sh` exits 0.
 These are the dimensions exercised inside CP4-CP7. Each CP states
 which slice of the matrix it covers.
 
-### 2.1 Emulator mode (2 modes)
+### 2.1 Emulator mode (3 modes)
 
-- **Mode A — uniform per-channel rate (rate-emulator)**: the FEB
-  rate-emulator drives each unmasked channel at a fixed Poisson-rate
-  target. Used to validate steady-state throughput, conservation, and
-  per-channel rate accuracy at egress-rbcam.
-- **Mode B — skewed rate (single-channel-hot)**: one channel runs at
-  the target rate, all other unmasked channels run at the rate / N
-  where N = unmasked-channel-count. Used to validate the rbcam
-  fairness and queue isolation under non-uniform load.
+Driven by the FEB-side hit emulator. The three modes exercise the
+three statistical regimes the SWB datapath must handle, from purely
+deterministic to fully random.
 
-> If the actual on-FEB emulator distinguishes a different pair of
-> modes (e.g. charge-injection-pulser vs MuTRiG-style hit-pattern
-> generator), the downstream evidence scripts only key on `mode = A | B`,
-> so the semantic mapping can be rebound at deploy time.
+- **Mode A — periodic injection**: each unmasked channel emits one hit
+  every `1/rate` seconds, deterministic. Inter-arrival distribution
+  is a delta; no Poisson variance. Used to validate exact counter
+  conservation (E1) and exact per-channel rate accuracy (E2) without
+  statistical bound slack.
+- **Mode B — header-sync injection**: each unmasked channel emits
+  hits aligned to the header / frame-sync boundary (deterministic,
+  but with a different temporal pattern from Mode A — bursts at sync
+  edges rather than uniformly spaced). Used to validate rbcam
+  behavior when many channels fire in lockstep at sync time, and to
+  validate the EOE pipeline can absorb the sync-aligned bursts
+  without halt.
+- **Mode C — IID per channel (emulator only)**: each unmasked channel
+  draws inter-arrival from an exponential distribution with mean
+  `1/rate`. Hits are independent across channels. This is the
+  Poisson rate model and is **emulator-only** — the real MuTRiG does
+  not produce IID hits natively. Used to validate the rbcam under
+  realistic random load and to validate the math-expert Poisson
+  5-sigma bound (§5).
+
+> Real-MuTRiG drive: as a bonus pass, Modes A and B can be driven
+> from a real MuTRiG instead of the emulator (CP10 below).
+> Real-MuTRiG cannot drive Mode C — it produces correlated hits, not
+> IID. The main test for tonight skips the real-MuTRiG bonus and
+> uses the emulator for all three modes.
 
 ### 2.2 Masking pattern (per-channel mask)
 
@@ -106,6 +122,15 @@ which slice of the matrix it covers.
 - R4: 1 MHz / channel
 
 Each held for **30 s** per test point.
+
+### 2.4 Matrix size
+
+3 modes x 8 mask patterns x 4 rates = **96 test points** for the main
+emulator-driven pass. Each test point produces 4 evidence artifacts
+(counter ledger, ingress hist, egress hist, DMA dump) = 384 evidence
+files total. The optional real-MuTRiG bonus (CP10) adds Modes A and B
+x 8 masks x 4 rates = 64 more points if executed; Mode C is not
+applicable to real MuTRiG.
 
 ## 3. Evidence categories (every CP that runs traffic produces all four)
 
@@ -212,15 +237,32 @@ Cosim recipes reference tb_int case IDs.
 - **Cosim recipe**: tb_int BASIC bucket mask cases (B-series cases
   pinned to mask register writes).
 
-### CP5 — Mode B at R1, all masks
+### CP5 — Mode B header-sync bursts at R1, all masks
 
-- **Goal**: skewed traffic does not break rbcam fairness.
-- **Slice**: B x {M0..M7} x R1.
-- **Action**: 8 x 30 s runs.
-- **Pass**: E2 matches the skewed expectation per §5 math model.
+- **Goal**: rbcam absorbs header-sync-aligned bursts without halt.
+- **Slice**: B x {M0..M7} x R1; 8 test points.
+- **Action**: 8 x 30 s runs in header-sync injection mode.
+- **Pass**: E1 conservation (CNT_HALT == 0 despite burstiness);
+  E2 bin[ch]=300k for every unmasked channel (Mode B is deterministic,
+  no Poisson slack).
 - **STP recipe**: rbcam per-channel FIFO fill-level taps (DEBUG=1
-  ports); trigger on any FIFO exceeding 80% depth.
-- **Cosim recipe**: tb_int PROF bucket P-series skewed cases.
+  ports); trigger on any FIFO exceeding 80% depth on a sync edge or
+  on any CNT_HALT pulse.
+- **Cosim recipe**: tb_int EDGE bucket sync-aligned burst cases.
+
+### CP5b — Mode C IID at R1, all masks
+
+- **Goal**: rbcam handles realistic random load without rate distortion.
+- **Slice**: C x {M0..M7} x R1; 8 test points.
+- **Action**: 8 x 30 s runs in IID-per-channel injection mode
+  (emulator-only).
+- **Pass**: E1 conservation; E2 bin[ch] within Poisson 5-sigma of
+  rate x 30 s for every unmasked channel (this is the test that
+  validates the Poisson 5-sigma bound derived by the math expert in
+  CP8).
+- **STP recipe**: rbcam queue depth distribution; trigger on tail
+  events (queue depth > P99 of the predicted distribution).
+- **Cosim recipe**: tb_int PROF bucket P-series IID-Poisson cases.
 
 ### CP6 — Rate ramp at M0
 
@@ -236,16 +278,17 @@ Cosim recipes reference tb_int case IDs.
   pulse.
 - **Cosim recipe**: tb_int PROF P065-P096 (max-throughput cases).
 
-### CP7 — Full matrix
+### CP7 — Full matrix (emulator-driven)
 
 - **Goal**: every combination green.
-- **Slice**: {A,B} x {M0..M7} x {R1..R4} = 64 test points.
+- **Slice**: {A,B,C} x {M0..M7} x {R1..R4} = 96 test points.
 - **Action**: scripted matrix run.
-- **Pass**: 64 rows PASS in CHECKLIST.md.
+- **Pass**: 96 rows PASS in CHECKLIST.md.
 - **STP recipe**: only re-arm per CP2-CP6 recipes for the specific
   failing slice.
 - **Cosim recipe**: select tb_int case whose stimulus most closely
-  matches the failing slice.
+  matches the failing slice (mode-A periodic, mode-B sync-aligned, or
+  mode-C IID Poisson).
 
 ### CP8 — Math review closed
 
@@ -258,21 +301,49 @@ Cosim recipes reference tb_int case IDs.
   criteria that previously used placeholders are updated to cite the
   MATH_REVIEW bounds.
 
-### CP9 — Final signoff
+### CP9 — Final signoff (main emulator-driven test)
 
 - **Action**: run `scripts/ci_verify_checklist.sh`.
-- **Pass**: all rows PASS; exit 0; CHECKLIST.md sha matches trailer.
-- This commit closes the rdma_subsystem onboard test plan and unblocks
-  the FEB SciFi production bring-up.
+- **Pass**: all 96 emulator rows PASS; exit 0; CHECKLIST.md sha matches
+  trailer.
+- This commit closes the rdma_subsystem main emulator-driven onboard
+  test and unblocks the FEB SciFi production bring-up. The
+  real-MuTRiG bonus pass (CP10) is optional and can run independently
+  afterwards without re-opening CP9.
+
+### CP10 — Real-MuTRiG bonus pass (deferred / optional)
+
+- **Goal**: prove the SWB datapath also accepts real-MuTRiG-sourced
+  hits, not just emulator-sourced ones.
+- **Slice**: {A,B} (real MuTRiG cannot produce Mode C IID) x {M0..M7}
+  x {R1..R4} = 64 additional test points.
+- **Action**: configure real MuTRiG via
+  `configure_mutrig_from_xml.py` (production path per feedback memory
+  on MuTRiG configure tool); switch the FEB hit source from the
+  emulator to the real MuTRiG; run the same 30 s windows.
+- **Pass**: E1 conservation; E2 per-channel rates match the
+  configured MuTRiG rates. Note: real-MuTRiG correlated hits will
+  generally fail Mode C's Poisson bound, so Mode C is intentionally
+  excluded here.
+- **STP recipe**: same as CP4/CP5 plus MuTRiG-side clane-error /
+  lane-lock taps (per the configure tool's known failure mode).
+- **Cosim recipe**: tb_int does not currently model real MuTRiG; CP10
+  is silicon-only. If real-MuTRiG-specific regressions surface, log
+  in BUG_HISTORY.md and consider extending tb_int.
+- **Skip for tonight**: the main test for tonight stops at CP9. CP10
+  is the bonus pass.
 
 ## 5. Math expert review (codex2 5.5 xhigh)
 
 A separate codex2 sub-subagent acting as math expert produces
 `test_plan/MATH_REVIEW.md`. Required outputs:
 
-- **Rate model**: expected per-channel rate under Mode A and Mode B,
-  the Poisson 5-sigma bound used in §3.1, §3.2, and the CP pass
-  criteria.
+- **Rate model**: per-channel rate under each of the three emulator
+  modes (Mode A periodic deterministic, Mode B header-sync
+  deterministic with sync-aligned bursts, Mode C IID Poisson), and
+  the Poisson 5-sigma bound used in §3.1, §3.2, and the CP5b pass
+  criterion. Mode A and Mode B are exact (no Poisson slack); only
+  Mode C uses the 5-sigma envelope.
 - **Conservation invariant**: exact form of
   `CNT_OPQ_INPUT_W * 4 == CNT_BYTES_WRITTEN + header_overhead`, with
   `header_overhead` enumerated per mu3e frame.
