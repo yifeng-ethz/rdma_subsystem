@@ -29,6 +29,26 @@ Replaces in `online_sc/online/common/firmware/a10/swb/swb_block.vhd`:
 
 OPQ itself is **NOT** modified.
 
+### No format translation in this subsystem
+
+The mu3e data frames coming out of OPQ egress (36-bit Avalon-ST: 32 b
+data + 4 b datak with sop / eop K-character markers) are the on-the-wire
+mu3e frame format already. **The subsystem does not translate them, does
+not assemble them into midas events, does not run a midas event_builder,
+and does not impose any DMA-event/end-of-event framing on top of the
+mu3e frame.** The DMA engine packs the 36-b OPQ stream into 256-b AXI4
+beats, writes the bytes verbatim into the SQE-named host rx_buffer, and
+walks address forward by the bytes-written count. The `EOE` status bit
+in the CQE simply records that OPQ asserted eop while filling the
+SQE-named buffer; it is informational for the host (so the host can find
+mu3e-frame boundaries inside the rx_buffer if it wants to) and is not a
+DMA framing requirement. The `FULL` status bit records the orthogonal
+case where the SQE buffer ran out before OPQ closed a frame.
+
+Consequence: the host's rx_buffer for an SQE is just a contiguous run of
+mu3e frame bytes. Any downstream midas event_builder lives in
+software, fed from the rx_buffer ring; it is not an FW concern.
+
 ## 2. IP partitioning
 
 Each IP is a top-level git submodule under `mu3e-ip-cores/`, with its own
