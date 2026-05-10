@@ -134,18 +134,40 @@ applicable to real MuTRiG.
 
 ## 3. Evidence categories (every CP that runs traffic produces all four)
 
-### 3.1 E1 — Counter lossless conservation
+### 3.1 E1 - Counter lossless conservation across the full chain
 
-Snapshot before and after the run window:
+Snapshot before and after the 30 s run window at **every datapath
+stage with CSR-visible counters**, not just FEB ingress and SWB BAR1.
+The chain (in flow order):
 
-- FEB-side: per-channel emulator-generated hit counter
-- SWB BAR1: `CNT_OPQ_INPUT_W`, `CNT_SQE_CONSUMED`, `CNT_CQE_POSTED`,
-  `CNT_BYTES_WRITTEN`, `CNT_EOE_OBSERVED`, `CNT_HALT`, plus the
-  legacy `EVENT_SKIP_EVENT_DMA_R` (must read zero).
+**FEB-side datapath IPs** (read via sc_tool through swb_ring_lock, per
+the FEB SciFi sc_hub slave map):
 
-PASS criterion: `CNT_OPQ_INPUT_W * 4 == CNT_BYTES_WRITTEN +
-header_overhead`, `CNT_HALT == 0`, FEB ingress count agrees with
-SWB-decoded egress count to within Poisson 5-sigma.
+- `rate_emulator` (or charge_injection_pulser if relevant per mode) -
+  per-channel programmed-rate counter and emitted-hit counter
+- `frame_assembler` / `header_generator` - frames produced, headers
+  emitted, EOE markers emitted
+- `rbcam` ingress and egress counters (these feed the hist IP's
+  pre/post histograms, see §3.3)
+- `hist` IP - histogram bin totals (used both as a counter for
+  conservation and as the source for the dislin pre/post-rbCAM panels)
+- FEB transceiver TX framer - frames sent on link 2
+
+**SWB-side via BAR1** (already enumerated):
+
+- `CNT_OPQ_INPUT_W`, `CNT_SQE_CONSUMED`, `CNT_CQE_POSTED`,
+  `CNT_BYTES_WRITTEN`, `CNT_EOE_OBSERVED`, `CNT_HALT`
+- legacy `EVENT_SKIP_EVENT_DMA_R` (must read zero with the new
+  rdma_subsystem datapath - any non-zero is a bug from the old code
+  path leaking through)
+
+PASS criterion (multi-stage conservation): for every adjacent stage
+pair (i, i+1), `count_in(i+1) == count_out(i)` exactly for Modes A
+and B (deterministic) or within Poisson 5-sigma for Mode C; the
+chain end-to-end equality is the existing `CNT_OPQ_INPUT_W * 4 ==
+CNT_BYTES_WRITTEN + header_overhead` plus `CNT_HALT == 0`. If any
+stage-pair fails, the offending stage is named directly in the E1
+evidence JSON.
 
 ### 3.2 E2 — Per-channel rate histogram (ingress vs egress-rbcam)
 
@@ -154,10 +176,77 @@ bin[ch]_ingress +/- 5 sigma_Poisson` for every unmasked channel;
 `bin[ch]_egress == 0` exactly for every masked channel. Subject to
 math expert review (§5).
 
-### 3.3 E3 — Latency plot
+### 3.3 E3 - 5-panel dislin lifetime histogram
 
-Per-hit (host_rx_ts - FEB_gen_ts). Reported metrics: median, p99,
-p99.9, max. PASS: p99.9 < predicted upper bound from MATH_REVIEW.md.
+E3 is a **5-checkpoint dislin lifetime histogram** in the exact
+reference format committed alongside the existing
+`feb_swb_corun/report_*/feb_swb_lifetime_hist.png` artifacts (the
+user-supplied reference plots are the visual contract). Each test
+point produces ONE PNG with five stacked panels sharing a common
+x-axis `hit lifetime [8 ns cycles]`, one panel per checkpoint in flow
+order:
+
+1. **pre-rbCAM** - bound `[0, 2000]` cycles; `D_pre =
+   wait_910(hit_ts) + s(q) + 18` (virtual MuTRiG model). Silicon
+   source: hist IP pre-rbcam histogram CSR readout. Reference example
+   (Mode B): p05=753, p50=835, p95=917 cycles.
+2. **post-rbCAM** - bound `[2000, 2200]` cycles; `D_post = (GTS_post
+   - ts_hit) mod 8192`, window `[2000, 2200]`. Silicon source: hist
+   IP post-rbcam histogram CSR readout. Reference example (any
+   mode): p05=2012, p50=2070, p95=2128 cycles.
+3. **FEB egress** - bound `[2049, 6143]` cycles; `D_feb <= 2F - p +
+   20 + eps_clk`. Source: sim only (tb_int scoreboard ledger).
+4. **OPQ ingress** - bound `[2049, 6159]` cycles; `D_ing = D_feb +
+   adapter_sync`. Source: sim only.
+5. **OPQ egress** - bound `[~4300, ~100000]` cycles; `D_opq = D_ing +
+   W_n` where `W_n = max(0, W_{n-1} + S_n - A_n)`. Source: sim only.
+
+Annotation rendering follows the dislin reference: green vertical
+lines at the bound edges, dashed orange at p05, solid black at p50,
+dashed black at p95. Common x-axis caption: `hit lifetime [8 ns
+cycles]`.
+
+**Per-mode title line and master equation**:
+
+- Mode A periodic: title `FEB/SWB ASIC0..7 all-channel hit lifetime
+  (periodic_phase_staggered)`, alpha master equation
+  `alpha_periodic(t) = 32 * (floor(t/156.2) + 1)`.
+- Mode B header-sync: title `... (header_sync)`,
+  `alpha_h(t) = 256 * (floor(t/910) + 1)`, `phase=100, stagger=16`.
+- Mode C IID: title `... (poisson_iid)`,
+  `E[alpha_iid(t)] = 256 * t / 1250 hits`.
+
+All three modes share the common D-equation
+`D_i = (T_i - GTS_hit) / 8 ns`.
+
+**Reference dislin generator**: the existing tool at
+`mu3e_ip_dev/.worktrees/mu3e_ip_cores_hit_type0_mux_20260504/firmware_builds/systems/system_20260504_emulator_type0/tb_int/feb_swb_corun/report_*/`
+produced the user-supplied reference plots. The new
+`test_plan/scripts/build_latency_histogram.py` REUSES that generator
+(imports it or invokes it as a subprocess) - it does NOT reimplement
+the dislin rendering.
+
+**Silicon vs sim scope**:
+
+- Silicon test point: pre-rbCAM and post-rbCAM panels (panels 1 and 2)
+  produced directly from the hist IP CSR readout, saved as
+  `evidence/<cp_id>/E3_silicon_lifetime_hist.png`.
+- Matched-sim test point (tb_int cosim with same stimulus seed):
+  produces all 5 panels, saved as
+  `evidence/<cp_id>/E3_sim_lifetime_hist.png`.
+
+**PASS criterion (per test point, per panel)**:
+
+- The `[bound_lo, bound_hi]` window captures >= 99% of hits (i.e.
+  < 1% out-of-bound on either side).
+- p05, p50, p95 markers all fall within `[bound_lo, bound_hi]`.
+- For each pair (pre-rbCAM, post-rbCAM): the silicon panel matches
+  the matched-sim panel to within Poisson 5-sigma at each bin (this
+  is the silicon vs sim cross-check).
+
+The per-mode panel bounds shown above are the user-supplied
+reference values; the math expert (CP8) may tighten them in
+MATH_REVIEW.md based on the derived queue model.
 
 ### 3.4 E4 — Offline DMA data with offline analysis
 
@@ -203,9 +292,12 @@ Cosim recipes reference tb_int case IDs.
 - **Goal**: minimum-traffic round-trip.
 - **Slice**: A x M4 (single channel unmasked) x R1 (10 kHz).
 - **Action**: 30 s run; expect 300 k hits.
-- **Pass**: E1 conservation holds; E2 has bin[ch_active]=300k +/-5sigma,
-  all others exactly 0; E3 median < 100 us; E4 decodes 300k hits all
-  in channel ch_active.
+- **Pass**: E1 multi-stage conservation holds at every FEB datapath
+  IP plus SWB BAR1; E2 has bin[ch_active]=300k +/-5sigma, all others
+  exactly 0; E3 5-panel dislin in-bound (>= 99% hits inside the per-
+  mode bound at each of the 5 checkpoints; on-board pre/post-rbCAM
+  panels match the matched-sim panels within Poisson 5-sigma); E4
+  decodes 300k hits all in channel ch_active.
 - **STP recipe**: probe FEB-side rate-emulator output port (the hit
   channel ID + valid signals); SWB-side `s_axis_opq_*`,
   `rdma_dma_packer` 32-bit-to-256-bit accumulator, `rdma_dma_writer`
@@ -242,9 +334,12 @@ Cosim recipes reference tb_int case IDs.
 - **Goal**: rbcam absorbs header-sync-aligned bursts without halt.
 - **Slice**: B x {M0..M7} x R1; 8 test points.
 - **Action**: 8 x 30 s runs in header-sync injection mode.
-- **Pass**: E1 conservation (CNT_HALT == 0 despite burstiness);
-  E2 bin[ch]=300k for every unmasked channel (Mode B is deterministic,
-  no Poisson slack).
+- **Pass**: E1 multi-stage conservation (CNT_HALT == 0 despite
+  burstiness); E2 bin[ch]=300k for every unmasked channel
+  (deterministic, no Poisson slack); E3 5-panel dislin in-bound per
+  the header_sync per-mode bounds (pre-rbCAM [0,2000], post-rbCAM
+  [2000,2200], FEB egress [2049,6143], OPQ ingress [2049,6159], OPQ
+  egress [~4356, ~99000]).
 - **STP recipe**: rbcam per-channel FIFO fill-level taps (DEBUG=1
   ports); trigger on any FIFO exceeding 80% depth on a sync edge or
   on any CNT_HALT pulse.
@@ -256,10 +351,12 @@ Cosim recipes reference tb_int case IDs.
 - **Slice**: C x {M0..M7} x R1; 8 test points.
 - **Action**: 8 x 30 s runs in IID-per-channel injection mode
   (emulator-only).
-- **Pass**: E1 conservation; E2 bin[ch] within Poisson 5-sigma of
-  rate x 30 s for every unmasked channel (this is the test that
-  validates the Poisson 5-sigma bound derived by the math expert in
-  CP8).
+- **Pass**: E1 multi-stage conservation; E2 bin[ch] within Poisson
+  5-sigma of rate x 30 s for every unmasked channel (this is the test
+  that validates the Poisson 5-sigma bound derived by the math expert
+  in CP8); E3 5-panel dislin in-bound per the poisson_iid per-mode
+  bounds (pre-rbCAM [0,2000], post-rbCAM [2000,2200], FEB egress
+  [2049,6143], OPQ ingress [2049,6159], OPQ egress [~4326, ~104607]).
 - **STP recipe**: rbcam queue depth distribution; trigger on tail
   events (queue depth > P99 of the predicted distribution).
 - **Cosim recipe**: tb_int PROF bucket P-series IID-Poisson cases.
@@ -270,8 +367,10 @@ Cosim recipes reference tb_int case IDs.
 - **Slice**: A x M0 x {R1..R4}.
 - **Action**: 4 x 30 s runs; R4 = 1 MHz x 256 = 256 MHit/s ~= 1 GB/s
   DMA.
-- **Pass**: E1 conservation at every rate; E3 p99.9 below MATH_REVIEW
-  bound; no E1 CNT_HALT increments.
+- **Pass**: E1 multi-stage conservation at every rate;
+  E3 5-panel dislin in-bound at every rate (the OPQ-egress panel
+  bound widens with rate per the queue model; see MATH_REVIEW.md);
+  no E1 CNT_HALT increments.
 - **STP recipe**: at R4 specifically, probe `rdma_dma_writer`
   `beats_remaining`, AXI4 AW/W/B outstanding-credit counter, host
   completer backpressure; trigger on B-channel slvErr or any halt
@@ -346,15 +445,33 @@ A separate codex2 sub-subagent acting as math expert produces
   Mode C uses the 5-sigma envelope.
 - **Conservation invariant**: exact form of
   `CNT_OPQ_INPUT_W * 4 == CNT_BYTES_WRITTEN + header_overhead`, with
-  `header_overhead` enumerated per mu3e frame.
-- **Latency upper bound**: closed-form or empirical bound on
-  99.9th-percentile end-to-end latency given (rbcam depth, DMA SQE
-  prefetch depth, AXI4 outstanding write credit, host completer
-  service rate).
+  `header_overhead` enumerated per mu3e frame; AND multi-stage
+  conservation across the FEB datapath IPs (rate_emulator -> frame
+  assembler -> rbcam ingress -> rbcam egress -> hist IP -> FEB TX) +
+  SWB-side BAR1 counters as a chain of stage-pair equalities (exact
+  for Modes A/B; Poisson 5-sigma for Mode C).
+- **Per-checkpoint lifetime bounds**: derive a per-mode per-rate bound
+  `[bound_lo, bound_hi]` for each of the 5 dislin checkpoints
+  (pre-rbCAM, post-rbCAM, FEB egress, OPQ ingress, OPQ egress). The
+  reference values from the user-supplied plots (e.g. header_sync
+  pre-rbCAM [0, 2000], OPQ egress [4356, 99133] cycles) are the
+  baseline; the math expert refines them per (mode, rate) combination
+  and provides closed-form D-equations:
+  - `D_pre = wait_910(hit_ts) + s(q) + 18`
+  - `D_post = (GTS_post - ts_hit) mod 8192`
+  - `D_feb <= 2F - p + 20 + eps_clk`
+  - `D_ing = D_feb + adapter_sync`
+  - `D_opq = D_ing + W_n; W_n = max(0, W_{n-1} + S_n - A_n)`
+- **In-bound hit fraction target**: each panel must contain >= 99% of
+  hits within `[bound_lo, bound_hi]`; the math expert justifies why
+  99% is the right threshold (vs 99.9%) given the panel's stochastic
+  model.
 
-Until MATH_REVIEW.md is committed and approved, CP3/CP5/CP6 latency
-PASS uses placeholder qualitative thresholds (median < 1 ms) which
-are NOT the real gate.
+Until MATH_REVIEW.md is committed and approved, CP3/CP5/CP5b/CP6
+latency PASS uses the user-supplied reference bounds as placeholders;
+those bounds are correct for the reference operating point but may
+be loose at other (mode, rate) combinations and are NOT the gate
+until the math expert ratifies them.
 
 ## 6. Machine-only checklist contract
 
