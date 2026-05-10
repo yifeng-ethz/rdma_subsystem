@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<system name="rdma_subsystem">
+ <component
+   name="rdma_subsystem"
+   displayName="RDMA Subsystem Supercore"
+   version="26.1.0.0510"
+   description="RDMA subsystem supercore Qsys wrapper"
+   tags="INTERNAL_COMPONENT=false"
+   categories="Mu3e Data Plane/RDMA" />
+ <parameter name="deviceFamily" value="Arria 10" />
+ <parameter name="device" value="10AX115N2F45E1SG" />
+ <parameter name="hideFromIPCatalog" value="false" />
+ <parameter name="projectName" value="rdma_subsystem" />
+ <parameter name="systemHash" value="0" />
+ <instanceScript></instanceScript>
+ <interface name="clk" internal="rdma_subsystem_0.clk" type="clock" dir="end" />
+ <interface name="reset_n" internal="rdma_subsystem_0.reset_n" type="reset" dir="end" />
+ <interface name="csr" internal="rdma_subsystem_0.csr" type="axi4lite" dir="end" />
+ <interface name="opq_in" internal="rdma_subsystem_0.opq_in" type="axi4stream" dir="end" />
+ <interface name="host_axi" internal="rdma_subsystem_0.host_axi" type="axi4" dir="start" />
+ <interface name="msix" internal="rdma_subsystem_0.msix" type="conduit" dir="start" />
+ <module name="rdma_subsystem_0" kind="rdma_subsystem_top" version="26.1.0.0510" enabled="1">
+  <parameter name="DMA_DATA_W" value="256" />
+  <parameter name="WQE_BUS_W" value="512" />
+  <parameter name="DEBUG_LEVEL" value="0" />
+  <parameter name="IP_UID" value="0x44514f50" />
+  <parameter name="VERSION_MAJOR" value="26" />
+  <parameter name="VERSION_MINOR" value="1" />
+  <parameter name="VERSION_PATCH" value="0" />
+  <parameter name="BUILD" value="510" />
+  <parameter name="VERSION_DATE" value="20260510" />
+  <parameter name="VERSION_GIT" value="0x0b66a91b" />
+  <parameter name="INSTANCE_ID" value="0" />
+ </module>
+</system>
