@@ -1,0 +1,8 @@
+project_open rdma_subsystem_standalone -revision rdma_subsystem_standalone
+create_timing_netlist
+read_sdc
+update_timing_netlist
+report_timing -setup -npaths 20 -detail full_path -file output_files/rdma_subsystem_standalone/rdma_subsystem_standalone.top_setup_paths.rpt
+report_timing -hold -npaths 20 -detail full_path -file output_files/rdma_subsystem_standalone/rdma_subsystem_standalone.top_hold_paths.rpt
+delete_timing_netlist
+project_close
