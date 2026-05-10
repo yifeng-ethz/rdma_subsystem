@@ -1,4 +1,4 @@
-# `opq_rdma_subsystem` — Architecture Plan
+# `rdma_subsystem` — Architecture Plan
 
 Status: **ARCHITECTURE — to be reviewed before per-IP RTL_PLAN.md.**
 Pinned by user directive: "semi-permanent structural change so we can
@@ -11,7 +11,7 @@ Per-IP RTL details live in each IP's own `RTL_PLAN.md`.
 
 ## 1. Subsystem scope
 
-`opq_rdma_subsystem` consumes **OPQ egress** (Avalon-ST, 36-bit, 1 source)
+`rdma_subsystem` consumes **OPQ egress** (Avalon-ST, 36-bit, 1 source)
 and pushes hits into **host DRAM** under a Submission-Queue / Completion-Queue
 contract (NVMe / RDMA-style):
 
@@ -35,18 +35,18 @@ Each IP is a top-level git submodule under `mu3e-ip-cores/`, with its own
 `RTL_PLAN.md`, its own `rtl/` `tb/uvm/` `syn/quartus/` `Makefile` `*.svd`
 `*_hw.tcl`, and its own git repo (initialized locally Phase 1; pushed to
 GitHub `yifeng-ethz` org and registered in `mu3e-ip-cores/.gitmodules`
-once Phase 1 cosim PASSes). The supercore `opq_rdma_subsystem/` is also a
+once Phase 1 cosim PASSes). The supercore `rdma_subsystem/` is also a
 top-level submodule alongside them — it integrates the four IPs as a
 Qsys subsystem via its own `*.qsys` / `*.tcl` and contains this
 `ARCHITECTURE_PLAN.md`.
 
 | Folder (submodule)            | Kind     | Role                                                         | Owns                                            |
 |-------------------------------|----------|--------------------------------------------------------------|-------------------------------------------------|
-| `opq_rdma_subsystem/`         | supercore | Subsystem assembly + architecture doc. No RTL of its own.    | This plan, `*.qsys`, `*.tcl`, integration TB.   |
-| `opq_dma_engine/`             | IP        | Pure data mover. Drains data ring → host buffer (via AVMM).  | OPQ packer, data ring FIFO, write engine.       |
-| `opq_sq_fetcher/`             | IP        | SQE puller. Fetches SQE from host SQ ring (via AVMM).        | SQ ring state, doorbell decode, sqe_out stream. |
-| `opq_cq_pusher/`              | IP        | CQE pusher. Writes CQE into host CQ ring (via AVMM).         | CQ ring state, MSI-X stub (Phase 2 wire).       |
-| `opq_run_manager/`            | IP        | Coordinator. Hooks SQ-fetch → DMA → CQ-push. Owns top CSR.   | SQE.opcode dispatch, sequencing FSM, BAR1 CSR.  |
+| `rdma_subsystem/`         | supercore | Subsystem assembly + architecture doc. No RTL of its own.    | This plan, `*.qsys`, `*.tcl`, integration TB.   |
+| `rdma_dma_engine/`             | IP        | Pure data mover. Drains data ring → host buffer (via AVMM).  | OPQ packer, data ring FIFO, write engine.       |
+| `rdma_sq_fetcher/`             | IP        | SQE puller. Fetches SQE from host SQ ring (via AVMM).        | SQ ring state, doorbell decode, sqe_out stream. |
+| `rdma_cq_pusher/`              | IP        | CQE pusher. Writes CQE into host CQ ring (via AVMM).         | CQ ring state, MSI-X stub (Phase 2 wire).       |
+| `rdma_run_manager/`            | IP        | Coordinator. Hooks SQ-fetch → DMA → CQ-push. Owns top CSR.   | SQE.opcode dispatch, sequencing FSM, BAR1 CSR.  |
 
 This split lets each IP be developed and signed off independently. The
 **run manager** is the only IP that knows about the SQ→DMA→CQ orchestration;
@@ -233,7 +233,7 @@ Status bits (16):
 - `[5]` `ALIGN_ERR`        — refused: misaligned addr or non-4 KB span
 - `[6:15]`                 — reserved
 
-## 6. CSR aperture (BAR1, byte-addressed) — owned by `opq_run_manager`
+## 6. CSR aperture (BAR1, byte-addressed) — owned by `rdma_run_manager`
 
 The run manager owns the only CSR aperture exposed to host. Sub-IPs do
 not own host-visible registers; they expose their internal counters via
@@ -339,10 +339,10 @@ versioned independently. Push to remote once Phase 1 is complete.
 ## 12. Pointers
 
 - Per-IP plans (sibling submodules at `mu3e-ip-cores/<ip>/RTL_PLAN.md`):
-  - `opq_dma_engine/RTL_PLAN.md`
-  - `opq_sq_fetcher/RTL_PLAN.md`
-  - `opq_cq_pusher/RTL_PLAN.md`
-  - `opq_run_manager/RTL_PLAN.md`
+  - `rdma_dma_engine/RTL_PLAN.md`
+  - `rdma_sq_fetcher/RTL_PLAN.md`
+  - `rdma_cq_pusher/RTL_PLAN.md`
+  - `rdma_run_manager/RTL_PLAN.md`
 - Existing OPQ CSR access: `make ip-opq-csr-*` in `musip_2604`.
 - Existing SWB datapath being replaced: `swb_block.vhd:347-417`.
 - Diagnostic memory: `feedback_swb_datapath_legacy_broken.md`.

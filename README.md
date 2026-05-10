@@ -1,4 +1,4 @@
-# `opq_dma_engine` — Submission/Completion-Queue DMA engine for OPQ egress
+# `rdma_dma_engine` — Submission/Completion-Queue DMA engine for OPQ egress
 
 ## What this IP replaces
 
@@ -9,7 +9,7 @@ unusable: on hardware it skipped 100% of events
 (`EVENT_SKIP_EVENT_DMA_R = 45 M`) while OPQ delivered 191 M hits with zero
 drops. See `feedback_swb_datapath_legacy_broken.md`.
 
-`opq_dma_engine` replaces all of that with a single IP block that consumes
+`rdma_dma_engine` replaces all of that with a single IP block that consumes
 OPQ egress and writes hits into host memory under host-controlled
 **Submission Queue / Completion Queue** semantics. Same model as NVMe and
 RDMA: the host owns its buffers and tells the FW where to drain into.
@@ -31,7 +31,7 @@ RDMA: the host owns its buffers and tells the FW where to drain into.
         |  |                                            |  |  doorbells
         |  v                                            |  |  via BAR1
    +-------------------------------------------------+  |  |  CSR
-   |              opq_dma_engine                     |  |  |
+   |              rdma_dma_engine                     |  |  |
    |                                                 |  |  |
    |  +------+   +-----------+   +---------------+   |  |  |
    |  | OPQ  |->| dma_packer |->| dma_writer    |---+--+  |
@@ -107,7 +107,7 @@ Reachable both via:
 ## Phase plan
 
 **Phase 1 — semi-permanent (this commit):**
-- IP scaffolding under `mu3e-ip-cores/misc/opq_dma_engine/` matches house
+- IP scaffolding under `mu3e-ip-cores/misc/rdma_dma_engine/` matches house
   conventions (rtl/, tb/uvm/, syn/quartus/, hw.tcl, svd, README,
   Makefile target).
 - RTL with the SQ/CQ FSM but **dummy PCIe master** stubs (read/write
@@ -131,24 +131,24 @@ Reachable both via:
 ## Files
 
 ```
-opq_dma_engine/
+rdma_dma_engine/
 ├── README.md                         (this file)
 ├── doc/
 │   └── csr_map.md                    (auto-generated from svd)
 ├── rtl/
-│   ├── opq_dma_engine.sv             top
-│   ├── opq_dma_packer.sv             (32b -> 256b accumulator, no-skip)
+│   ├── rdma_dma_engine.sv             top
+│   ├── rdma_dma_packer.sv             (32b -> 256b accumulator, no-skip)
 │   ├── opq_dma_sq_fetcher.sv         (SQE fetch + parser)
-│   ├── opq_dma_writer.sv             (host-buffer write engine)
+│   ├── rdma_dma_writer.sv             (host-buffer write engine)
 │   ├── opq_dma_cq_writer.sv          (CQE producer)
-│   └── opq_dma_engine_csr.sv         (BAR1 register file)
+│   └── rdma_dma_engine_csr.sv         (BAR1 register file)
 ├── tb/uvm/
-│   ├── opq_dma_engine_tb_top.sv      cosim with software-model host
+│   ├── rdma_dma_engine_tb_top.sv      cosim with software-model host
 │   ├── host_model_pkg.sv             SQ/CQ ring + buffer model
 │   └── Makefile                      vsim QuestaOne 2026.1
 ├── syn/quartus/
-│   └── opq_dma_engine_standalone.qsf standalone fitter for sign-off
-├── opq_dma_engine.svd                CSR map (CMSIS-SVD)
-├── opq_dma_engine_hw.tcl             Qsys IP definition
+│   └── rdma_dma_engine_standalone.qsf standalone fitter for sign-off
+├── rdma_dma_engine.svd                CSR map (CMSIS-SVD)
+├── rdma_dma_engine_hw.tcl             Qsys IP definition
 └── Makefile                          standard mu3e-ip-cores targets
 ```
