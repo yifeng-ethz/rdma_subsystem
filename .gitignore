@@ -12,3 +12,8 @@ work/
 *.sof
 *.pof
 *.jdi
+tb_int/uvm/build/
+tb_int/uvm/logs/
+*.ucdb
+*.vstf
+transcript
