@@ -17,3 +17,5 @@ tb_int/uvm/logs/
 *.ucdb
 *.vstf
 transcript
+__pycache__/
+*.pyc

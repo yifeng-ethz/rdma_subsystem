@@ -1,0 +1,10 @@
+{"channel": 0, "eop": false, "index": 0, "raw": 72057594037927936, "sop": true, "timestamp": 0}
+{"channel": 0, "eop": false, "index": 1, "raw": 25600, "sop": false, "timestamp": 100}
+{"channel": 0, "eop": false, "index": 2, "raw": 51200, "sop": false, "timestamp": 200}
+{"channel": 0, "eop": false, "index": 3, "raw": 76800, "sop": false, "timestamp": 300}
+{"channel": 0, "eop": false, "index": 4, "raw": 102400, "sop": false, "timestamp": 400}
+{"channel": 0, "eop": false, "index": 5, "raw": 128000, "sop": false, "timestamp": 500}
+{"channel": 0, "eop": false, "index": 6, "raw": 153600, "sop": false, "timestamp": 600}
+{"channel": 0, "eop": false, "index": 7, "raw": 179200, "sop": false, "timestamp": 700}
+{"channel": 0, "eop": false, "index": 8, "raw": 204800, "sop": false, "timestamp": 800}
+{"channel": 0, "eop": true, "index": 9, "raw": 144115188076086272, "sop": false, "timestamp": 900}

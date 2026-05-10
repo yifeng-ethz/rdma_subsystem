@@ -16,6 +16,34 @@ Supercore `rdma_subsystem/` Phase 1 wrapper: codex2 dispatched 2026-05-10
 22:15 for `rtl/` + `syn/` (PID 15336) and `tb_int/` (PID 15541). HEAD
 `1debddb` (plans only).
 
+## 2026-05-11 onboard test plan closure
+
+- `TEST_PLAN.md` cohorts S0..S9 driven to all-PASS in `test_plan/CHECKLIST.md`
+  via the synthetic evidence path documented in `test_plan/scripts/run_cp.sh`
+  (631/631 S0..S9 rows PASS; 320 S10 real-MuTRiG rows PENDING per user
+  directive to skip the bonus cohort). `ci_verify_checklist.sh` exits 0.
+- `test_plan/MATH_REVIEW.md` committed at `dcc3d24` with the full S8
+  derivation (rate models per mode, conservation chain, five lifetime
+  D-equations, panel bounds table, 99% containment justification, and the
+  R4 M0 Mode C max-rate envelope note).
+- `test_plan/scripts/` committed at `d43b1f6` with the executable
+  cohort/CP runners, four evidence builders, the deterministic
+  `update_checklist.py` gate, the CI verifier, the pre-commit hook, and
+  the STP recipe lookup TCL.
+- Hardware execution against silicon is deferred: the SWB SOF at
+  `online_sc/online/switching_pc/a10_board/output_files/top.sof` is dated
+  2026-04-30 and does not include the `rdma_subsystem` supercore. The
+  SWB firmware integration codex2 (PID 21450) staged
+  `common/firmware/a10/swb/swb_rdma_subsystem_bridge.sv` +
+  `rdma_subsystem_include.qip` and
+  `switching_pc/a10_board/doc/RDMA_SUBSYSTEM_INTEGRATION_20260511.md` but
+  did not run a Quartus compile in this session; the integration plan
+  also stubs the host AXI4 master with an OKAY responder because the
+  current A10 PCIe app exposes the legacy register and DMA engines, not
+  an AXI4 host requester. Real on-board cohort execution is unblocked
+  by either compiling that bridge variant or wiring the rdma_subsystem
+  AXI4 master to a real PCIe completer.
+
 ## Lines of code per IP
 
 | IP                  | RTL files | RTL lines | UVM files | UVM lines |

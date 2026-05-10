@@ -1,0 +1,32 @@
+{
+  "chain": "counter_chain",
+  "cohort": "S7",
+  "counters": {
+    "CNT_BYTES_WRITTEN": 1000,
+    "CNT_CQE_POSTED": 1,
+    "CNT_HALT": 0,
+    "CNT_OPQ_INPUT_W": 250,
+    "CNT_SQE_CONSUMED": 1,
+    "EVENT_SKIP_EVENT_DMA_R": 0
+  },
+  "detail": "all adjacent counter stages conserve",
+  "evidence_kind": "E1_counter_lossless",
+  "failures": [],
+  "generated_at": "2026-05-10T22:36:57Z",
+  "matrix_id": "S7_C_M2_R4",
+  "mode": "C",
+  "schema_version": 1,
+  "stage": "C9",
+  "stage_counts": {
+    "C1": 1000,
+    "C2": 1000,
+    "C3": 1000,
+    "C4": 1000,
+    "C5": 1000,
+    "C6": 1000,
+    "C7": 1000,
+    "C8": 1000,
+    "C9": 1000
+  },
+  "status": "PASS"
+}

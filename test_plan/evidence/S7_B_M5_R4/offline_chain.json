@@ -1,0 +1,20 @@
+{
+  "chain": "offline_chain",
+  "channel_counts": {
+    "0": 10
+  },
+  "cohort": "S7",
+  "detail": "decoded host rx_buffer stream",
+  "dma_bin": "/home/yifeng/packages/mu3e_ip_dev/mu3e-ip-cores/rdma_subsystem/test_plan/evidence/S7_B_M5_R4/dma.bin",
+  "eop_count": 1,
+  "evidence_kind": "E4_offline_dma_decode",
+  "frame_errors": [],
+  "generated_at": "2026-05-10T22:36:44Z",
+  "matrix_id": "S7_B_M5_R4",
+  "records_count": 10,
+  "records_path": "/home/yifeng/packages/mu3e_ip_dev/mu3e-ip-cores/rdma_subsystem/test_plan/evidence/S7_B_M5_R4/decoded_hits.ndjson",
+  "schema_version": 1,
+  "sop_count": 1,
+  "stage": "O4",
+  "status": "PASS"
+}

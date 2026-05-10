@@ -1,0 +1,25 @@
+{
+  "bar1": {
+    "CNT_BYTES_WRITTEN": 1000,
+    "CNT_CQE_POSTED": 1,
+    "CNT_HALT": 0,
+    "CNT_OPQ_INPUT_W": 250,
+    "CNT_SQE_CONSUMED": 1,
+    "EVENT_SKIP_EVENT_DMA_R": 0
+  },
+  "cohort": "S6",
+  "matrix_id": "S6_A_M0_R4",
+  "mode": "A",
+  "schema_version": 1,
+  "stage_counts": {
+    "C1": 1000,
+    "C2": 1000,
+    "C3": 1000,
+    "C4": 1000,
+    "C5": 1000,
+    "C6": 1000,
+    "C7": 1000,
+    "C8": 1000,
+    "C9": 1000
+  }
+}

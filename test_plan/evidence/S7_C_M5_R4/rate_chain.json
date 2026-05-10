@@ -1,0 +1,19 @@
+{
+  "active_channels": 255,
+  "chain": "rate_chain",
+  "cohort": "S7",
+  "detail": "ingress and egress per-channel histograms match",
+  "evidence_kind": "E2_rate_histogram",
+  "failures": [],
+  "generated_at": "2026-05-10T22:37:05Z",
+  "mask": "M5",
+  "matrix_id": "S7_C_M5_R4",
+  "mode": "C",
+  "rate_hz": 1000000.0,
+  "run_seconds": 30.0,
+  "schema_version": 1,
+  "stage": "R6",
+  "status": "PASS",
+  "total_egress": 7650000000,
+  "total_ingress": 7650000000
+}

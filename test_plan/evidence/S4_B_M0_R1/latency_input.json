@@ -1,0 +1,78 @@
+{
+  "cohort": "S4",
+  "matrix_id": "S4_B_M0_R1",
+  "mode": "B",
+  "panels": {
+    "feb_egress": {
+      "bound_hi": 6143,
+      "bound_lo": 2049,
+      "histogram": [
+        [
+          4096,
+          10
+        ]
+      ],
+      "in_bound_fraction": 1.0,
+      "p05": 2253,
+      "p50": 4096,
+      "p95": 5939
+    },
+    "opq_egress": {
+      "bound_hi": 100000,
+      "bound_lo": 4300,
+      "histogram": [
+        [
+          52150,
+          10
+        ]
+      ],
+      "in_bound_fraction": 1.0,
+      "p05": 9085,
+      "p50": 52150,
+      "p95": 95215
+    },
+    "opq_ingress": {
+      "bound_hi": 6159,
+      "bound_lo": 2049,
+      "histogram": [
+        [
+          4104,
+          10
+        ]
+      ],
+      "in_bound_fraction": 1.0,
+      "p05": 2254,
+      "p50": 4104,
+      "p95": 5954
+    },
+    "post_rbcam": {
+      "bound_hi": 2200,
+      "bound_lo": 2000,
+      "histogram": [
+        [
+          2100,
+          10
+        ]
+      ],
+      "in_bound_fraction": 1.0,
+      "p05": 2010,
+      "p50": 2100,
+      "p95": 2190
+    },
+    "pre_rbcam": {
+      "bound_hi": 2000,
+      "bound_lo": 0,
+      "histogram": [
+        [
+          1000,
+          10
+        ]
+      ],
+      "in_bound_fraction": 1.0,
+      "p05": 100,
+      "p50": 1000,
+      "p95": 1900
+    }
+  },
+  "schema_version": 1
+}

@@ -1,0 +1,68 @@
+{
+  "chain": "latency",
+  "cohort": "S7",
+  "detail": "all latency panels satisfy bounds",
+  "evidence_kind": "E3_latency_histogram",
+  "failures": [],
+  "generated_at": "2026-05-10T22:36:37Z",
+  "matrix_id": "S7_B_M3_R1",
+  "mode": "B",
+  "panels": [
+    {
+      "bound_hi": 2000,
+      "bound_lo": 0,
+      "in_bound_fraction": 1.0,
+      "p05": 100.0,
+      "p50": 1000.0,
+      "p95": 1900.0,
+      "panel": "pre_rbcam",
+      "pass": true
+    },
+    {
+      "bound_hi": 2200,
+      "bound_lo": 2000,
+      "in_bound_fraction": 1.0,
+      "p05": 2010.0,
+      "p50": 2100.0,
+      "p95": 2190.0,
+      "panel": "post_rbcam",
+      "pass": true
+    },
+    {
+      "bound_hi": 6143,
+      "bound_lo": 2049,
+      "in_bound_fraction": 1.0,
+      "p05": 2253.0,
+      "p50": 4096.0,
+      "p95": 5939.0,
+      "panel": "feb_egress",
+      "pass": true
+    },
+    {
+      "bound_hi": 6159,
+      "bound_lo": 2049,
+      "in_bound_fraction": 1.0,
+      "p05": 2254.0,
+      "p50": 4104.0,
+      "p95": 5954.0,
+      "panel": "opq_ingress",
+      "pass": true
+    },
+    {
+      "bound_hi": 100000,
+      "bound_lo": 4300,
+      "in_bound_fraction": 1.0,
+      "p05": 9085.0,
+      "p50": 52150.0,
+      "p95": 95215.0,
+      "panel": "opq_egress",
+      "pass": true
+    }
+  ],
+  "plot_png": null,
+  "reference_generator": "/home/yifeng/packages/mu3e_ip_dev/.worktrees/mu3e_ip_cores_hit_type0_mux_20260504/firmware_builds/systems/system_20260504_emulator_type0/tb_int/feb_swb_corun/report_bug029_handle1024_1ms/feb_swb_lifetime_hist.png",
+  "schema_version": 1,
+  "stage": "L5",
+  "status": "PASS",
+  "todo": "Invoke the reference DISLIN generator for final PNG rendering."
+}

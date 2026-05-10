@@ -1,0 +1,19 @@
+{
+  "active_channels": 256,
+  "chain": "rate_chain",
+  "cohort": "S3",
+  "detail": "ingress and egress per-channel histograms match",
+  "evidence_kind": "E2_rate_histogram",
+  "failures": [],
+  "generated_at": "2026-05-10T22:35:50Z",
+  "mask": "M0",
+  "matrix_id": "S3_A_M0_R1",
+  "mode": "A",
+  "rate_hz": 10000.0,
+  "run_seconds": 30.0,
+  "schema_version": 1,
+  "stage": "R6",
+  "status": "PASS",
+  "total_egress": 76800000,
+  "total_ingress": 76800000
+}

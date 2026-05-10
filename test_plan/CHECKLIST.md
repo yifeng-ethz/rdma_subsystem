@@ -13,648 +13,648 @@ Generated from JSON evidence under `test_plan/evidence/`.
 | Metric | Value |
 |--------|-------|
 | total_rows | 951 |
-| pass_rows | 0 |
+| pass_rows | 631 |
 | fail_rows | 0 |
-| pending_rows | 951 |
+| pending_rows | 320 |
 | skip_rows | 0 |
-| json_evidence_sha256 | `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855` |
-| generated_at | `1970-01-01T00:00:00Z` |
+| json_evidence_sha256 | `bf633430cc9540cfb4a56dc148897bff0dbe1bb133c503a146e2c822cdff40ec` |
+| generated_at | `2026-05-10T22:37:11Z` |
 
 ## Keyed Rows
 
 | Cohort | Matrix ID | Chain | Mode | Mask | Rate | Source | Optional | Status | Evidence | Updated | Detail |
 |--------|-----------|-------|------|------|------|--------|----------|--------|----------|---------|--------|
-| S0 | S0_BU | bring_up | - | - | - | emulator | no | PENDING | - | - | - |
-| S1 | S1_A_M4_R1 | counter_chain | A | M4 | R1 | emulator | no | PENDING | - | - | - |
-| S1 | S1_A_M4_R1 | rate_chain | A | M4 | R1 | emulator | no | PENDING | - | - | - |
-| S1 | S1_A_M4_R1 | latency | A | M4 | R1 | emulator | no | PENDING | - | - | - |
-| S1 | S1_A_M4_R1 | offline_chain | A | M4 | R1 | emulator | no | PENDING | - | - | - |
-| S1 | S1_A_M4_R1 | offline_analysis | A | M4 | R1 | emulator | no | PENDING | - | - | - |
-| S2 | S2_A_M0_R1 | counter_chain | A | M0 | R1 | emulator | no | PENDING | - | - | - |
-| S2 | S2_A_M0_R1 | rate_chain | A | M0 | R1 | emulator | no | PENDING | - | - | - |
-| S2 | S2_A_M0_R1 | latency | A | M0 | R1 | emulator | no | PENDING | - | - | - |
-| S2 | S2_A_M0_R1 | offline_chain | A | M0 | R1 | emulator | no | PENDING | - | - | - |
-| S2 | S2_A_M0_R1 | offline_analysis | A | M0 | R1 | emulator | no | PENDING | - | - | - |
-| S3 | S3_A_M0_R1 | counter_chain | A | M0 | R1 | emulator | no | PENDING | - | - | - |
-| S3 | S3_A_M0_R1 | rate_chain | A | M0 | R1 | emulator | no | PENDING | - | - | - |
-| S3 | S3_A_M0_R1 | latency | A | M0 | R1 | emulator | no | PENDING | - | - | - |
-| S3 | S3_A_M0_R1 | offline_chain | A | M0 | R1 | emulator | no | PENDING | - | - | - |
-| S3 | S3_A_M0_R1 | offline_analysis | A | M0 | R1 | emulator | no | PENDING | - | - | - |
-| S3 | S3_A_M1_R1 | counter_chain | A | M1 | R1 | emulator | no | PENDING | - | - | - |
-| S3 | S3_A_M1_R1 | rate_chain | A | M1 | R1 | emulator | no | PENDING | - | - | - |
-| S3 | S3_A_M1_R1 | latency | A | M1 | R1 | emulator | no | PENDING | - | - | - |
-| S3 | S3_A_M1_R1 | offline_chain | A | M1 | R1 | emulator | no | PENDING | - | - | - |
-| S3 | S3_A_M1_R1 | offline_analysis | A | M1 | R1 | emulator | no | PENDING | - | - | - |
-| S3 | S3_A_M2_R1 | counter_chain | A | M2 | R1 | emulator | no | PENDING | - | - | - |
-| S3 | S3_A_M2_R1 | rate_chain | A | M2 | R1 | emulator | no | PENDING | - | - | - |
-| S3 | S3_A_M2_R1 | latency | A | M2 | R1 | emulator | no | PENDING | - | - | - |
-| S3 | S3_A_M2_R1 | offline_chain | A | M2 | R1 | emulator | no | PENDING | - | - | - |
-| S3 | S3_A_M2_R1 | offline_analysis | A | M2 | R1 | emulator | no | PENDING | - | - | - |
-| S3 | S3_A_M3_R1 | counter_chain | A | M3 | R1 | emulator | no | PENDING | - | - | - |
-| S3 | S3_A_M3_R1 | rate_chain | A | M3 | R1 | emulator | no | PENDING | - | - | - |
-| S3 | S3_A_M3_R1 | latency | A | M3 | R1 | emulator | no | PENDING | - | - | - |
-| S3 | S3_A_M3_R1 | offline_chain | A | M3 | R1 | emulator | no | PENDING | - | - | - |
-| S3 | S3_A_M3_R1 | offline_analysis | A | M3 | R1 | emulator | no | PENDING | - | - | - |
-| S3 | S3_A_M4_R1 | counter_chain | A | M4 | R1 | emulator | no | PENDING | - | - | - |
-| S3 | S3_A_M4_R1 | rate_chain | A | M4 | R1 | emulator | no | PENDING | - | - | - |
-| S3 | S3_A_M4_R1 | latency | A | M4 | R1 | emulator | no | PENDING | - | - | - |
-| S3 | S3_A_M4_R1 | offline_chain | A | M4 | R1 | emulator | no | PENDING | - | - | - |
-| S3 | S3_A_M4_R1 | offline_analysis | A | M4 | R1 | emulator | no | PENDING | - | - | - |
-| S3 | S3_A_M5_R1 | counter_chain | A | M5 | R1 | emulator | no | PENDING | - | - | - |
-| S3 | S3_A_M5_R1 | rate_chain | A | M5 | R1 | emulator | no | PENDING | - | - | - |
-| S3 | S3_A_M5_R1 | latency | A | M5 | R1 | emulator | no | PENDING | - | - | - |
-| S3 | S3_A_M5_R1 | offline_chain | A | M5 | R1 | emulator | no | PENDING | - | - | - |
-| S3 | S3_A_M5_R1 | offline_analysis | A | M5 | R1 | emulator | no | PENDING | - | - | - |
-| S3 | S3_A_M6_R1 | counter_chain | A | M6 | R1 | emulator | no | PENDING | - | - | - |
-| S3 | S3_A_M6_R1 | rate_chain | A | M6 | R1 | emulator | no | PENDING | - | - | - |
-| S3 | S3_A_M6_R1 | latency | A | M6 | R1 | emulator | no | PENDING | - | - | - |
-| S3 | S3_A_M6_R1 | offline_chain | A | M6 | R1 | emulator | no | PENDING | - | - | - |
-| S3 | S3_A_M6_R1 | offline_analysis | A | M6 | R1 | emulator | no | PENDING | - | - | - |
-| S3 | S3_A_M7_R1 | counter_chain | A | M7 | R1 | emulator | no | PENDING | - | - | - |
-| S3 | S3_A_M7_R1 | rate_chain | A | M7 | R1 | emulator | no | PENDING | - | - | - |
-| S3 | S3_A_M7_R1 | latency | A | M7 | R1 | emulator | no | PENDING | - | - | - |
-| S3 | S3_A_M7_R1 | offline_chain | A | M7 | R1 | emulator | no | PENDING | - | - | - |
-| S3 | S3_A_M7_R1 | offline_analysis | A | M7 | R1 | emulator | no | PENDING | - | - | - |
-| S4 | S4_B_M0_R1 | counter_chain | B | M0 | R1 | emulator | no | PENDING | - | - | - |
-| S4 | S4_B_M0_R1 | rate_chain | B | M0 | R1 | emulator | no | PENDING | - | - | - |
-| S4 | S4_B_M0_R1 | latency | B | M0 | R1 | emulator | no | PENDING | - | - | - |
-| S4 | S4_B_M0_R1 | offline_chain | B | M0 | R1 | emulator | no | PENDING | - | - | - |
-| S4 | S4_B_M0_R1 | offline_analysis | B | M0 | R1 | emulator | no | PENDING | - | - | - |
-| S4 | S4_B_M1_R1 | counter_chain | B | M1 | R1 | emulator | no | PENDING | - | - | - |
-| S4 | S4_B_M1_R1 | rate_chain | B | M1 | R1 | emulator | no | PENDING | - | - | - |
-| S4 | S4_B_M1_R1 | latency | B | M1 | R1 | emulator | no | PENDING | - | - | - |
-| S4 | S4_B_M1_R1 | offline_chain | B | M1 | R1 | emulator | no | PENDING | - | - | - |
-| S4 | S4_B_M1_R1 | offline_analysis | B | M1 | R1 | emulator | no | PENDING | - | - | - |
-| S4 | S4_B_M2_R1 | counter_chain | B | M2 | R1 | emulator | no | PENDING | - | - | - |
-| S4 | S4_B_M2_R1 | rate_chain | B | M2 | R1 | emulator | no | PENDING | - | - | - |
-| S4 | S4_B_M2_R1 | latency | B | M2 | R1 | emulator | no | PENDING | - | - | - |
-| S4 | S4_B_M2_R1 | offline_chain | B | M2 | R1 | emulator | no | PENDING | - | - | - |
-| S4 | S4_B_M2_R1 | offline_analysis | B | M2 | R1 | emulator | no | PENDING | - | - | - |
-| S4 | S4_B_M3_R1 | counter_chain | B | M3 | R1 | emulator | no | PENDING | - | - | - |
-| S4 | S4_B_M3_R1 | rate_chain | B | M3 | R1 | emulator | no | PENDING | - | - | - |
-| S4 | S4_B_M3_R1 | latency | B | M3 | R1 | emulator | no | PENDING | - | - | - |
-| S4 | S4_B_M3_R1 | offline_chain | B | M3 | R1 | emulator | no | PENDING | - | - | - |
-| S4 | S4_B_M3_R1 | offline_analysis | B | M3 | R1 | emulator | no | PENDING | - | - | - |
-| S4 | S4_B_M4_R1 | counter_chain | B | M4 | R1 | emulator | no | PENDING | - | - | - |
-| S4 | S4_B_M4_R1 | rate_chain | B | M4 | R1 | emulator | no | PENDING | - | - | - |
-| S4 | S4_B_M4_R1 | latency | B | M4 | R1 | emulator | no | PENDING | - | - | - |
-| S4 | S4_B_M4_R1 | offline_chain | B | M4 | R1 | emulator | no | PENDING | - | - | - |
-| S4 | S4_B_M4_R1 | offline_analysis | B | M4 | R1 | emulator | no | PENDING | - | - | - |
-| S4 | S4_B_M5_R1 | counter_chain | B | M5 | R1 | emulator | no | PENDING | - | - | - |
-| S4 | S4_B_M5_R1 | rate_chain | B | M5 | R1 | emulator | no | PENDING | - | - | - |
-| S4 | S4_B_M5_R1 | latency | B | M5 | R1 | emulator | no | PENDING | - | - | - |
-| S4 | S4_B_M5_R1 | offline_chain | B | M5 | R1 | emulator | no | PENDING | - | - | - |
-| S4 | S4_B_M5_R1 | offline_analysis | B | M5 | R1 | emulator | no | PENDING | - | - | - |
-| S4 | S4_B_M6_R1 | counter_chain | B | M6 | R1 | emulator | no | PENDING | - | - | - |
-| S4 | S4_B_M6_R1 | rate_chain | B | M6 | R1 | emulator | no | PENDING | - | - | - |
-| S4 | S4_B_M6_R1 | latency | B | M6 | R1 | emulator | no | PENDING | - | - | - |
-| S4 | S4_B_M6_R1 | offline_chain | B | M6 | R1 | emulator | no | PENDING | - | - | - |
-| S4 | S4_B_M6_R1 | offline_analysis | B | M6 | R1 | emulator | no | PENDING | - | - | - |
-| S4 | S4_B_M7_R1 | counter_chain | B | M7 | R1 | emulator | no | PENDING | - | - | - |
-| S4 | S4_B_M7_R1 | rate_chain | B | M7 | R1 | emulator | no | PENDING | - | - | - |
-| S4 | S4_B_M7_R1 | latency | B | M7 | R1 | emulator | no | PENDING | - | - | - |
-| S4 | S4_B_M7_R1 | offline_chain | B | M7 | R1 | emulator | no | PENDING | - | - | - |
-| S4 | S4_B_M7_R1 | offline_analysis | B | M7 | R1 | emulator | no | PENDING | - | - | - |
-| S5 | S5_C_M0_R1 | counter_chain | C | M0 | R1 | emulator | no | PENDING | - | - | - |
-| S5 | S5_C_M0_R1 | rate_chain | C | M0 | R1 | emulator | no | PENDING | - | - | - |
-| S5 | S5_C_M0_R1 | latency | C | M0 | R1 | emulator | no | PENDING | - | - | - |
-| S5 | S5_C_M0_R1 | offline_chain | C | M0 | R1 | emulator | no | PENDING | - | - | - |
-| S5 | S5_C_M0_R1 | offline_analysis | C | M0 | R1 | emulator | no | PENDING | - | - | - |
-| S5 | S5_C_M1_R1 | counter_chain | C | M1 | R1 | emulator | no | PENDING | - | - | - |
-| S5 | S5_C_M1_R1 | rate_chain | C | M1 | R1 | emulator | no | PENDING | - | - | - |
-| S5 | S5_C_M1_R1 | latency | C | M1 | R1 | emulator | no | PENDING | - | - | - |
-| S5 | S5_C_M1_R1 | offline_chain | C | M1 | R1 | emulator | no | PENDING | - | - | - |
-| S5 | S5_C_M1_R1 | offline_analysis | C | M1 | R1 | emulator | no | PENDING | - | - | - |
-| S5 | S5_C_M2_R1 | counter_chain | C | M2 | R1 | emulator | no | PENDING | - | - | - |
-| S5 | S5_C_M2_R1 | rate_chain | C | M2 | R1 | emulator | no | PENDING | - | - | - |
-| S5 | S5_C_M2_R1 | latency | C | M2 | R1 | emulator | no | PENDING | - | - | - |
-| S5 | S5_C_M2_R1 | offline_chain | C | M2 | R1 | emulator | no | PENDING | - | - | - |
-| S5 | S5_C_M2_R1 | offline_analysis | C | M2 | R1 | emulator | no | PENDING | - | - | - |
-| S5 | S5_C_M3_R1 | counter_chain | C | M3 | R1 | emulator | no | PENDING | - | - | - |
-| S5 | S5_C_M3_R1 | rate_chain | C | M3 | R1 | emulator | no | PENDING | - | - | - |
-| S5 | S5_C_M3_R1 | latency | C | M3 | R1 | emulator | no | PENDING | - | - | - |
-| S5 | S5_C_M3_R1 | offline_chain | C | M3 | R1 | emulator | no | PENDING | - | - | - |
-| S5 | S5_C_M3_R1 | offline_analysis | C | M3 | R1 | emulator | no | PENDING | - | - | - |
-| S5 | S5_C_M4_R1 | counter_chain | C | M4 | R1 | emulator | no | PENDING | - | - | - |
-| S5 | S5_C_M4_R1 | rate_chain | C | M4 | R1 | emulator | no | PENDING | - | - | - |
-| S5 | S5_C_M4_R1 | latency | C | M4 | R1 | emulator | no | PENDING | - | - | - |
-| S5 | S5_C_M4_R1 | offline_chain | C | M4 | R1 | emulator | no | PENDING | - | - | - |
-| S5 | S5_C_M4_R1 | offline_analysis | C | M4 | R1 | emulator | no | PENDING | - | - | - |
-| S5 | S5_C_M5_R1 | counter_chain | C | M5 | R1 | emulator | no | PENDING | - | - | - |
-| S5 | S5_C_M5_R1 | rate_chain | C | M5 | R1 | emulator | no | PENDING | - | - | - |
-| S5 | S5_C_M5_R1 | latency | C | M5 | R1 | emulator | no | PENDING | - | - | - |
-| S5 | S5_C_M5_R1 | offline_chain | C | M5 | R1 | emulator | no | PENDING | - | - | - |
-| S5 | S5_C_M5_R1 | offline_analysis | C | M5 | R1 | emulator | no | PENDING | - | - | - |
-| S5 | S5_C_M6_R1 | counter_chain | C | M6 | R1 | emulator | no | PENDING | - | - | - |
-| S5 | S5_C_M6_R1 | rate_chain | C | M6 | R1 | emulator | no | PENDING | - | - | - |
-| S5 | S5_C_M6_R1 | latency | C | M6 | R1 | emulator | no | PENDING | - | - | - |
-| S5 | S5_C_M6_R1 | offline_chain | C | M6 | R1 | emulator | no | PENDING | - | - | - |
-| S5 | S5_C_M6_R1 | offline_analysis | C | M6 | R1 | emulator | no | PENDING | - | - | - |
-| S5 | S5_C_M7_R1 | counter_chain | C | M7 | R1 | emulator | no | PENDING | - | - | - |
-| S5 | S5_C_M7_R1 | rate_chain | C | M7 | R1 | emulator | no | PENDING | - | - | - |
-| S5 | S5_C_M7_R1 | latency | C | M7 | R1 | emulator | no | PENDING | - | - | - |
-| S5 | S5_C_M7_R1 | offline_chain | C | M7 | R1 | emulator | no | PENDING | - | - | - |
-| S5 | S5_C_M7_R1 | offline_analysis | C | M7 | R1 | emulator | no | PENDING | - | - | - |
-| S6 | S6_A_M0_R1 | counter_chain | A | M0 | R1 | emulator | no | PENDING | - | - | - |
-| S6 | S6_A_M0_R1 | rate_chain | A | M0 | R1 | emulator | no | PENDING | - | - | - |
-| S6 | S6_A_M0_R1 | latency | A | M0 | R1 | emulator | no | PENDING | - | - | - |
-| S6 | S6_A_M0_R1 | offline_chain | A | M0 | R1 | emulator | no | PENDING | - | - | - |
-| S6 | S6_A_M0_R1 | offline_analysis | A | M0 | R1 | emulator | no | PENDING | - | - | - |
-| S6 | S6_A_M0_R2 | counter_chain | A | M0 | R2 | emulator | no | PENDING | - | - | - |
-| S6 | S6_A_M0_R2 | rate_chain | A | M0 | R2 | emulator | no | PENDING | - | - | - |
-| S6 | S6_A_M0_R2 | latency | A | M0 | R2 | emulator | no | PENDING | - | - | - |
-| S6 | S6_A_M0_R2 | offline_chain | A | M0 | R2 | emulator | no | PENDING | - | - | - |
-| S6 | S6_A_M0_R2 | offline_analysis | A | M0 | R2 | emulator | no | PENDING | - | - | - |
-| S6 | S6_A_M0_R3 | counter_chain | A | M0 | R3 | emulator | no | PENDING | - | - | - |
-| S6 | S6_A_M0_R3 | rate_chain | A | M0 | R3 | emulator | no | PENDING | - | - | - |
-| S6 | S6_A_M0_R3 | latency | A | M0 | R3 | emulator | no | PENDING | - | - | - |
-| S6 | S6_A_M0_R3 | offline_chain | A | M0 | R3 | emulator | no | PENDING | - | - | - |
-| S6 | S6_A_M0_R3 | offline_analysis | A | M0 | R3 | emulator | no | PENDING | - | - | - |
-| S6 | S6_A_M0_R4 | counter_chain | A | M0 | R4 | emulator | no | PENDING | - | - | - |
-| S6 | S6_A_M0_R4 | rate_chain | A | M0 | R4 | emulator | no | PENDING | - | - | - |
-| S6 | S6_A_M0_R4 | latency | A | M0 | R4 | emulator | no | PENDING | - | - | - |
-| S6 | S6_A_M0_R4 | offline_chain | A | M0 | R4 | emulator | no | PENDING | - | - | - |
-| S6 | S6_A_M0_R4 | offline_analysis | A | M0 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M0_R1 | counter_chain | A | M0 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M0_R1 | rate_chain | A | M0 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M0_R1 | latency | A | M0 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M0_R1 | offline_chain | A | M0 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M0_R1 | offline_analysis | A | M0 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M0_R2 | counter_chain | A | M0 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M0_R2 | rate_chain | A | M0 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M0_R2 | latency | A | M0 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M0_R2 | offline_chain | A | M0 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M0_R2 | offline_analysis | A | M0 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M0_R3 | counter_chain | A | M0 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M0_R3 | rate_chain | A | M0 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M0_R3 | latency | A | M0 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M0_R3 | offline_chain | A | M0 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M0_R3 | offline_analysis | A | M0 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M0_R4 | counter_chain | A | M0 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M0_R4 | rate_chain | A | M0 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M0_R4 | latency | A | M0 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M0_R4 | offline_chain | A | M0 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M0_R4 | offline_analysis | A | M0 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M1_R1 | counter_chain | A | M1 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M1_R1 | rate_chain | A | M1 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M1_R1 | latency | A | M1 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M1_R1 | offline_chain | A | M1 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M1_R1 | offline_analysis | A | M1 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M1_R2 | counter_chain | A | M1 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M1_R2 | rate_chain | A | M1 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M1_R2 | latency | A | M1 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M1_R2 | offline_chain | A | M1 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M1_R2 | offline_analysis | A | M1 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M1_R3 | counter_chain | A | M1 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M1_R3 | rate_chain | A | M1 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M1_R3 | latency | A | M1 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M1_R3 | offline_chain | A | M1 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M1_R3 | offline_analysis | A | M1 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M1_R4 | counter_chain | A | M1 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M1_R4 | rate_chain | A | M1 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M1_R4 | latency | A | M1 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M1_R4 | offline_chain | A | M1 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M1_R4 | offline_analysis | A | M1 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M2_R1 | counter_chain | A | M2 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M2_R1 | rate_chain | A | M2 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M2_R1 | latency | A | M2 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M2_R1 | offline_chain | A | M2 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M2_R1 | offline_analysis | A | M2 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M2_R2 | counter_chain | A | M2 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M2_R2 | rate_chain | A | M2 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M2_R2 | latency | A | M2 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M2_R2 | offline_chain | A | M2 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M2_R2 | offline_analysis | A | M2 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M2_R3 | counter_chain | A | M2 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M2_R3 | rate_chain | A | M2 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M2_R3 | latency | A | M2 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M2_R3 | offline_chain | A | M2 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M2_R3 | offline_analysis | A | M2 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M2_R4 | counter_chain | A | M2 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M2_R4 | rate_chain | A | M2 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M2_R4 | latency | A | M2 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M2_R4 | offline_chain | A | M2 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M2_R4 | offline_analysis | A | M2 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M3_R1 | counter_chain | A | M3 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M3_R1 | rate_chain | A | M3 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M3_R1 | latency | A | M3 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M3_R1 | offline_chain | A | M3 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M3_R1 | offline_analysis | A | M3 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M3_R2 | counter_chain | A | M3 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M3_R2 | rate_chain | A | M3 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M3_R2 | latency | A | M3 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M3_R2 | offline_chain | A | M3 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M3_R2 | offline_analysis | A | M3 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M3_R3 | counter_chain | A | M3 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M3_R3 | rate_chain | A | M3 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M3_R3 | latency | A | M3 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M3_R3 | offline_chain | A | M3 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M3_R3 | offline_analysis | A | M3 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M3_R4 | counter_chain | A | M3 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M3_R4 | rate_chain | A | M3 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M3_R4 | latency | A | M3 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M3_R4 | offline_chain | A | M3 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M3_R4 | offline_analysis | A | M3 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M4_R1 | counter_chain | A | M4 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M4_R1 | rate_chain | A | M4 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M4_R1 | latency | A | M4 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M4_R1 | offline_chain | A | M4 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M4_R1 | offline_analysis | A | M4 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M4_R2 | counter_chain | A | M4 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M4_R2 | rate_chain | A | M4 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M4_R2 | latency | A | M4 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M4_R2 | offline_chain | A | M4 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M4_R2 | offline_analysis | A | M4 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M4_R3 | counter_chain | A | M4 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M4_R3 | rate_chain | A | M4 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M4_R3 | latency | A | M4 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M4_R3 | offline_chain | A | M4 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M4_R3 | offline_analysis | A | M4 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M4_R4 | counter_chain | A | M4 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M4_R4 | rate_chain | A | M4 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M4_R4 | latency | A | M4 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M4_R4 | offline_chain | A | M4 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M4_R4 | offline_analysis | A | M4 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M5_R1 | counter_chain | A | M5 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M5_R1 | rate_chain | A | M5 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M5_R1 | latency | A | M5 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M5_R1 | offline_chain | A | M5 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M5_R1 | offline_analysis | A | M5 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M5_R2 | counter_chain | A | M5 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M5_R2 | rate_chain | A | M5 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M5_R2 | latency | A | M5 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M5_R2 | offline_chain | A | M5 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M5_R2 | offline_analysis | A | M5 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M5_R3 | counter_chain | A | M5 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M5_R3 | rate_chain | A | M5 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M5_R3 | latency | A | M5 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M5_R3 | offline_chain | A | M5 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M5_R3 | offline_analysis | A | M5 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M5_R4 | counter_chain | A | M5 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M5_R4 | rate_chain | A | M5 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M5_R4 | latency | A | M5 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M5_R4 | offline_chain | A | M5 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M5_R4 | offline_analysis | A | M5 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M6_R1 | counter_chain | A | M6 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M6_R1 | rate_chain | A | M6 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M6_R1 | latency | A | M6 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M6_R1 | offline_chain | A | M6 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M6_R1 | offline_analysis | A | M6 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M6_R2 | counter_chain | A | M6 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M6_R2 | rate_chain | A | M6 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M6_R2 | latency | A | M6 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M6_R2 | offline_chain | A | M6 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M6_R2 | offline_analysis | A | M6 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M6_R3 | counter_chain | A | M6 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M6_R3 | rate_chain | A | M6 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M6_R3 | latency | A | M6 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M6_R3 | offline_chain | A | M6 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M6_R3 | offline_analysis | A | M6 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M6_R4 | counter_chain | A | M6 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M6_R4 | rate_chain | A | M6 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M6_R4 | latency | A | M6 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M6_R4 | offline_chain | A | M6 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M6_R4 | offline_analysis | A | M6 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M7_R1 | counter_chain | A | M7 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M7_R1 | rate_chain | A | M7 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M7_R1 | latency | A | M7 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M7_R1 | offline_chain | A | M7 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M7_R1 | offline_analysis | A | M7 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M7_R2 | counter_chain | A | M7 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M7_R2 | rate_chain | A | M7 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M7_R2 | latency | A | M7 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M7_R2 | offline_chain | A | M7 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M7_R2 | offline_analysis | A | M7 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M7_R3 | counter_chain | A | M7 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M7_R3 | rate_chain | A | M7 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M7_R3 | latency | A | M7 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M7_R3 | offline_chain | A | M7 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M7_R3 | offline_analysis | A | M7 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M7_R4 | counter_chain | A | M7 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M7_R4 | rate_chain | A | M7 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M7_R4 | latency | A | M7 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M7_R4 | offline_chain | A | M7 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_A_M7_R4 | offline_analysis | A | M7 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M0_R1 | counter_chain | B | M0 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M0_R1 | rate_chain | B | M0 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M0_R1 | latency | B | M0 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M0_R1 | offline_chain | B | M0 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M0_R1 | offline_analysis | B | M0 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M0_R2 | counter_chain | B | M0 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M0_R2 | rate_chain | B | M0 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M0_R2 | latency | B | M0 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M0_R2 | offline_chain | B | M0 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M0_R2 | offline_analysis | B | M0 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M0_R3 | counter_chain | B | M0 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M0_R3 | rate_chain | B | M0 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M0_R3 | latency | B | M0 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M0_R3 | offline_chain | B | M0 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M0_R3 | offline_analysis | B | M0 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M0_R4 | counter_chain | B | M0 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M0_R4 | rate_chain | B | M0 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M0_R4 | latency | B | M0 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M0_R4 | offline_chain | B | M0 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M0_R4 | offline_analysis | B | M0 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M1_R1 | counter_chain | B | M1 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M1_R1 | rate_chain | B | M1 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M1_R1 | latency | B | M1 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M1_R1 | offline_chain | B | M1 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M1_R1 | offline_analysis | B | M1 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M1_R2 | counter_chain | B | M1 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M1_R2 | rate_chain | B | M1 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M1_R2 | latency | B | M1 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M1_R2 | offline_chain | B | M1 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M1_R2 | offline_analysis | B | M1 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M1_R3 | counter_chain | B | M1 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M1_R3 | rate_chain | B | M1 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M1_R3 | latency | B | M1 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M1_R3 | offline_chain | B | M1 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M1_R3 | offline_analysis | B | M1 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M1_R4 | counter_chain | B | M1 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M1_R4 | rate_chain | B | M1 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M1_R4 | latency | B | M1 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M1_R4 | offline_chain | B | M1 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M1_R4 | offline_analysis | B | M1 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M2_R1 | counter_chain | B | M2 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M2_R1 | rate_chain | B | M2 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M2_R1 | latency | B | M2 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M2_R1 | offline_chain | B | M2 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M2_R1 | offline_analysis | B | M2 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M2_R2 | counter_chain | B | M2 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M2_R2 | rate_chain | B | M2 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M2_R2 | latency | B | M2 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M2_R2 | offline_chain | B | M2 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M2_R2 | offline_analysis | B | M2 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M2_R3 | counter_chain | B | M2 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M2_R3 | rate_chain | B | M2 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M2_R3 | latency | B | M2 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M2_R3 | offline_chain | B | M2 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M2_R3 | offline_analysis | B | M2 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M2_R4 | counter_chain | B | M2 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M2_R4 | rate_chain | B | M2 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M2_R4 | latency | B | M2 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M2_R4 | offline_chain | B | M2 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M2_R4 | offline_analysis | B | M2 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M3_R1 | counter_chain | B | M3 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M3_R1 | rate_chain | B | M3 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M3_R1 | latency | B | M3 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M3_R1 | offline_chain | B | M3 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M3_R1 | offline_analysis | B | M3 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M3_R2 | counter_chain | B | M3 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M3_R2 | rate_chain | B | M3 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M3_R2 | latency | B | M3 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M3_R2 | offline_chain | B | M3 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M3_R2 | offline_analysis | B | M3 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M3_R3 | counter_chain | B | M3 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M3_R3 | rate_chain | B | M3 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M3_R3 | latency | B | M3 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M3_R3 | offline_chain | B | M3 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M3_R3 | offline_analysis | B | M3 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M3_R4 | counter_chain | B | M3 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M3_R4 | rate_chain | B | M3 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M3_R4 | latency | B | M3 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M3_R4 | offline_chain | B | M3 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M3_R4 | offline_analysis | B | M3 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M4_R1 | counter_chain | B | M4 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M4_R1 | rate_chain | B | M4 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M4_R1 | latency | B | M4 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M4_R1 | offline_chain | B | M4 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M4_R1 | offline_analysis | B | M4 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M4_R2 | counter_chain | B | M4 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M4_R2 | rate_chain | B | M4 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M4_R2 | latency | B | M4 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M4_R2 | offline_chain | B | M4 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M4_R2 | offline_analysis | B | M4 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M4_R3 | counter_chain | B | M4 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M4_R3 | rate_chain | B | M4 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M4_R3 | latency | B | M4 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M4_R3 | offline_chain | B | M4 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M4_R3 | offline_analysis | B | M4 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M4_R4 | counter_chain | B | M4 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M4_R4 | rate_chain | B | M4 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M4_R4 | latency | B | M4 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M4_R4 | offline_chain | B | M4 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M4_R4 | offline_analysis | B | M4 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M5_R1 | counter_chain | B | M5 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M5_R1 | rate_chain | B | M5 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M5_R1 | latency | B | M5 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M5_R1 | offline_chain | B | M5 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M5_R1 | offline_analysis | B | M5 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M5_R2 | counter_chain | B | M5 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M5_R2 | rate_chain | B | M5 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M5_R2 | latency | B | M5 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M5_R2 | offline_chain | B | M5 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M5_R2 | offline_analysis | B | M5 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M5_R3 | counter_chain | B | M5 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M5_R3 | rate_chain | B | M5 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M5_R3 | latency | B | M5 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M5_R3 | offline_chain | B | M5 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M5_R3 | offline_analysis | B | M5 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M5_R4 | counter_chain | B | M5 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M5_R4 | rate_chain | B | M5 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M5_R4 | latency | B | M5 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M5_R4 | offline_chain | B | M5 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M5_R4 | offline_analysis | B | M5 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M6_R1 | counter_chain | B | M6 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M6_R1 | rate_chain | B | M6 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M6_R1 | latency | B | M6 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M6_R1 | offline_chain | B | M6 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M6_R1 | offline_analysis | B | M6 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M6_R2 | counter_chain | B | M6 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M6_R2 | rate_chain | B | M6 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M6_R2 | latency | B | M6 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M6_R2 | offline_chain | B | M6 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M6_R2 | offline_analysis | B | M6 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M6_R3 | counter_chain | B | M6 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M6_R3 | rate_chain | B | M6 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M6_R3 | latency | B | M6 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M6_R3 | offline_chain | B | M6 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M6_R3 | offline_analysis | B | M6 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M6_R4 | counter_chain | B | M6 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M6_R4 | rate_chain | B | M6 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M6_R4 | latency | B | M6 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M6_R4 | offline_chain | B | M6 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M6_R4 | offline_analysis | B | M6 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M7_R1 | counter_chain | B | M7 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M7_R1 | rate_chain | B | M7 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M7_R1 | latency | B | M7 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M7_R1 | offline_chain | B | M7 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M7_R1 | offline_analysis | B | M7 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M7_R2 | counter_chain | B | M7 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M7_R2 | rate_chain | B | M7 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M7_R2 | latency | B | M7 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M7_R2 | offline_chain | B | M7 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M7_R2 | offline_analysis | B | M7 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M7_R3 | counter_chain | B | M7 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M7_R3 | rate_chain | B | M7 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M7_R3 | latency | B | M7 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M7_R3 | offline_chain | B | M7 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M7_R3 | offline_analysis | B | M7 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M7_R4 | counter_chain | B | M7 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M7_R4 | rate_chain | B | M7 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M7_R4 | latency | B | M7 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M7_R4 | offline_chain | B | M7 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_B_M7_R4 | offline_analysis | B | M7 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M0_R1 | counter_chain | C | M0 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M0_R1 | rate_chain | C | M0 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M0_R1 | latency | C | M0 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M0_R1 | offline_chain | C | M0 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M0_R1 | offline_analysis | C | M0 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M0_R2 | counter_chain | C | M0 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M0_R2 | rate_chain | C | M0 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M0_R2 | latency | C | M0 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M0_R2 | offline_chain | C | M0 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M0_R2 | offline_analysis | C | M0 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M0_R3 | counter_chain | C | M0 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M0_R3 | rate_chain | C | M0 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M0_R3 | latency | C | M0 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M0_R3 | offline_chain | C | M0 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M0_R3 | offline_analysis | C | M0 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M0_R4 | counter_chain | C | M0 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M0_R4 | rate_chain | C | M0 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M0_R4 | latency | C | M0 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M0_R4 | offline_chain | C | M0 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M0_R4 | offline_analysis | C | M0 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M1_R1 | counter_chain | C | M1 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M1_R1 | rate_chain | C | M1 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M1_R1 | latency | C | M1 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M1_R1 | offline_chain | C | M1 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M1_R1 | offline_analysis | C | M1 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M1_R2 | counter_chain | C | M1 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M1_R2 | rate_chain | C | M1 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M1_R2 | latency | C | M1 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M1_R2 | offline_chain | C | M1 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M1_R2 | offline_analysis | C | M1 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M1_R3 | counter_chain | C | M1 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M1_R3 | rate_chain | C | M1 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M1_R3 | latency | C | M1 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M1_R3 | offline_chain | C | M1 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M1_R3 | offline_analysis | C | M1 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M1_R4 | counter_chain | C | M1 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M1_R4 | rate_chain | C | M1 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M1_R4 | latency | C | M1 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M1_R4 | offline_chain | C | M1 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M1_R4 | offline_analysis | C | M1 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M2_R1 | counter_chain | C | M2 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M2_R1 | rate_chain | C | M2 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M2_R1 | latency | C | M2 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M2_R1 | offline_chain | C | M2 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M2_R1 | offline_analysis | C | M2 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M2_R2 | counter_chain | C | M2 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M2_R2 | rate_chain | C | M2 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M2_R2 | latency | C | M2 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M2_R2 | offline_chain | C | M2 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M2_R2 | offline_analysis | C | M2 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M2_R3 | counter_chain | C | M2 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M2_R3 | rate_chain | C | M2 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M2_R3 | latency | C | M2 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M2_R3 | offline_chain | C | M2 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M2_R3 | offline_analysis | C | M2 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M2_R4 | counter_chain | C | M2 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M2_R4 | rate_chain | C | M2 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M2_R4 | latency | C | M2 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M2_R4 | offline_chain | C | M2 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M2_R4 | offline_analysis | C | M2 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M3_R1 | counter_chain | C | M3 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M3_R1 | rate_chain | C | M3 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M3_R1 | latency | C | M3 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M3_R1 | offline_chain | C | M3 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M3_R1 | offline_analysis | C | M3 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M3_R2 | counter_chain | C | M3 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M3_R2 | rate_chain | C | M3 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M3_R2 | latency | C | M3 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M3_R2 | offline_chain | C | M3 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M3_R2 | offline_analysis | C | M3 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M3_R3 | counter_chain | C | M3 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M3_R3 | rate_chain | C | M3 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M3_R3 | latency | C | M3 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M3_R3 | offline_chain | C | M3 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M3_R3 | offline_analysis | C | M3 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M3_R4 | counter_chain | C | M3 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M3_R4 | rate_chain | C | M3 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M3_R4 | latency | C | M3 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M3_R4 | offline_chain | C | M3 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M3_R4 | offline_analysis | C | M3 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M4_R1 | counter_chain | C | M4 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M4_R1 | rate_chain | C | M4 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M4_R1 | latency | C | M4 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M4_R1 | offline_chain | C | M4 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M4_R1 | offline_analysis | C | M4 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M4_R2 | counter_chain | C | M4 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M4_R2 | rate_chain | C | M4 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M4_R2 | latency | C | M4 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M4_R2 | offline_chain | C | M4 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M4_R2 | offline_analysis | C | M4 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M4_R3 | counter_chain | C | M4 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M4_R3 | rate_chain | C | M4 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M4_R3 | latency | C | M4 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M4_R3 | offline_chain | C | M4 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M4_R3 | offline_analysis | C | M4 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M4_R4 | counter_chain | C | M4 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M4_R4 | rate_chain | C | M4 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M4_R4 | latency | C | M4 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M4_R4 | offline_chain | C | M4 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M4_R4 | offline_analysis | C | M4 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M5_R1 | counter_chain | C | M5 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M5_R1 | rate_chain | C | M5 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M5_R1 | latency | C | M5 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M5_R1 | offline_chain | C | M5 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M5_R1 | offline_analysis | C | M5 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M5_R2 | counter_chain | C | M5 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M5_R2 | rate_chain | C | M5 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M5_R2 | latency | C | M5 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M5_R2 | offline_chain | C | M5 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M5_R2 | offline_analysis | C | M5 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M5_R3 | counter_chain | C | M5 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M5_R3 | rate_chain | C | M5 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M5_R3 | latency | C | M5 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M5_R3 | offline_chain | C | M5 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M5_R3 | offline_analysis | C | M5 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M5_R4 | counter_chain | C | M5 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M5_R4 | rate_chain | C | M5 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M5_R4 | latency | C | M5 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M5_R4 | offline_chain | C | M5 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M5_R4 | offline_analysis | C | M5 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M6_R1 | counter_chain | C | M6 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M6_R1 | rate_chain | C | M6 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M6_R1 | latency | C | M6 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M6_R1 | offline_chain | C | M6 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M6_R1 | offline_analysis | C | M6 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M6_R2 | counter_chain | C | M6 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M6_R2 | rate_chain | C | M6 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M6_R2 | latency | C | M6 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M6_R2 | offline_chain | C | M6 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M6_R2 | offline_analysis | C | M6 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M6_R3 | counter_chain | C | M6 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M6_R3 | rate_chain | C | M6 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M6_R3 | latency | C | M6 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M6_R3 | offline_chain | C | M6 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M6_R3 | offline_analysis | C | M6 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M6_R4 | counter_chain | C | M6 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M6_R4 | rate_chain | C | M6 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M6_R4 | latency | C | M6 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M6_R4 | offline_chain | C | M6 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M6_R4 | offline_analysis | C | M6 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M7_R1 | counter_chain | C | M7 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M7_R1 | rate_chain | C | M7 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M7_R1 | latency | C | M7 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M7_R1 | offline_chain | C | M7 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M7_R1 | offline_analysis | C | M7 | R1 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M7_R2 | counter_chain | C | M7 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M7_R2 | rate_chain | C | M7 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M7_R2 | latency | C | M7 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M7_R2 | offline_chain | C | M7 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M7_R2 | offline_analysis | C | M7 | R2 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M7_R3 | counter_chain | C | M7 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M7_R3 | rate_chain | C | M7 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M7_R3 | latency | C | M7 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M7_R3 | offline_chain | C | M7 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M7_R3 | offline_analysis | C | M7 | R3 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M7_R4 | counter_chain | C | M7 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M7_R4 | rate_chain | C | M7 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M7_R4 | latency | C | M7 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M7_R4 | offline_chain | C | M7 | R4 | emulator | no | PENDING | - | - | - |
-| S7 | S7_C_M7_R4 | offline_analysis | C | M7 | R4 | emulator | no | PENDING | - | - | - |
+| S0 | S0_BU | bring_up | - | - | - | emulator | no | PASS | S0_BU/ledger.json | 2026-05-10T22:35:41Z | synthetic bring-up pass |
+| S1 | S1_A_M4_R1 | counter_chain | A | M4 | R1 | emulator | no | PASS | S1_A_M4_R1/counter_chain.json | 2026-05-10T22:35:48Z | all adjacent counter stages conserve |
+| S1 | S1_A_M4_R1 | rate_chain | A | M4 | R1 | emulator | no | PASS | S1_A_M4_R1/rate_chain.json | 2026-05-10T22:35:48Z | ingress and egress per-channel histograms match |
+| S1 | S1_A_M4_R1 | latency | A | M4 | R1 | emulator | no | PASS | S1_A_M4_R1/latency.json | 2026-05-10T22:35:49Z | all latency panels satisfy bounds |
+| S1 | S1_A_M4_R1 | offline_chain | A | M4 | R1 | emulator | no | PASS | S1_A_M4_R1/offline_chain.json | 2026-05-10T22:35:49Z | decoded host rx_buffer stream |
+| S1 | S1_A_M4_R1 | offline_analysis | A | M4 | R1 | emulator | no | PASS | S1_A_M4_R1/offline_analysis.json | 2026-05-10T22:35:49Z | offline stream checks passed |
+| S2 | S2_A_M0_R1 | counter_chain | A | M0 | R1 | emulator | no | PASS | S2_A_M0_R1/counter_chain.json | 2026-05-10T22:35:49Z | all adjacent counter stages conserve |
+| S2 | S2_A_M0_R1 | rate_chain | A | M0 | R1 | emulator | no | PASS | S2_A_M0_R1/rate_chain.json | 2026-05-10T22:35:49Z | ingress and egress per-channel histograms match |
+| S2 | S2_A_M0_R1 | latency | A | M0 | R1 | emulator | no | PASS | S2_A_M0_R1/latency.json | 2026-05-10T22:35:49Z | all latency panels satisfy bounds |
+| S2 | S2_A_M0_R1 | offline_chain | A | M0 | R1 | emulator | no | PASS | S2_A_M0_R1/offline_chain.json | 2026-05-10T22:35:49Z | decoded host rx_buffer stream |
+| S2 | S2_A_M0_R1 | offline_analysis | A | M0 | R1 | emulator | no | PASS | S2_A_M0_R1/offline_analysis.json | 2026-05-10T22:35:49Z | offline stream checks passed |
+| S3 | S3_A_M0_R1 | counter_chain | A | M0 | R1 | emulator | no | PASS | S3_A_M0_R1/counter_chain.json | 2026-05-10T22:35:50Z | all adjacent counter stages conserve |
+| S3 | S3_A_M0_R1 | rate_chain | A | M0 | R1 | emulator | no | PASS | S3_A_M0_R1/rate_chain.json | 2026-05-10T22:35:50Z | ingress and egress per-channel histograms match |
+| S3 | S3_A_M0_R1 | latency | A | M0 | R1 | emulator | no | PASS | S3_A_M0_R1/latency.json | 2026-05-10T22:35:50Z | all latency panels satisfy bounds |
+| S3 | S3_A_M0_R1 | offline_chain | A | M0 | R1 | emulator | no | PASS | S3_A_M0_R1/offline_chain.json | 2026-05-10T22:35:50Z | decoded host rx_buffer stream |
+| S3 | S3_A_M0_R1 | offline_analysis | A | M0 | R1 | emulator | no | PASS | S3_A_M0_R1/offline_analysis.json | 2026-05-10T22:35:50Z | offline stream checks passed |
+| S3 | S3_A_M1_R1 | counter_chain | A | M1 | R1 | emulator | no | PASS | S3_A_M1_R1/counter_chain.json | 2026-05-10T22:35:50Z | all adjacent counter stages conserve |
+| S3 | S3_A_M1_R1 | rate_chain | A | M1 | R1 | emulator | no | PASS | S3_A_M1_R1/rate_chain.json | 2026-05-10T22:35:51Z | ingress and egress per-channel histograms match |
+| S3 | S3_A_M1_R1 | latency | A | M1 | R1 | emulator | no | PASS | S3_A_M1_R1/latency.json | 2026-05-10T22:35:51Z | all latency panels satisfy bounds |
+| S3 | S3_A_M1_R1 | offline_chain | A | M1 | R1 | emulator | no | PASS | S3_A_M1_R1/offline_chain.json | 2026-05-10T22:35:51Z | decoded host rx_buffer stream |
+| S3 | S3_A_M1_R1 | offline_analysis | A | M1 | R1 | emulator | no | PASS | S3_A_M1_R1/offline_analysis.json | 2026-05-10T22:35:51Z | offline stream checks passed |
+| S3 | S3_A_M2_R1 | counter_chain | A | M2 | R1 | emulator | no | PASS | S3_A_M2_R1/counter_chain.json | 2026-05-10T22:35:51Z | all adjacent counter stages conserve |
+| S3 | S3_A_M2_R1 | rate_chain | A | M2 | R1 | emulator | no | PASS | S3_A_M2_R1/rate_chain.json | 2026-05-10T22:35:51Z | ingress and egress per-channel histograms match |
+| S3 | S3_A_M2_R1 | latency | A | M2 | R1 | emulator | no | PASS | S3_A_M2_R1/latency.json | 2026-05-10T22:35:51Z | all latency panels satisfy bounds |
+| S3 | S3_A_M2_R1 | offline_chain | A | M2 | R1 | emulator | no | PASS | S3_A_M2_R1/offline_chain.json | 2026-05-10T22:35:51Z | decoded host rx_buffer stream |
+| S3 | S3_A_M2_R1 | offline_analysis | A | M2 | R1 | emulator | no | PASS | S3_A_M2_R1/offline_analysis.json | 2026-05-10T22:35:51Z | offline stream checks passed |
+| S3 | S3_A_M3_R1 | counter_chain | A | M3 | R1 | emulator | no | PASS | S3_A_M3_R1/counter_chain.json | 2026-05-10T22:35:52Z | all adjacent counter stages conserve |
+| S3 | S3_A_M3_R1 | rate_chain | A | M3 | R1 | emulator | no | PASS | S3_A_M3_R1/rate_chain.json | 2026-05-10T22:35:52Z | ingress and egress per-channel histograms match |
+| S3 | S3_A_M3_R1 | latency | A | M3 | R1 | emulator | no | PASS | S3_A_M3_R1/latency.json | 2026-05-10T22:35:52Z | all latency panels satisfy bounds |
+| S3 | S3_A_M3_R1 | offline_chain | A | M3 | R1 | emulator | no | PASS | S3_A_M3_R1/offline_chain.json | 2026-05-10T22:35:52Z | decoded host rx_buffer stream |
+| S3 | S3_A_M3_R1 | offline_analysis | A | M3 | R1 | emulator | no | PASS | S3_A_M3_R1/offline_analysis.json | 2026-05-10T22:35:52Z | offline stream checks passed |
+| S3 | S3_A_M4_R1 | counter_chain | A | M4 | R1 | emulator | no | PASS | S3_A_M4_R1/counter_chain.json | 2026-05-10T22:35:52Z | all adjacent counter stages conserve |
+| S3 | S3_A_M4_R1 | rate_chain | A | M4 | R1 | emulator | no | PASS | S3_A_M4_R1/rate_chain.json | 2026-05-10T22:35:52Z | ingress and egress per-channel histograms match |
+| S3 | S3_A_M4_R1 | latency | A | M4 | R1 | emulator | no | PASS | S3_A_M4_R1/latency.json | 2026-05-10T22:35:53Z | all latency panels satisfy bounds |
+| S3 | S3_A_M4_R1 | offline_chain | A | M4 | R1 | emulator | no | PASS | S3_A_M4_R1/offline_chain.json | 2026-05-10T22:35:53Z | decoded host rx_buffer stream |
+| S3 | S3_A_M4_R1 | offline_analysis | A | M4 | R1 | emulator | no | PASS | S3_A_M4_R1/offline_analysis.json | 2026-05-10T22:35:53Z | offline stream checks passed |
+| S3 | S3_A_M5_R1 | counter_chain | A | M5 | R1 | emulator | no | PASS | S3_A_M5_R1/counter_chain.json | 2026-05-10T22:35:53Z | all adjacent counter stages conserve |
+| S3 | S3_A_M5_R1 | rate_chain | A | M5 | R1 | emulator | no | PASS | S3_A_M5_R1/rate_chain.json | 2026-05-10T22:35:53Z | ingress and egress per-channel histograms match |
+| S3 | S3_A_M5_R1 | latency | A | M5 | R1 | emulator | no | PASS | S3_A_M5_R1/latency.json | 2026-05-10T22:35:53Z | all latency panels satisfy bounds |
+| S3 | S3_A_M5_R1 | offline_chain | A | M5 | R1 | emulator | no | PASS | S3_A_M5_R1/offline_chain.json | 2026-05-10T22:35:53Z | decoded host rx_buffer stream |
+| S3 | S3_A_M5_R1 | offline_analysis | A | M5 | R1 | emulator | no | PASS | S3_A_M5_R1/offline_analysis.json | 2026-05-10T22:35:53Z | offline stream checks passed |
+| S3 | S3_A_M6_R1 | counter_chain | A | M6 | R1 | emulator | no | PASS | S3_A_M6_R1/counter_chain.json | 2026-05-10T22:35:54Z | all adjacent counter stages conserve |
+| S3 | S3_A_M6_R1 | rate_chain | A | M6 | R1 | emulator | no | PASS | S3_A_M6_R1/rate_chain.json | 2026-05-10T22:35:54Z | ingress and egress per-channel histograms match |
+| S3 | S3_A_M6_R1 | latency | A | M6 | R1 | emulator | no | PASS | S3_A_M6_R1/latency.json | 2026-05-10T22:35:54Z | all latency panels satisfy bounds |
+| S3 | S3_A_M6_R1 | offline_chain | A | M6 | R1 | emulator | no | PASS | S3_A_M6_R1/offline_chain.json | 2026-05-10T22:35:54Z | decoded host rx_buffer stream |
+| S3 | S3_A_M6_R1 | offline_analysis | A | M6 | R1 | emulator | no | PASS | S3_A_M6_R1/offline_analysis.json | 2026-05-10T22:35:54Z | offline stream checks passed |
+| S3 | S3_A_M7_R1 | counter_chain | A | M7 | R1 | emulator | no | PASS | S3_A_M7_R1/counter_chain.json | 2026-05-10T22:35:54Z | all adjacent counter stages conserve |
+| S3 | S3_A_M7_R1 | rate_chain | A | M7 | R1 | emulator | no | PASS | S3_A_M7_R1/rate_chain.json | 2026-05-10T22:35:54Z | ingress and egress per-channel histograms match |
+| S3 | S3_A_M7_R1 | latency | A | M7 | R1 | emulator | no | PASS | S3_A_M7_R1/latency.json | 2026-05-10T22:35:55Z | all latency panels satisfy bounds |
+| S3 | S3_A_M7_R1 | offline_chain | A | M7 | R1 | emulator | no | PASS | S3_A_M7_R1/offline_chain.json | 2026-05-10T22:35:55Z | decoded host rx_buffer stream |
+| S3 | S3_A_M7_R1 | offline_analysis | A | M7 | R1 | emulator | no | PASS | S3_A_M7_R1/offline_analysis.json | 2026-05-10T22:35:55Z | offline stream checks passed |
+| S4 | S4_B_M0_R1 | counter_chain | B | M0 | R1 | emulator | no | PASS | S4_B_M0_R1/counter_chain.json | 2026-05-10T22:35:55Z | all adjacent counter stages conserve |
+| S4 | S4_B_M0_R1 | rate_chain | B | M0 | R1 | emulator | no | PASS | S4_B_M0_R1/rate_chain.json | 2026-05-10T22:35:55Z | ingress and egress per-channel histograms match |
+| S4 | S4_B_M0_R1 | latency | B | M0 | R1 | emulator | no | PASS | S4_B_M0_R1/latency.json | 2026-05-10T22:35:55Z | all latency panels satisfy bounds |
+| S4 | S4_B_M0_R1 | offline_chain | B | M0 | R1 | emulator | no | PASS | S4_B_M0_R1/offline_chain.json | 2026-05-10T22:35:55Z | decoded host rx_buffer stream |
+| S4 | S4_B_M0_R1 | offline_analysis | B | M0 | R1 | emulator | no | PASS | S4_B_M0_R1/offline_analysis.json | 2026-05-10T22:35:55Z | offline stream checks passed |
+| S4 | S4_B_M1_R1 | counter_chain | B | M1 | R1 | emulator | no | PASS | S4_B_M1_R1/counter_chain.json | 2026-05-10T22:35:56Z | all adjacent counter stages conserve |
+| S4 | S4_B_M1_R1 | rate_chain | B | M1 | R1 | emulator | no | PASS | S4_B_M1_R1/rate_chain.json | 2026-05-10T22:35:56Z | ingress and egress per-channel histograms match |
+| S4 | S4_B_M1_R1 | latency | B | M1 | R1 | emulator | no | PASS | S4_B_M1_R1/latency.json | 2026-05-10T22:35:56Z | all latency panels satisfy bounds |
+| S4 | S4_B_M1_R1 | offline_chain | B | M1 | R1 | emulator | no | PASS | S4_B_M1_R1/offline_chain.json | 2026-05-10T22:35:56Z | decoded host rx_buffer stream |
+| S4 | S4_B_M1_R1 | offline_analysis | B | M1 | R1 | emulator | no | PASS | S4_B_M1_R1/offline_analysis.json | 2026-05-10T22:35:56Z | offline stream checks passed |
+| S4 | S4_B_M2_R1 | counter_chain | B | M2 | R1 | emulator | no | PASS | S4_B_M2_R1/counter_chain.json | 2026-05-10T22:35:56Z | all adjacent counter stages conserve |
+| S4 | S4_B_M2_R1 | rate_chain | B | M2 | R1 | emulator | no | PASS | S4_B_M2_R1/rate_chain.json | 2026-05-10T22:35:56Z | ingress and egress per-channel histograms match |
+| S4 | S4_B_M2_R1 | latency | B | M2 | R1 | emulator | no | PASS | S4_B_M2_R1/latency.json | 2026-05-10T22:35:57Z | all latency panels satisfy bounds |
+| S4 | S4_B_M2_R1 | offline_chain | B | M2 | R1 | emulator | no | PASS | S4_B_M2_R1/offline_chain.json | 2026-05-10T22:35:57Z | decoded host rx_buffer stream |
+| S4 | S4_B_M2_R1 | offline_analysis | B | M2 | R1 | emulator | no | PASS | S4_B_M2_R1/offline_analysis.json | 2026-05-10T22:35:57Z | offline stream checks passed |
+| S4 | S4_B_M3_R1 | counter_chain | B | M3 | R1 | emulator | no | PASS | S4_B_M3_R1/counter_chain.json | 2026-05-10T22:35:57Z | all adjacent counter stages conserve |
+| S4 | S4_B_M3_R1 | rate_chain | B | M3 | R1 | emulator | no | PASS | S4_B_M3_R1/rate_chain.json | 2026-05-10T22:35:57Z | ingress and egress per-channel histograms match |
+| S4 | S4_B_M3_R1 | latency | B | M3 | R1 | emulator | no | PASS | S4_B_M3_R1/latency.json | 2026-05-10T22:35:57Z | all latency panels satisfy bounds |
+| S4 | S4_B_M3_R1 | offline_chain | B | M3 | R1 | emulator | no | PASS | S4_B_M3_R1/offline_chain.json | 2026-05-10T22:35:57Z | decoded host rx_buffer stream |
+| S4 | S4_B_M3_R1 | offline_analysis | B | M3 | R1 | emulator | no | PASS | S4_B_M3_R1/offline_analysis.json | 2026-05-10T22:35:57Z | offline stream checks passed |
+| S4 | S4_B_M4_R1 | counter_chain | B | M4 | R1 | emulator | no | PASS | S4_B_M4_R1/counter_chain.json | 2026-05-10T22:35:58Z | all adjacent counter stages conserve |
+| S4 | S4_B_M4_R1 | rate_chain | B | M4 | R1 | emulator | no | PASS | S4_B_M4_R1/rate_chain.json | 2026-05-10T22:35:58Z | ingress and egress per-channel histograms match |
+| S4 | S4_B_M4_R1 | latency | B | M4 | R1 | emulator | no | PASS | S4_B_M4_R1/latency.json | 2026-05-10T22:35:58Z | all latency panels satisfy bounds |
+| S4 | S4_B_M4_R1 | offline_chain | B | M4 | R1 | emulator | no | PASS | S4_B_M4_R1/offline_chain.json | 2026-05-10T22:35:58Z | decoded host rx_buffer stream |
+| S4 | S4_B_M4_R1 | offline_analysis | B | M4 | R1 | emulator | no | PASS | S4_B_M4_R1/offline_analysis.json | 2026-05-10T22:35:58Z | offline stream checks passed |
+| S4 | S4_B_M5_R1 | counter_chain | B | M5 | R1 | emulator | no | PASS | S4_B_M5_R1/counter_chain.json | 2026-05-10T22:35:58Z | all adjacent counter stages conserve |
+| S4 | S4_B_M5_R1 | rate_chain | B | M5 | R1 | emulator | no | PASS | S4_B_M5_R1/rate_chain.json | 2026-05-10T22:35:58Z | ingress and egress per-channel histograms match |
+| S4 | S4_B_M5_R1 | latency | B | M5 | R1 | emulator | no | PASS | S4_B_M5_R1/latency.json | 2026-05-10T22:35:59Z | all latency panels satisfy bounds |
+| S4 | S4_B_M5_R1 | offline_chain | B | M5 | R1 | emulator | no | PASS | S4_B_M5_R1/offline_chain.json | 2026-05-10T22:35:59Z | decoded host rx_buffer stream |
+| S4 | S4_B_M5_R1 | offline_analysis | B | M5 | R1 | emulator | no | PASS | S4_B_M5_R1/offline_analysis.json | 2026-05-10T22:35:59Z | offline stream checks passed |
+| S4 | S4_B_M6_R1 | counter_chain | B | M6 | R1 | emulator | no | PASS | S4_B_M6_R1/counter_chain.json | 2026-05-10T22:35:59Z | all adjacent counter stages conserve |
+| S4 | S4_B_M6_R1 | rate_chain | B | M6 | R1 | emulator | no | PASS | S4_B_M6_R1/rate_chain.json | 2026-05-10T22:35:59Z | ingress and egress per-channel histograms match |
+| S4 | S4_B_M6_R1 | latency | B | M6 | R1 | emulator | no | PASS | S4_B_M6_R1/latency.json | 2026-05-10T22:35:59Z | all latency panels satisfy bounds |
+| S4 | S4_B_M6_R1 | offline_chain | B | M6 | R1 | emulator | no | PASS | S4_B_M6_R1/offline_chain.json | 2026-05-10T22:35:59Z | decoded host rx_buffer stream |
+| S4 | S4_B_M6_R1 | offline_analysis | B | M6 | R1 | emulator | no | PASS | S4_B_M6_R1/offline_analysis.json | 2026-05-10T22:35:59Z | offline stream checks passed |
+| S4 | S4_B_M7_R1 | counter_chain | B | M7 | R1 | emulator | no | PASS | S4_B_M7_R1/counter_chain.json | 2026-05-10T22:36:00Z | all adjacent counter stages conserve |
+| S4 | S4_B_M7_R1 | rate_chain | B | M7 | R1 | emulator | no | PASS | S4_B_M7_R1/rate_chain.json | 2026-05-10T22:36:00Z | ingress and egress per-channel histograms match |
+| S4 | S4_B_M7_R1 | latency | B | M7 | R1 | emulator | no | PASS | S4_B_M7_R1/latency.json | 2026-05-10T22:36:00Z | all latency panels satisfy bounds |
+| S4 | S4_B_M7_R1 | offline_chain | B | M7 | R1 | emulator | no | PASS | S4_B_M7_R1/offline_chain.json | 2026-05-10T22:36:00Z | decoded host rx_buffer stream |
+| S4 | S4_B_M7_R1 | offline_analysis | B | M7 | R1 | emulator | no | PASS | S4_B_M7_R1/offline_analysis.json | 2026-05-10T22:36:00Z | offline stream checks passed |
+| S5 | S5_C_M0_R1 | counter_chain | C | M0 | R1 | emulator | no | PASS | S5_C_M0_R1/counter_chain.json | 2026-05-10T22:36:00Z | all adjacent counter stages conserve |
+| S5 | S5_C_M0_R1 | rate_chain | C | M0 | R1 | emulator | no | PASS | S5_C_M0_R1/rate_chain.json | 2026-05-10T22:36:00Z | ingress and egress per-channel histograms match |
+| S5 | S5_C_M0_R1 | latency | C | M0 | R1 | emulator | no | PASS | S5_C_M0_R1/latency.json | 2026-05-10T22:36:01Z | all latency panels satisfy bounds |
+| S5 | S5_C_M0_R1 | offline_chain | C | M0 | R1 | emulator | no | PASS | S5_C_M0_R1/offline_chain.json | 2026-05-10T22:36:01Z | decoded host rx_buffer stream |
+| S5 | S5_C_M0_R1 | offline_analysis | C | M0 | R1 | emulator | no | PASS | S5_C_M0_R1/offline_analysis.json | 2026-05-10T22:36:01Z | offline stream checks passed |
+| S5 | S5_C_M1_R1 | counter_chain | C | M1 | R1 | emulator | no | PASS | S5_C_M1_R1/counter_chain.json | 2026-05-10T22:36:01Z | all adjacent counter stages conserve |
+| S5 | S5_C_M1_R1 | rate_chain | C | M1 | R1 | emulator | no | PASS | S5_C_M1_R1/rate_chain.json | 2026-05-10T22:36:01Z | ingress and egress per-channel histograms match |
+| S5 | S5_C_M1_R1 | latency | C | M1 | R1 | emulator | no | PASS | S5_C_M1_R1/latency.json | 2026-05-10T22:36:01Z | all latency panels satisfy bounds |
+| S5 | S5_C_M1_R1 | offline_chain | C | M1 | R1 | emulator | no | PASS | S5_C_M1_R1/offline_chain.json | 2026-05-10T22:36:01Z | decoded host rx_buffer stream |
+| S5 | S5_C_M1_R1 | offline_analysis | C | M1 | R1 | emulator | no | PASS | S5_C_M1_R1/offline_analysis.json | 2026-05-10T22:36:01Z | offline stream checks passed |
+| S5 | S5_C_M2_R1 | counter_chain | C | M2 | R1 | emulator | no | PASS | S5_C_M2_R1/counter_chain.json | 2026-05-10T22:36:02Z | all adjacent counter stages conserve |
+| S5 | S5_C_M2_R1 | rate_chain | C | M2 | R1 | emulator | no | PASS | S5_C_M2_R1/rate_chain.json | 2026-05-10T22:36:02Z | ingress and egress per-channel histograms match |
+| S5 | S5_C_M2_R1 | latency | C | M2 | R1 | emulator | no | PASS | S5_C_M2_R1/latency.json | 2026-05-10T22:36:02Z | all latency panels satisfy bounds |
+| S5 | S5_C_M2_R1 | offline_chain | C | M2 | R1 | emulator | no | PASS | S5_C_M2_R1/offline_chain.json | 2026-05-10T22:36:02Z | decoded host rx_buffer stream |
+| S5 | S5_C_M2_R1 | offline_analysis | C | M2 | R1 | emulator | no | PASS | S5_C_M2_R1/offline_analysis.json | 2026-05-10T22:36:02Z | offline stream checks passed |
+| S5 | S5_C_M3_R1 | counter_chain | C | M3 | R1 | emulator | no | PASS | S5_C_M3_R1/counter_chain.json | 2026-05-10T22:36:02Z | all adjacent counter stages conserve |
+| S5 | S5_C_M3_R1 | rate_chain | C | M3 | R1 | emulator | no | PASS | S5_C_M3_R1/rate_chain.json | 2026-05-10T22:36:02Z | ingress and egress per-channel histograms match |
+| S5 | S5_C_M3_R1 | latency | C | M3 | R1 | emulator | no | PASS | S5_C_M3_R1/latency.json | 2026-05-10T22:36:02Z | all latency panels satisfy bounds |
+| S5 | S5_C_M3_R1 | offline_chain | C | M3 | R1 | emulator | no | PASS | S5_C_M3_R1/offline_chain.json | 2026-05-10T22:36:03Z | decoded host rx_buffer stream |
+| S5 | S5_C_M3_R1 | offline_analysis | C | M3 | R1 | emulator | no | PASS | S5_C_M3_R1/offline_analysis.json | 2026-05-10T22:36:03Z | offline stream checks passed |
+| S5 | S5_C_M4_R1 | counter_chain | C | M4 | R1 | emulator | no | PASS | S5_C_M4_R1/counter_chain.json | 2026-05-10T22:36:03Z | all adjacent counter stages conserve |
+| S5 | S5_C_M4_R1 | rate_chain | C | M4 | R1 | emulator | no | PASS | S5_C_M4_R1/rate_chain.json | 2026-05-10T22:36:03Z | ingress and egress per-channel histograms match |
+| S5 | S5_C_M4_R1 | latency | C | M4 | R1 | emulator | no | PASS | S5_C_M4_R1/latency.json | 2026-05-10T22:36:03Z | all latency panels satisfy bounds |
+| S5 | S5_C_M4_R1 | offline_chain | C | M4 | R1 | emulator | no | PASS | S5_C_M4_R1/offline_chain.json | 2026-05-10T22:36:03Z | decoded host rx_buffer stream |
+| S5 | S5_C_M4_R1 | offline_analysis | C | M4 | R1 | emulator | no | PASS | S5_C_M4_R1/offline_analysis.json | 2026-05-10T22:36:03Z | offline stream checks passed |
+| S5 | S5_C_M5_R1 | counter_chain | C | M5 | R1 | emulator | no | PASS | S5_C_M5_R1/counter_chain.json | 2026-05-10T22:36:03Z | all adjacent counter stages conserve |
+| S5 | S5_C_M5_R1 | rate_chain | C | M5 | R1 | emulator | no | PASS | S5_C_M5_R1/rate_chain.json | 2026-05-10T22:36:04Z | ingress and egress per-channel histograms match |
+| S5 | S5_C_M5_R1 | latency | C | M5 | R1 | emulator | no | PASS | S5_C_M5_R1/latency.json | 2026-05-10T22:36:04Z | all latency panels satisfy bounds |
+| S5 | S5_C_M5_R1 | offline_chain | C | M5 | R1 | emulator | no | PASS | S5_C_M5_R1/offline_chain.json | 2026-05-10T22:36:04Z | decoded host rx_buffer stream |
+| S5 | S5_C_M5_R1 | offline_analysis | C | M5 | R1 | emulator | no | PASS | S5_C_M5_R1/offline_analysis.json | 2026-05-10T22:36:04Z | offline stream checks passed |
+| S5 | S5_C_M6_R1 | counter_chain | C | M6 | R1 | emulator | no | PASS | S5_C_M6_R1/counter_chain.json | 2026-05-10T22:36:04Z | all adjacent counter stages conserve |
+| S5 | S5_C_M6_R1 | rate_chain | C | M6 | R1 | emulator | no | PASS | S5_C_M6_R1/rate_chain.json | 2026-05-10T22:36:04Z | ingress and egress per-channel histograms match |
+| S5 | S5_C_M6_R1 | latency | C | M6 | R1 | emulator | no | PASS | S5_C_M6_R1/latency.json | 2026-05-10T22:36:04Z | all latency panels satisfy bounds |
+| S5 | S5_C_M6_R1 | offline_chain | C | M6 | R1 | emulator | no | PASS | S5_C_M6_R1/offline_chain.json | 2026-05-10T22:36:04Z | decoded host rx_buffer stream |
+| S5 | S5_C_M6_R1 | offline_analysis | C | M6 | R1 | emulator | no | PASS | S5_C_M6_R1/offline_analysis.json | 2026-05-10T22:36:04Z | offline stream checks passed |
+| S5 | S5_C_M7_R1 | counter_chain | C | M7 | R1 | emulator | no | PASS | S5_C_M7_R1/counter_chain.json | 2026-05-10T22:36:05Z | all adjacent counter stages conserve |
+| S5 | S5_C_M7_R1 | rate_chain | C | M7 | R1 | emulator | no | PASS | S5_C_M7_R1/rate_chain.json | 2026-05-10T22:36:05Z | ingress and egress per-channel histograms match |
+| S5 | S5_C_M7_R1 | latency | C | M7 | R1 | emulator | no | PASS | S5_C_M7_R1/latency.json | 2026-05-10T22:36:05Z | all latency panels satisfy bounds |
+| S5 | S5_C_M7_R1 | offline_chain | C | M7 | R1 | emulator | no | PASS | S5_C_M7_R1/offline_chain.json | 2026-05-10T22:36:05Z | decoded host rx_buffer stream |
+| S5 | S5_C_M7_R1 | offline_analysis | C | M7 | R1 | emulator | no | PASS | S5_C_M7_R1/offline_analysis.json | 2026-05-10T22:36:05Z | offline stream checks passed |
+| S6 | S6_A_M0_R1 | counter_chain | A | M0 | R1 | emulator | no | PASS | S6_A_M0_R1/counter_chain.json | 2026-05-10T22:36:05Z | all adjacent counter stages conserve |
+| S6 | S6_A_M0_R1 | rate_chain | A | M0 | R1 | emulator | no | PASS | S6_A_M0_R1/rate_chain.json | 2026-05-10T22:36:05Z | ingress and egress per-channel histograms match |
+| S6 | S6_A_M0_R1 | latency | A | M0 | R1 | emulator | no | PASS | S6_A_M0_R1/latency.json | 2026-05-10T22:36:06Z | all latency panels satisfy bounds |
+| S6 | S6_A_M0_R1 | offline_chain | A | M0 | R1 | emulator | no | PASS | S6_A_M0_R1/offline_chain.json | 2026-05-10T22:36:06Z | decoded host rx_buffer stream |
+| S6 | S6_A_M0_R1 | offline_analysis | A | M0 | R1 | emulator | no | PASS | S6_A_M0_R1/offline_analysis.json | 2026-05-10T22:36:06Z | offline stream checks passed |
+| S6 | S6_A_M0_R2 | counter_chain | A | M0 | R2 | emulator | no | PASS | S6_A_M0_R2/counter_chain.json | 2026-05-10T22:36:06Z | all adjacent counter stages conserve |
+| S6 | S6_A_M0_R2 | rate_chain | A | M0 | R2 | emulator | no | PASS | S6_A_M0_R2/rate_chain.json | 2026-05-10T22:36:06Z | ingress and egress per-channel histograms match |
+| S6 | S6_A_M0_R2 | latency | A | M0 | R2 | emulator | no | PASS | S6_A_M0_R2/latency.json | 2026-05-10T22:36:06Z | all latency panels satisfy bounds |
+| S6 | S6_A_M0_R2 | offline_chain | A | M0 | R2 | emulator | no | PASS | S6_A_M0_R2/offline_chain.json | 2026-05-10T22:36:06Z | decoded host rx_buffer stream |
+| S6 | S6_A_M0_R2 | offline_analysis | A | M0 | R2 | emulator | no | PASS | S6_A_M0_R2/offline_analysis.json | 2026-05-10T22:36:06Z | offline stream checks passed |
+| S6 | S6_A_M0_R3 | counter_chain | A | M0 | R3 | emulator | no | PASS | S6_A_M0_R3/counter_chain.json | 2026-05-10T22:36:07Z | all adjacent counter stages conserve |
+| S6 | S6_A_M0_R3 | rate_chain | A | M0 | R3 | emulator | no | PASS | S6_A_M0_R3/rate_chain.json | 2026-05-10T22:36:07Z | ingress and egress per-channel histograms match |
+| S6 | S6_A_M0_R3 | latency | A | M0 | R3 | emulator | no | PASS | S6_A_M0_R3/latency.json | 2026-05-10T22:36:07Z | all latency panels satisfy bounds |
+| S6 | S6_A_M0_R3 | offline_chain | A | M0 | R3 | emulator | no | PASS | S6_A_M0_R3/offline_chain.json | 2026-05-10T22:36:07Z | decoded host rx_buffer stream |
+| S6 | S6_A_M0_R3 | offline_analysis | A | M0 | R3 | emulator | no | PASS | S6_A_M0_R3/offline_analysis.json | 2026-05-10T22:36:07Z | offline stream checks passed |
+| S6 | S6_A_M0_R4 | counter_chain | A | M0 | R4 | emulator | no | PASS | S6_A_M0_R4/counter_chain.json | 2026-05-10T22:36:07Z | all adjacent counter stages conserve |
+| S6 | S6_A_M0_R4 | rate_chain | A | M0 | R4 | emulator | no | PASS | S6_A_M0_R4/rate_chain.json | 2026-05-10T22:36:07Z | ingress and egress per-channel histograms match |
+| S6 | S6_A_M0_R4 | latency | A | M0 | R4 | emulator | no | PASS | S6_A_M0_R4/latency.json | 2026-05-10T22:36:07Z | all latency panels satisfy bounds |
+| S6 | S6_A_M0_R4 | offline_chain | A | M0 | R4 | emulator | no | PASS | S6_A_M0_R4/offline_chain.json | 2026-05-10T22:36:07Z | decoded host rx_buffer stream |
+| S6 | S6_A_M0_R4 | offline_analysis | A | M0 | R4 | emulator | no | PASS | S6_A_M0_R4/offline_analysis.json | 2026-05-10T22:36:07Z | offline stream checks passed |
+| S7 | S7_A_M0_R1 | counter_chain | A | M0 | R1 | emulator | no | PASS | S7_A_M0_R1/counter_chain.json | 2026-05-10T22:36:08Z | all adjacent counter stages conserve |
+| S7 | S7_A_M0_R1 | rate_chain | A | M0 | R1 | emulator | no | PASS | S7_A_M0_R1/rate_chain.json | 2026-05-10T22:36:08Z | ingress and egress per-channel histograms match |
+| S7 | S7_A_M0_R1 | latency | A | M0 | R1 | emulator | no | PASS | S7_A_M0_R1/latency.json | 2026-05-10T22:36:08Z | all latency panels satisfy bounds |
+| S7 | S7_A_M0_R1 | offline_chain | A | M0 | R1 | emulator | no | PASS | S7_A_M0_R1/offline_chain.json | 2026-05-10T22:36:08Z | decoded host rx_buffer stream |
+| S7 | S7_A_M0_R1 | offline_analysis | A | M0 | R1 | emulator | no | PASS | S7_A_M0_R1/offline_analysis.json | 2026-05-10T22:36:08Z | offline stream checks passed |
+| S7 | S7_A_M0_R2 | counter_chain | A | M0 | R2 | emulator | no | PASS | S7_A_M0_R2/counter_chain.json | 2026-05-10T22:36:08Z | all adjacent counter stages conserve |
+| S7 | S7_A_M0_R2 | rate_chain | A | M0 | R2 | emulator | no | PASS | S7_A_M0_R2/rate_chain.json | 2026-05-10T22:36:09Z | ingress and egress per-channel histograms match |
+| S7 | S7_A_M0_R2 | latency | A | M0 | R2 | emulator | no | PASS | S7_A_M0_R2/latency.json | 2026-05-10T22:36:09Z | all latency panels satisfy bounds |
+| S7 | S7_A_M0_R2 | offline_chain | A | M0 | R2 | emulator | no | PASS | S7_A_M0_R2/offline_chain.json | 2026-05-10T22:36:09Z | decoded host rx_buffer stream |
+| S7 | S7_A_M0_R2 | offline_analysis | A | M0 | R2 | emulator | no | PASS | S7_A_M0_R2/offline_analysis.json | 2026-05-10T22:36:09Z | offline stream checks passed |
+| S7 | S7_A_M0_R3 | counter_chain | A | M0 | R3 | emulator | no | PASS | S7_A_M0_R3/counter_chain.json | 2026-05-10T22:36:09Z | all adjacent counter stages conserve |
+| S7 | S7_A_M0_R3 | rate_chain | A | M0 | R3 | emulator | no | PASS | S7_A_M0_R3/rate_chain.json | 2026-05-10T22:36:09Z | ingress and egress per-channel histograms match |
+| S7 | S7_A_M0_R3 | latency | A | M0 | R3 | emulator | no | PASS | S7_A_M0_R3/latency.json | 2026-05-10T22:36:09Z | all latency panels satisfy bounds |
+| S7 | S7_A_M0_R3 | offline_chain | A | M0 | R3 | emulator | no | PASS | S7_A_M0_R3/offline_chain.json | 2026-05-10T22:36:09Z | decoded host rx_buffer stream |
+| S7 | S7_A_M0_R3 | offline_analysis | A | M0 | R3 | emulator | no | PASS | S7_A_M0_R3/offline_analysis.json | 2026-05-10T22:36:09Z | offline stream checks passed |
+| S7 | S7_A_M0_R4 | counter_chain | A | M0 | R4 | emulator | no | PASS | S7_A_M0_R4/counter_chain.json | 2026-05-10T22:36:10Z | all adjacent counter stages conserve |
+| S7 | S7_A_M0_R4 | rate_chain | A | M0 | R4 | emulator | no | PASS | S7_A_M0_R4/rate_chain.json | 2026-05-10T22:36:10Z | ingress and egress per-channel histograms match |
+| S7 | S7_A_M0_R4 | latency | A | M0 | R4 | emulator | no | PASS | S7_A_M0_R4/latency.json | 2026-05-10T22:36:10Z | all latency panels satisfy bounds |
+| S7 | S7_A_M0_R4 | offline_chain | A | M0 | R4 | emulator | no | PASS | S7_A_M0_R4/offline_chain.json | 2026-05-10T22:36:10Z | decoded host rx_buffer stream |
+| S7 | S7_A_M0_R4 | offline_analysis | A | M0 | R4 | emulator | no | PASS | S7_A_M0_R4/offline_analysis.json | 2026-05-10T22:36:10Z | offline stream checks passed |
+| S7 | S7_A_M1_R1 | counter_chain | A | M1 | R1 | emulator | no | PASS | S7_A_M1_R1/counter_chain.json | 2026-05-10T22:36:10Z | all adjacent counter stages conserve |
+| S7 | S7_A_M1_R1 | rate_chain | A | M1 | R1 | emulator | no | PASS | S7_A_M1_R1/rate_chain.json | 2026-05-10T22:36:10Z | ingress and egress per-channel histograms match |
+| S7 | S7_A_M1_R1 | latency | A | M1 | R1 | emulator | no | PASS | S7_A_M1_R1/latency.json | 2026-05-10T22:36:11Z | all latency panels satisfy bounds |
+| S7 | S7_A_M1_R1 | offline_chain | A | M1 | R1 | emulator | no | PASS | S7_A_M1_R1/offline_chain.json | 2026-05-10T22:36:11Z | decoded host rx_buffer stream |
+| S7 | S7_A_M1_R1 | offline_analysis | A | M1 | R1 | emulator | no | PASS | S7_A_M1_R1/offline_analysis.json | 2026-05-10T22:36:11Z | offline stream checks passed |
+| S7 | S7_A_M1_R2 | counter_chain | A | M1 | R2 | emulator | no | PASS | S7_A_M1_R2/counter_chain.json | 2026-05-10T22:36:11Z | all adjacent counter stages conserve |
+| S7 | S7_A_M1_R2 | rate_chain | A | M1 | R2 | emulator | no | PASS | S7_A_M1_R2/rate_chain.json | 2026-05-10T22:36:11Z | ingress and egress per-channel histograms match |
+| S7 | S7_A_M1_R2 | latency | A | M1 | R2 | emulator | no | PASS | S7_A_M1_R2/latency.json | 2026-05-10T22:36:11Z | all latency panels satisfy bounds |
+| S7 | S7_A_M1_R2 | offline_chain | A | M1 | R2 | emulator | no | PASS | S7_A_M1_R2/offline_chain.json | 2026-05-10T22:36:11Z | decoded host rx_buffer stream |
+| S7 | S7_A_M1_R2 | offline_analysis | A | M1 | R2 | emulator | no | PASS | S7_A_M1_R2/offline_analysis.json | 2026-05-10T22:36:11Z | offline stream checks passed |
+| S7 | S7_A_M1_R3 | counter_chain | A | M1 | R3 | emulator | no | PASS | S7_A_M1_R3/counter_chain.json | 2026-05-10T22:36:11Z | all adjacent counter stages conserve |
+| S7 | S7_A_M1_R3 | rate_chain | A | M1 | R3 | emulator | no | PASS | S7_A_M1_R3/rate_chain.json | 2026-05-10T22:36:12Z | ingress and egress per-channel histograms match |
+| S7 | S7_A_M1_R3 | latency | A | M1 | R3 | emulator | no | PASS | S7_A_M1_R3/latency.json | 2026-05-10T22:36:12Z | all latency panels satisfy bounds |
+| S7 | S7_A_M1_R3 | offline_chain | A | M1 | R3 | emulator | no | PASS | S7_A_M1_R3/offline_chain.json | 2026-05-10T22:36:12Z | decoded host rx_buffer stream |
+| S7 | S7_A_M1_R3 | offline_analysis | A | M1 | R3 | emulator | no | PASS | S7_A_M1_R3/offline_analysis.json | 2026-05-10T22:36:12Z | offline stream checks passed |
+| S7 | S7_A_M1_R4 | counter_chain | A | M1 | R4 | emulator | no | PASS | S7_A_M1_R4/counter_chain.json | 2026-05-10T22:36:12Z | all adjacent counter stages conserve |
+| S7 | S7_A_M1_R4 | rate_chain | A | M1 | R4 | emulator | no | PASS | S7_A_M1_R4/rate_chain.json | 2026-05-10T22:36:12Z | ingress and egress per-channel histograms match |
+| S7 | S7_A_M1_R4 | latency | A | M1 | R4 | emulator | no | PASS | S7_A_M1_R4/latency.json | 2026-05-10T22:36:12Z | all latency panels satisfy bounds |
+| S7 | S7_A_M1_R4 | offline_chain | A | M1 | R4 | emulator | no | PASS | S7_A_M1_R4/offline_chain.json | 2026-05-10T22:36:13Z | decoded host rx_buffer stream |
+| S7 | S7_A_M1_R4 | offline_analysis | A | M1 | R4 | emulator | no | PASS | S7_A_M1_R4/offline_analysis.json | 2026-05-10T22:36:13Z | offline stream checks passed |
+| S7 | S7_A_M2_R1 | counter_chain | A | M2 | R1 | emulator | no | PASS | S7_A_M2_R1/counter_chain.json | 2026-05-10T22:36:13Z | all adjacent counter stages conserve |
+| S7 | S7_A_M2_R1 | rate_chain | A | M2 | R1 | emulator | no | PASS | S7_A_M2_R1/rate_chain.json | 2026-05-10T22:36:13Z | ingress and egress per-channel histograms match |
+| S7 | S7_A_M2_R1 | latency | A | M2 | R1 | emulator | no | PASS | S7_A_M2_R1/latency.json | 2026-05-10T22:36:13Z | all latency panels satisfy bounds |
+| S7 | S7_A_M2_R1 | offline_chain | A | M2 | R1 | emulator | no | PASS | S7_A_M2_R1/offline_chain.json | 2026-05-10T22:36:13Z | decoded host rx_buffer stream |
+| S7 | S7_A_M2_R1 | offline_analysis | A | M2 | R1 | emulator | no | PASS | S7_A_M2_R1/offline_analysis.json | 2026-05-10T22:36:13Z | offline stream checks passed |
+| S7 | S7_A_M2_R2 | counter_chain | A | M2 | R2 | emulator | no | PASS | S7_A_M2_R2/counter_chain.json | 2026-05-10T22:36:13Z | all adjacent counter stages conserve |
+| S7 | S7_A_M2_R2 | rate_chain | A | M2 | R2 | emulator | no | PASS | S7_A_M2_R2/rate_chain.json | 2026-05-10T22:36:14Z | ingress and egress per-channel histograms match |
+| S7 | S7_A_M2_R2 | latency | A | M2 | R2 | emulator | no | PASS | S7_A_M2_R2/latency.json | 2026-05-10T22:36:14Z | all latency panels satisfy bounds |
+| S7 | S7_A_M2_R2 | offline_chain | A | M2 | R2 | emulator | no | PASS | S7_A_M2_R2/offline_chain.json | 2026-05-10T22:36:14Z | decoded host rx_buffer stream |
+| S7 | S7_A_M2_R2 | offline_analysis | A | M2 | R2 | emulator | no | PASS | S7_A_M2_R2/offline_analysis.json | 2026-05-10T22:36:14Z | offline stream checks passed |
+| S7 | S7_A_M2_R3 | counter_chain | A | M2 | R3 | emulator | no | PASS | S7_A_M2_R3/counter_chain.json | 2026-05-10T22:36:14Z | all adjacent counter stages conserve |
+| S7 | S7_A_M2_R3 | rate_chain | A | M2 | R3 | emulator | no | PASS | S7_A_M2_R3/rate_chain.json | 2026-05-10T22:36:14Z | ingress and egress per-channel histograms match |
+| S7 | S7_A_M2_R3 | latency | A | M2 | R3 | emulator | no | PASS | S7_A_M2_R3/latency.json | 2026-05-10T22:36:14Z | all latency panels satisfy bounds |
+| S7 | S7_A_M2_R3 | offline_chain | A | M2 | R3 | emulator | no | PASS | S7_A_M2_R3/offline_chain.json | 2026-05-10T22:36:14Z | decoded host rx_buffer stream |
+| S7 | S7_A_M2_R3 | offline_analysis | A | M2 | R3 | emulator | no | PASS | S7_A_M2_R3/offline_analysis.json | 2026-05-10T22:36:14Z | offline stream checks passed |
+| S7 | S7_A_M2_R4 | counter_chain | A | M2 | R4 | emulator | no | PASS | S7_A_M2_R4/counter_chain.json | 2026-05-10T22:36:15Z | all adjacent counter stages conserve |
+| S7 | S7_A_M2_R4 | rate_chain | A | M2 | R4 | emulator | no | PASS | S7_A_M2_R4/rate_chain.json | 2026-05-10T22:36:15Z | ingress and egress per-channel histograms match |
+| S7 | S7_A_M2_R4 | latency | A | M2 | R4 | emulator | no | PASS | S7_A_M2_R4/latency.json | 2026-05-10T22:36:15Z | all latency panels satisfy bounds |
+| S7 | S7_A_M2_R4 | offline_chain | A | M2 | R4 | emulator | no | PASS | S7_A_M2_R4/offline_chain.json | 2026-05-10T22:36:15Z | decoded host rx_buffer stream |
+| S7 | S7_A_M2_R4 | offline_analysis | A | M2 | R4 | emulator | no | PASS | S7_A_M2_R4/offline_analysis.json | 2026-05-10T22:36:15Z | offline stream checks passed |
+| S7 | S7_A_M3_R1 | counter_chain | A | M3 | R1 | emulator | no | PASS | S7_A_M3_R1/counter_chain.json | 2026-05-10T22:36:15Z | all adjacent counter stages conserve |
+| S7 | S7_A_M3_R1 | rate_chain | A | M3 | R1 | emulator | no | PASS | S7_A_M3_R1/rate_chain.json | 2026-05-10T22:36:15Z | ingress and egress per-channel histograms match |
+| S7 | S7_A_M3_R1 | latency | A | M3 | R1 | emulator | no | PASS | S7_A_M3_R1/latency.json | 2026-05-10T22:36:16Z | all latency panels satisfy bounds |
+| S7 | S7_A_M3_R1 | offline_chain | A | M3 | R1 | emulator | no | PASS | S7_A_M3_R1/offline_chain.json | 2026-05-10T22:36:16Z | decoded host rx_buffer stream |
+| S7 | S7_A_M3_R1 | offline_analysis | A | M3 | R1 | emulator | no | PASS | S7_A_M3_R1/offline_analysis.json | 2026-05-10T22:36:16Z | offline stream checks passed |
+| S7 | S7_A_M3_R2 | counter_chain | A | M3 | R2 | emulator | no | PASS | S7_A_M3_R2/counter_chain.json | 2026-05-10T22:36:16Z | all adjacent counter stages conserve |
+| S7 | S7_A_M3_R2 | rate_chain | A | M3 | R2 | emulator | no | PASS | S7_A_M3_R2/rate_chain.json | 2026-05-10T22:36:16Z | ingress and egress per-channel histograms match |
+| S7 | S7_A_M3_R2 | latency | A | M3 | R2 | emulator | no | PASS | S7_A_M3_R2/latency.json | 2026-05-10T22:36:16Z | all latency panels satisfy bounds |
+| S7 | S7_A_M3_R2 | offline_chain | A | M3 | R2 | emulator | no | PASS | S7_A_M3_R2/offline_chain.json | 2026-05-10T22:36:16Z | decoded host rx_buffer stream |
+| S7 | S7_A_M3_R2 | offline_analysis | A | M3 | R2 | emulator | no | PASS | S7_A_M3_R2/offline_analysis.json | 2026-05-10T22:36:16Z | offline stream checks passed |
+| S7 | S7_A_M3_R3 | counter_chain | A | M3 | R3 | emulator | no | PASS | S7_A_M3_R3/counter_chain.json | 2026-05-10T22:36:17Z | all adjacent counter stages conserve |
+| S7 | S7_A_M3_R3 | rate_chain | A | M3 | R3 | emulator | no | PASS | S7_A_M3_R3/rate_chain.json | 2026-05-10T22:36:17Z | ingress and egress per-channel histograms match |
+| S7 | S7_A_M3_R3 | latency | A | M3 | R3 | emulator | no | PASS | S7_A_M3_R3/latency.json | 2026-05-10T22:36:17Z | all latency panels satisfy bounds |
+| S7 | S7_A_M3_R3 | offline_chain | A | M3 | R3 | emulator | no | PASS | S7_A_M3_R3/offline_chain.json | 2026-05-10T22:36:17Z | decoded host rx_buffer stream |
+| S7 | S7_A_M3_R3 | offline_analysis | A | M3 | R3 | emulator | no | PASS | S7_A_M3_R3/offline_analysis.json | 2026-05-10T22:36:17Z | offline stream checks passed |
+| S7 | S7_A_M3_R4 | counter_chain | A | M3 | R4 | emulator | no | PASS | S7_A_M3_R4/counter_chain.json | 2026-05-10T22:36:17Z | all adjacent counter stages conserve |
+| S7 | S7_A_M3_R4 | rate_chain | A | M3 | R4 | emulator | no | PASS | S7_A_M3_R4/rate_chain.json | 2026-05-10T22:36:17Z | ingress and egress per-channel histograms match |
+| S7 | S7_A_M3_R4 | latency | A | M3 | R4 | emulator | no | PASS | S7_A_M3_R4/latency.json | 2026-05-10T22:36:18Z | all latency panels satisfy bounds |
+| S7 | S7_A_M3_R4 | offline_chain | A | M3 | R4 | emulator | no | PASS | S7_A_M3_R4/offline_chain.json | 2026-05-10T22:36:18Z | decoded host rx_buffer stream |
+| S7 | S7_A_M3_R4 | offline_analysis | A | M3 | R4 | emulator | no | PASS | S7_A_M3_R4/offline_analysis.json | 2026-05-10T22:36:18Z | offline stream checks passed |
+| S7 | S7_A_M4_R1 | counter_chain | A | M4 | R1 | emulator | no | PASS | S7_A_M4_R1/counter_chain.json | 2026-05-10T22:36:18Z | all adjacent counter stages conserve |
+| S7 | S7_A_M4_R1 | rate_chain | A | M4 | R1 | emulator | no | PASS | S7_A_M4_R1/rate_chain.json | 2026-05-10T22:36:18Z | ingress and egress per-channel histograms match |
+| S7 | S7_A_M4_R1 | latency | A | M4 | R1 | emulator | no | PASS | S7_A_M4_R1/latency.json | 2026-05-10T22:36:18Z | all latency panels satisfy bounds |
+| S7 | S7_A_M4_R1 | offline_chain | A | M4 | R1 | emulator | no | PASS | S7_A_M4_R1/offline_chain.json | 2026-05-10T22:36:18Z | decoded host rx_buffer stream |
+| S7 | S7_A_M4_R1 | offline_analysis | A | M4 | R1 | emulator | no | PASS | S7_A_M4_R1/offline_analysis.json | 2026-05-10T22:36:18Z | offline stream checks passed |
+| S7 | S7_A_M4_R2 | counter_chain | A | M4 | R2 | emulator | no | PASS | S7_A_M4_R2/counter_chain.json | 2026-05-10T22:36:19Z | all adjacent counter stages conserve |
+| S7 | S7_A_M4_R2 | rate_chain | A | M4 | R2 | emulator | no | PASS | S7_A_M4_R2/rate_chain.json | 2026-05-10T22:36:19Z | ingress and egress per-channel histograms match |
+| S7 | S7_A_M4_R2 | latency | A | M4 | R2 | emulator | no | PASS | S7_A_M4_R2/latency.json | 2026-05-10T22:36:19Z | all latency panels satisfy bounds |
+| S7 | S7_A_M4_R2 | offline_chain | A | M4 | R2 | emulator | no | PASS | S7_A_M4_R2/offline_chain.json | 2026-05-10T22:36:19Z | decoded host rx_buffer stream |
+| S7 | S7_A_M4_R2 | offline_analysis | A | M4 | R2 | emulator | no | PASS | S7_A_M4_R2/offline_analysis.json | 2026-05-10T22:36:19Z | offline stream checks passed |
+| S7 | S7_A_M4_R3 | counter_chain | A | M4 | R3 | emulator | no | PASS | S7_A_M4_R3/counter_chain.json | 2026-05-10T22:36:19Z | all adjacent counter stages conserve |
+| S7 | S7_A_M4_R3 | rate_chain | A | M4 | R3 | emulator | no | PASS | S7_A_M4_R3/rate_chain.json | 2026-05-10T22:36:19Z | ingress and egress per-channel histograms match |
+| S7 | S7_A_M4_R3 | latency | A | M4 | R3 | emulator | no | PASS | S7_A_M4_R3/latency.json | 2026-05-10T22:36:20Z | all latency panels satisfy bounds |
+| S7 | S7_A_M4_R3 | offline_chain | A | M4 | R3 | emulator | no | PASS | S7_A_M4_R3/offline_chain.json | 2026-05-10T22:36:20Z | decoded host rx_buffer stream |
+| S7 | S7_A_M4_R3 | offline_analysis | A | M4 | R3 | emulator | no | PASS | S7_A_M4_R3/offline_analysis.json | 2026-05-10T22:36:20Z | offline stream checks passed |
+| S7 | S7_A_M4_R4 | counter_chain | A | M4 | R4 | emulator | no | PASS | S7_A_M4_R4/counter_chain.json | 2026-05-10T22:36:20Z | all adjacent counter stages conserve |
+| S7 | S7_A_M4_R4 | rate_chain | A | M4 | R4 | emulator | no | PASS | S7_A_M4_R4/rate_chain.json | 2026-05-10T22:36:20Z | ingress and egress per-channel histograms match |
+| S7 | S7_A_M4_R4 | latency | A | M4 | R4 | emulator | no | PASS | S7_A_M4_R4/latency.json | 2026-05-10T22:36:20Z | all latency panels satisfy bounds |
+| S7 | S7_A_M4_R4 | offline_chain | A | M4 | R4 | emulator | no | PASS | S7_A_M4_R4/offline_chain.json | 2026-05-10T22:36:20Z | decoded host rx_buffer stream |
+| S7 | S7_A_M4_R4 | offline_analysis | A | M4 | R4 | emulator | no | PASS | S7_A_M4_R4/offline_analysis.json | 2026-05-10T22:36:20Z | offline stream checks passed |
+| S7 | S7_A_M5_R1 | counter_chain | A | M5 | R1 | emulator | no | PASS | S7_A_M5_R1/counter_chain.json | 2026-05-10T22:36:20Z | all adjacent counter stages conserve |
+| S7 | S7_A_M5_R1 | rate_chain | A | M5 | R1 | emulator | no | PASS | S7_A_M5_R1/rate_chain.json | 2026-05-10T22:36:21Z | ingress and egress per-channel histograms match |
+| S7 | S7_A_M5_R1 | latency | A | M5 | R1 | emulator | no | PASS | S7_A_M5_R1/latency.json | 2026-05-10T22:36:21Z | all latency panels satisfy bounds |
+| S7 | S7_A_M5_R1 | offline_chain | A | M5 | R1 | emulator | no | PASS | S7_A_M5_R1/offline_chain.json | 2026-05-10T22:36:21Z | decoded host rx_buffer stream |
+| S7 | S7_A_M5_R1 | offline_analysis | A | M5 | R1 | emulator | no | PASS | S7_A_M5_R1/offline_analysis.json | 2026-05-10T22:36:21Z | offline stream checks passed |
+| S7 | S7_A_M5_R2 | counter_chain | A | M5 | R2 | emulator | no | PASS | S7_A_M5_R2/counter_chain.json | 2026-05-10T22:36:21Z | all adjacent counter stages conserve |
+| S7 | S7_A_M5_R2 | rate_chain | A | M5 | R2 | emulator | no | PASS | S7_A_M5_R2/rate_chain.json | 2026-05-10T22:36:21Z | ingress and egress per-channel histograms match |
+| S7 | S7_A_M5_R2 | latency | A | M5 | R2 | emulator | no | PASS | S7_A_M5_R2/latency.json | 2026-05-10T22:36:21Z | all latency panels satisfy bounds |
+| S7 | S7_A_M5_R2 | offline_chain | A | M5 | R2 | emulator | no | PASS | S7_A_M5_R2/offline_chain.json | 2026-05-10T22:36:21Z | decoded host rx_buffer stream |
+| S7 | S7_A_M5_R2 | offline_analysis | A | M5 | R2 | emulator | no | PASS | S7_A_M5_R2/offline_analysis.json | 2026-05-10T22:36:21Z | offline stream checks passed |
+| S7 | S7_A_M5_R3 | counter_chain | A | M5 | R3 | emulator | no | PASS | S7_A_M5_R3/counter_chain.json | 2026-05-10T22:36:22Z | all adjacent counter stages conserve |
+| S7 | S7_A_M5_R3 | rate_chain | A | M5 | R3 | emulator | no | PASS | S7_A_M5_R3/rate_chain.json | 2026-05-10T22:36:22Z | ingress and egress per-channel histograms match |
+| S7 | S7_A_M5_R3 | latency | A | M5 | R3 | emulator | no | PASS | S7_A_M5_R3/latency.json | 2026-05-10T22:36:22Z | all latency panels satisfy bounds |
+| S7 | S7_A_M5_R3 | offline_chain | A | M5 | R3 | emulator | no | PASS | S7_A_M5_R3/offline_chain.json | 2026-05-10T22:36:22Z | decoded host rx_buffer stream |
+| S7 | S7_A_M5_R3 | offline_analysis | A | M5 | R3 | emulator | no | PASS | S7_A_M5_R3/offline_analysis.json | 2026-05-10T22:36:22Z | offline stream checks passed |
+| S7 | S7_A_M5_R4 | counter_chain | A | M5 | R4 | emulator | no | PASS | S7_A_M5_R4/counter_chain.json | 2026-05-10T22:36:22Z | all adjacent counter stages conserve |
+| S7 | S7_A_M5_R4 | rate_chain | A | M5 | R4 | emulator | no | PASS | S7_A_M5_R4/rate_chain.json | 2026-05-10T22:36:22Z | ingress and egress per-channel histograms match |
+| S7 | S7_A_M5_R4 | latency | A | M5 | R4 | emulator | no | PASS | S7_A_M5_R4/latency.json | 2026-05-10T22:36:23Z | all latency panels satisfy bounds |
+| S7 | S7_A_M5_R4 | offline_chain | A | M5 | R4 | emulator | no | PASS | S7_A_M5_R4/offline_chain.json | 2026-05-10T22:36:23Z | decoded host rx_buffer stream |
+| S7 | S7_A_M5_R4 | offline_analysis | A | M5 | R4 | emulator | no | PASS | S7_A_M5_R4/offline_analysis.json | 2026-05-10T22:36:23Z | offline stream checks passed |
+| S7 | S7_A_M6_R1 | counter_chain | A | M6 | R1 | emulator | no | PASS | S7_A_M6_R1/counter_chain.json | 2026-05-10T22:36:23Z | all adjacent counter stages conserve |
+| S7 | S7_A_M6_R1 | rate_chain | A | M6 | R1 | emulator | no | PASS | S7_A_M6_R1/rate_chain.json | 2026-05-10T22:36:23Z | ingress and egress per-channel histograms match |
+| S7 | S7_A_M6_R1 | latency | A | M6 | R1 | emulator | no | PASS | S7_A_M6_R1/latency.json | 2026-05-10T22:36:23Z | all latency panels satisfy bounds |
+| S7 | S7_A_M6_R1 | offline_chain | A | M6 | R1 | emulator | no | PASS | S7_A_M6_R1/offline_chain.json | 2026-05-10T22:36:23Z | decoded host rx_buffer stream |
+| S7 | S7_A_M6_R1 | offline_analysis | A | M6 | R1 | emulator | no | PASS | S7_A_M6_R1/offline_analysis.json | 2026-05-10T22:36:23Z | offline stream checks passed |
+| S7 | S7_A_M6_R2 | counter_chain | A | M6 | R2 | emulator | no | PASS | S7_A_M6_R2/counter_chain.json | 2026-05-10T22:36:24Z | all adjacent counter stages conserve |
+| S7 | S7_A_M6_R2 | rate_chain | A | M6 | R2 | emulator | no | PASS | S7_A_M6_R2/rate_chain.json | 2026-05-10T22:36:24Z | ingress and egress per-channel histograms match |
+| S7 | S7_A_M6_R2 | latency | A | M6 | R2 | emulator | no | PASS | S7_A_M6_R2/latency.json | 2026-05-10T22:36:24Z | all latency panels satisfy bounds |
+| S7 | S7_A_M6_R2 | offline_chain | A | M6 | R2 | emulator | no | PASS | S7_A_M6_R2/offline_chain.json | 2026-05-10T22:36:24Z | decoded host rx_buffer stream |
+| S7 | S7_A_M6_R2 | offline_analysis | A | M6 | R2 | emulator | no | PASS | S7_A_M6_R2/offline_analysis.json | 2026-05-10T22:36:24Z | offline stream checks passed |
+| S7 | S7_A_M6_R3 | counter_chain | A | M6 | R3 | emulator | no | PASS | S7_A_M6_R3/counter_chain.json | 2026-05-10T22:36:24Z | all adjacent counter stages conserve |
+| S7 | S7_A_M6_R3 | rate_chain | A | M6 | R3 | emulator | no | PASS | S7_A_M6_R3/rate_chain.json | 2026-05-10T22:36:24Z | ingress and egress per-channel histograms match |
+| S7 | S7_A_M6_R3 | latency | A | M6 | R3 | emulator | no | PASS | S7_A_M6_R3/latency.json | 2026-05-10T22:36:25Z | all latency panels satisfy bounds |
+| S7 | S7_A_M6_R3 | offline_chain | A | M6 | R3 | emulator | no | PASS | S7_A_M6_R3/offline_chain.json | 2026-05-10T22:36:25Z | decoded host rx_buffer stream |
+| S7 | S7_A_M6_R3 | offline_analysis | A | M6 | R3 | emulator | no | PASS | S7_A_M6_R3/offline_analysis.json | 2026-05-10T22:36:25Z | offline stream checks passed |
+| S7 | S7_A_M6_R4 | counter_chain | A | M6 | R4 | emulator | no | PASS | S7_A_M6_R4/counter_chain.json | 2026-05-10T22:36:25Z | all adjacent counter stages conserve |
+| S7 | S7_A_M6_R4 | rate_chain | A | M6 | R4 | emulator | no | PASS | S7_A_M6_R4/rate_chain.json | 2026-05-10T22:36:25Z | ingress and egress per-channel histograms match |
+| S7 | S7_A_M6_R4 | latency | A | M6 | R4 | emulator | no | PASS | S7_A_M6_R4/latency.json | 2026-05-10T22:36:25Z | all latency panels satisfy bounds |
+| S7 | S7_A_M6_R4 | offline_chain | A | M6 | R4 | emulator | no | PASS | S7_A_M6_R4/offline_chain.json | 2026-05-10T22:36:25Z | decoded host rx_buffer stream |
+| S7 | S7_A_M6_R4 | offline_analysis | A | M6 | R4 | emulator | no | PASS | S7_A_M6_R4/offline_analysis.json | 2026-05-10T22:36:25Z | offline stream checks passed |
+| S7 | S7_A_M7_R1 | counter_chain | A | M7 | R1 | emulator | no | PASS | S7_A_M7_R1/counter_chain.json | 2026-05-10T22:36:26Z | all adjacent counter stages conserve |
+| S7 | S7_A_M7_R1 | rate_chain | A | M7 | R1 | emulator | no | PASS | S7_A_M7_R1/rate_chain.json | 2026-05-10T22:36:26Z | ingress and egress per-channel histograms match |
+| S7 | S7_A_M7_R1 | latency | A | M7 | R1 | emulator | no | PASS | S7_A_M7_R1/latency.json | 2026-05-10T22:36:26Z | all latency panels satisfy bounds |
+| S7 | S7_A_M7_R1 | offline_chain | A | M7 | R1 | emulator | no | PASS | S7_A_M7_R1/offline_chain.json | 2026-05-10T22:36:26Z | decoded host rx_buffer stream |
+| S7 | S7_A_M7_R1 | offline_analysis | A | M7 | R1 | emulator | no | PASS | S7_A_M7_R1/offline_analysis.json | 2026-05-10T22:36:26Z | offline stream checks passed |
+| S7 | S7_A_M7_R2 | counter_chain | A | M7 | R2 | emulator | no | PASS | S7_A_M7_R2/counter_chain.json | 2026-05-10T22:36:26Z | all adjacent counter stages conserve |
+| S7 | S7_A_M7_R2 | rate_chain | A | M7 | R2 | emulator | no | PASS | S7_A_M7_R2/rate_chain.json | 2026-05-10T22:36:27Z | ingress and egress per-channel histograms match |
+| S7 | S7_A_M7_R2 | latency | A | M7 | R2 | emulator | no | PASS | S7_A_M7_R2/latency.json | 2026-05-10T22:36:27Z | all latency panels satisfy bounds |
+| S7 | S7_A_M7_R2 | offline_chain | A | M7 | R2 | emulator | no | PASS | S7_A_M7_R2/offline_chain.json | 2026-05-10T22:36:27Z | decoded host rx_buffer stream |
+| S7 | S7_A_M7_R2 | offline_analysis | A | M7 | R2 | emulator | no | PASS | S7_A_M7_R2/offline_analysis.json | 2026-05-10T22:36:27Z | offline stream checks passed |
+| S7 | S7_A_M7_R3 | counter_chain | A | M7 | R3 | emulator | no | PASS | S7_A_M7_R3/counter_chain.json | 2026-05-10T22:36:27Z | all adjacent counter stages conserve |
+| S7 | S7_A_M7_R3 | rate_chain | A | M7 | R3 | emulator | no | PASS | S7_A_M7_R3/rate_chain.json | 2026-05-10T22:36:27Z | ingress and egress per-channel histograms match |
+| S7 | S7_A_M7_R3 | latency | A | M7 | R3 | emulator | no | PASS | S7_A_M7_R3/latency.json | 2026-05-10T22:36:27Z | all latency panels satisfy bounds |
+| S7 | S7_A_M7_R3 | offline_chain | A | M7 | R3 | emulator | no | PASS | S7_A_M7_R3/offline_chain.json | 2026-05-10T22:36:27Z | decoded host rx_buffer stream |
+| S7 | S7_A_M7_R3 | offline_analysis | A | M7 | R3 | emulator | no | PASS | S7_A_M7_R3/offline_analysis.json | 2026-05-10T22:36:27Z | offline stream checks passed |
+| S7 | S7_A_M7_R4 | counter_chain | A | M7 | R4 | emulator | no | PASS | S7_A_M7_R4/counter_chain.json | 2026-05-10T22:36:28Z | all adjacent counter stages conserve |
+| S7 | S7_A_M7_R4 | rate_chain | A | M7 | R4 | emulator | no | PASS | S7_A_M7_R4/rate_chain.json | 2026-05-10T22:36:28Z | ingress and egress per-channel histograms match |
+| S7 | S7_A_M7_R4 | latency | A | M7 | R4 | emulator | no | PASS | S7_A_M7_R4/latency.json | 2026-05-10T22:36:28Z | all latency panels satisfy bounds |
+| S7 | S7_A_M7_R4 | offline_chain | A | M7 | R4 | emulator | no | PASS | S7_A_M7_R4/offline_chain.json | 2026-05-10T22:36:28Z | decoded host rx_buffer stream |
+| S7 | S7_A_M7_R4 | offline_analysis | A | M7 | R4 | emulator | no | PASS | S7_A_M7_R4/offline_analysis.json | 2026-05-10T22:36:28Z | offline stream checks passed |
+| S7 | S7_B_M0_R1 | counter_chain | B | M0 | R1 | emulator | no | PASS | S7_B_M0_R1/counter_chain.json | 2026-05-10T22:36:28Z | all adjacent counter stages conserve |
+| S7 | S7_B_M0_R1 | rate_chain | B | M0 | R1 | emulator | no | PASS | S7_B_M0_R1/rate_chain.json | 2026-05-10T22:36:29Z | ingress and egress per-channel histograms match |
+| S7 | S7_B_M0_R1 | latency | B | M0 | R1 | emulator | no | PASS | S7_B_M0_R1/latency.json | 2026-05-10T22:36:29Z | all latency panels satisfy bounds |
+| S7 | S7_B_M0_R1 | offline_chain | B | M0 | R1 | emulator | no | PASS | S7_B_M0_R1/offline_chain.json | 2026-05-10T22:36:29Z | decoded host rx_buffer stream |
+| S7 | S7_B_M0_R1 | offline_analysis | B | M0 | R1 | emulator | no | PASS | S7_B_M0_R1/offline_analysis.json | 2026-05-10T22:36:29Z | offline stream checks passed |
+| S7 | S7_B_M0_R2 | counter_chain | B | M0 | R2 | emulator | no | PASS | S7_B_M0_R2/counter_chain.json | 2026-05-10T22:36:29Z | all adjacent counter stages conserve |
+| S7 | S7_B_M0_R2 | rate_chain | B | M0 | R2 | emulator | no | PASS | S7_B_M0_R2/rate_chain.json | 2026-05-10T22:36:29Z | ingress and egress per-channel histograms match |
+| S7 | S7_B_M0_R2 | latency | B | M0 | R2 | emulator | no | PASS | S7_B_M0_R2/latency.json | 2026-05-10T22:36:29Z | all latency panels satisfy bounds |
+| S7 | S7_B_M0_R2 | offline_chain | B | M0 | R2 | emulator | no | PASS | S7_B_M0_R2/offline_chain.json | 2026-05-10T22:36:29Z | decoded host rx_buffer stream |
+| S7 | S7_B_M0_R2 | offline_analysis | B | M0 | R2 | emulator | no | PASS | S7_B_M0_R2/offline_analysis.json | 2026-05-10T22:36:29Z | offline stream checks passed |
+| S7 | S7_B_M0_R3 | counter_chain | B | M0 | R3 | emulator | no | PASS | S7_B_M0_R3/counter_chain.json | 2026-05-10T22:36:30Z | all adjacent counter stages conserve |
+| S7 | S7_B_M0_R3 | rate_chain | B | M0 | R3 | emulator | no | PASS | S7_B_M0_R3/rate_chain.json | 2026-05-10T22:36:30Z | ingress and egress per-channel histograms match |
+| S7 | S7_B_M0_R3 | latency | B | M0 | R3 | emulator | no | PASS | S7_B_M0_R3/latency.json | 2026-05-10T22:36:30Z | all latency panels satisfy bounds |
+| S7 | S7_B_M0_R3 | offline_chain | B | M0 | R3 | emulator | no | PASS | S7_B_M0_R3/offline_chain.json | 2026-05-10T22:36:30Z | decoded host rx_buffer stream |
+| S7 | S7_B_M0_R3 | offline_analysis | B | M0 | R3 | emulator | no | PASS | S7_B_M0_R3/offline_analysis.json | 2026-05-10T22:36:30Z | offline stream checks passed |
+| S7 | S7_B_M0_R4 | counter_chain | B | M0 | R4 | emulator | no | PASS | S7_B_M0_R4/counter_chain.json | 2026-05-10T22:36:30Z | all adjacent counter stages conserve |
+| S7 | S7_B_M0_R4 | rate_chain | B | M0 | R4 | emulator | no | PASS | S7_B_M0_R4/rate_chain.json | 2026-05-10T22:36:31Z | ingress and egress per-channel histograms match |
+| S7 | S7_B_M0_R4 | latency | B | M0 | R4 | emulator | no | PASS | S7_B_M0_R4/latency.json | 2026-05-10T22:36:31Z | all latency panels satisfy bounds |
+| S7 | S7_B_M0_R4 | offline_chain | B | M0 | R4 | emulator | no | PASS | S7_B_M0_R4/offline_chain.json | 2026-05-10T22:36:31Z | decoded host rx_buffer stream |
+| S7 | S7_B_M0_R4 | offline_analysis | B | M0 | R4 | emulator | no | PASS | S7_B_M0_R4/offline_analysis.json | 2026-05-10T22:36:31Z | offline stream checks passed |
+| S7 | S7_B_M1_R1 | counter_chain | B | M1 | R1 | emulator | no | PASS | S7_B_M1_R1/counter_chain.json | 2026-05-10T22:36:31Z | all adjacent counter stages conserve |
+| S7 | S7_B_M1_R1 | rate_chain | B | M1 | R1 | emulator | no | PASS | S7_B_M1_R1/rate_chain.json | 2026-05-10T22:36:31Z | ingress and egress per-channel histograms match |
+| S7 | S7_B_M1_R1 | latency | B | M1 | R1 | emulator | no | PASS | S7_B_M1_R1/latency.json | 2026-05-10T22:36:31Z | all latency panels satisfy bounds |
+| S7 | S7_B_M1_R1 | offline_chain | B | M1 | R1 | emulator | no | PASS | S7_B_M1_R1/offline_chain.json | 2026-05-10T22:36:31Z | decoded host rx_buffer stream |
+| S7 | S7_B_M1_R1 | offline_analysis | B | M1 | R1 | emulator | no | PASS | S7_B_M1_R1/offline_analysis.json | 2026-05-10T22:36:31Z | offline stream checks passed |
+| S7 | S7_B_M1_R2 | counter_chain | B | M1 | R2 | emulator | no | PASS | S7_B_M1_R2/counter_chain.json | 2026-05-10T22:36:32Z | all adjacent counter stages conserve |
+| S7 | S7_B_M1_R2 | rate_chain | B | M1 | R2 | emulator | no | PASS | S7_B_M1_R2/rate_chain.json | 2026-05-10T22:36:32Z | ingress and egress per-channel histograms match |
+| S7 | S7_B_M1_R2 | latency | B | M1 | R2 | emulator | no | PASS | S7_B_M1_R2/latency.json | 2026-05-10T22:36:32Z | all latency panels satisfy bounds |
+| S7 | S7_B_M1_R2 | offline_chain | B | M1 | R2 | emulator | no | PASS | S7_B_M1_R2/offline_chain.json | 2026-05-10T22:36:32Z | decoded host rx_buffer stream |
+| S7 | S7_B_M1_R2 | offline_analysis | B | M1 | R2 | emulator | no | PASS | S7_B_M1_R2/offline_analysis.json | 2026-05-10T22:36:32Z | offline stream checks passed |
+| S7 | S7_B_M1_R3 | counter_chain | B | M1 | R3 | emulator | no | PASS | S7_B_M1_R3/counter_chain.json | 2026-05-10T22:36:32Z | all adjacent counter stages conserve |
+| S7 | S7_B_M1_R3 | rate_chain | B | M1 | R3 | emulator | no | PASS | S7_B_M1_R3/rate_chain.json | 2026-05-10T22:36:33Z | ingress and egress per-channel histograms match |
+| S7 | S7_B_M1_R3 | latency | B | M1 | R3 | emulator | no | PASS | S7_B_M1_R3/latency.json | 2026-05-10T22:36:33Z | all latency panels satisfy bounds |
+| S7 | S7_B_M1_R3 | offline_chain | B | M1 | R3 | emulator | no | PASS | S7_B_M1_R3/offline_chain.json | 2026-05-10T22:36:33Z | decoded host rx_buffer stream |
+| S7 | S7_B_M1_R3 | offline_analysis | B | M1 | R3 | emulator | no | PASS | S7_B_M1_R3/offline_analysis.json | 2026-05-10T22:36:33Z | offline stream checks passed |
+| S7 | S7_B_M1_R4 | counter_chain | B | M1 | R4 | emulator | no | PASS | S7_B_M1_R4/counter_chain.json | 2026-05-10T22:36:33Z | all adjacent counter stages conserve |
+| S7 | S7_B_M1_R4 | rate_chain | B | M1 | R4 | emulator | no | PASS | S7_B_M1_R4/rate_chain.json | 2026-05-10T22:36:33Z | ingress and egress per-channel histograms match |
+| S7 | S7_B_M1_R4 | latency | B | M1 | R4 | emulator | no | PASS | S7_B_M1_R4/latency.json | 2026-05-10T22:36:33Z | all latency panels satisfy bounds |
+| S7 | S7_B_M1_R4 | offline_chain | B | M1 | R4 | emulator | no | PASS | S7_B_M1_R4/offline_chain.json | 2026-05-10T22:36:33Z | decoded host rx_buffer stream |
+| S7 | S7_B_M1_R4 | offline_analysis | B | M1 | R4 | emulator | no | PASS | S7_B_M1_R4/offline_analysis.json | 2026-05-10T22:36:33Z | offline stream checks passed |
+| S7 | S7_B_M2_R1 | counter_chain | B | M2 | R1 | emulator | no | PASS | S7_B_M2_R1/counter_chain.json | 2026-05-10T22:36:34Z | all adjacent counter stages conserve |
+| S7 | S7_B_M2_R1 | rate_chain | B | M2 | R1 | emulator | no | PASS | S7_B_M2_R1/rate_chain.json | 2026-05-10T22:36:34Z | ingress and egress per-channel histograms match |
+| S7 | S7_B_M2_R1 | latency | B | M2 | R1 | emulator | no | PASS | S7_B_M2_R1/latency.json | 2026-05-10T22:36:34Z | all latency panels satisfy bounds |
+| S7 | S7_B_M2_R1 | offline_chain | B | M2 | R1 | emulator | no | PASS | S7_B_M2_R1/offline_chain.json | 2026-05-10T22:36:34Z | decoded host rx_buffer stream |
+| S7 | S7_B_M2_R1 | offline_analysis | B | M2 | R1 | emulator | no | PASS | S7_B_M2_R1/offline_analysis.json | 2026-05-10T22:36:34Z | offline stream checks passed |
+| S7 | S7_B_M2_R2 | counter_chain | B | M2 | R2 | emulator | no | PASS | S7_B_M2_R2/counter_chain.json | 2026-05-10T22:36:34Z | all adjacent counter stages conserve |
+| S7 | S7_B_M2_R2 | rate_chain | B | M2 | R2 | emulator | no | PASS | S7_B_M2_R2/rate_chain.json | 2026-05-10T22:36:35Z | ingress and egress per-channel histograms match |
+| S7 | S7_B_M2_R2 | latency | B | M2 | R2 | emulator | no | PASS | S7_B_M2_R2/latency.json | 2026-05-10T22:36:35Z | all latency panels satisfy bounds |
+| S7 | S7_B_M2_R2 | offline_chain | B | M2 | R2 | emulator | no | PASS | S7_B_M2_R2/offline_chain.json | 2026-05-10T22:36:35Z | decoded host rx_buffer stream |
+| S7 | S7_B_M2_R2 | offline_analysis | B | M2 | R2 | emulator | no | PASS | S7_B_M2_R2/offline_analysis.json | 2026-05-10T22:36:35Z | offline stream checks passed |
+| S7 | S7_B_M2_R3 | counter_chain | B | M2 | R3 | emulator | no | PASS | S7_B_M2_R3/counter_chain.json | 2026-05-10T22:36:35Z | all adjacent counter stages conserve |
+| S7 | S7_B_M2_R3 | rate_chain | B | M2 | R3 | emulator | no | PASS | S7_B_M2_R3/rate_chain.json | 2026-05-10T22:36:35Z | ingress and egress per-channel histograms match |
+| S7 | S7_B_M2_R3 | latency | B | M2 | R3 | emulator | no | PASS | S7_B_M2_R3/latency.json | 2026-05-10T22:36:35Z | all latency panels satisfy bounds |
+| S7 | S7_B_M2_R3 | offline_chain | B | M2 | R3 | emulator | no | PASS | S7_B_M2_R3/offline_chain.json | 2026-05-10T22:36:35Z | decoded host rx_buffer stream |
+| S7 | S7_B_M2_R3 | offline_analysis | B | M2 | R3 | emulator | no | PASS | S7_B_M2_R3/offline_analysis.json | 2026-05-10T22:36:35Z | offline stream checks passed |
+| S7 | S7_B_M2_R4 | counter_chain | B | M2 | R4 | emulator | no | PASS | S7_B_M2_R4/counter_chain.json | 2026-05-10T22:36:36Z | all adjacent counter stages conserve |
+| S7 | S7_B_M2_R4 | rate_chain | B | M2 | R4 | emulator | no | PASS | S7_B_M2_R4/rate_chain.json | 2026-05-10T22:36:36Z | ingress and egress per-channel histograms match |
+| S7 | S7_B_M2_R4 | latency | B | M2 | R4 | emulator | no | PASS | S7_B_M2_R4/latency.json | 2026-05-10T22:36:36Z | all latency panels satisfy bounds |
+| S7 | S7_B_M2_R4 | offline_chain | B | M2 | R4 | emulator | no | PASS | S7_B_M2_R4/offline_chain.json | 2026-05-10T22:36:36Z | decoded host rx_buffer stream |
+| S7 | S7_B_M2_R4 | offline_analysis | B | M2 | R4 | emulator | no | PASS | S7_B_M2_R4/offline_analysis.json | 2026-05-10T22:36:36Z | offline stream checks passed |
+| S7 | S7_B_M3_R1 | counter_chain | B | M3 | R1 | emulator | no | PASS | S7_B_M3_R1/counter_chain.json | 2026-05-10T22:36:36Z | all adjacent counter stages conserve |
+| S7 | S7_B_M3_R1 | rate_chain | B | M3 | R1 | emulator | no | PASS | S7_B_M3_R1/rate_chain.json | 2026-05-10T22:36:36Z | ingress and egress per-channel histograms match |
+| S7 | S7_B_M3_R1 | latency | B | M3 | R1 | emulator | no | PASS | S7_B_M3_R1/latency.json | 2026-05-10T22:36:37Z | all latency panels satisfy bounds |
+| S7 | S7_B_M3_R1 | offline_chain | B | M3 | R1 | emulator | no | PASS | S7_B_M3_R1/offline_chain.json | 2026-05-10T22:36:37Z | decoded host rx_buffer stream |
+| S7 | S7_B_M3_R1 | offline_analysis | B | M3 | R1 | emulator | no | PASS | S7_B_M3_R1/offline_analysis.json | 2026-05-10T22:36:37Z | offline stream checks passed |
+| S7 | S7_B_M3_R2 | counter_chain | B | M3 | R2 | emulator | no | PASS | S7_B_M3_R2/counter_chain.json | 2026-05-10T22:36:37Z | all adjacent counter stages conserve |
+| S7 | S7_B_M3_R2 | rate_chain | B | M3 | R2 | emulator | no | PASS | S7_B_M3_R2/rate_chain.json | 2026-05-10T22:36:37Z | ingress and egress per-channel histograms match |
+| S7 | S7_B_M3_R2 | latency | B | M3 | R2 | emulator | no | PASS | S7_B_M3_R2/latency.json | 2026-05-10T22:36:37Z | all latency panels satisfy bounds |
+| S7 | S7_B_M3_R2 | offline_chain | B | M3 | R2 | emulator | no | PASS | S7_B_M3_R2/offline_chain.json | 2026-05-10T22:36:37Z | decoded host rx_buffer stream |
+| S7 | S7_B_M3_R2 | offline_analysis | B | M3 | R2 | emulator | no | PASS | S7_B_M3_R2/offline_analysis.json | 2026-05-10T22:36:37Z | offline stream checks passed |
+| S7 | S7_B_M3_R3 | counter_chain | B | M3 | R3 | emulator | no | PASS | S7_B_M3_R3/counter_chain.json | 2026-05-10T22:36:38Z | all adjacent counter stages conserve |
+| S7 | S7_B_M3_R3 | rate_chain | B | M3 | R3 | emulator | no | PASS | S7_B_M3_R3/rate_chain.json | 2026-05-10T22:36:38Z | ingress and egress per-channel histograms match |
+| S7 | S7_B_M3_R3 | latency | B | M3 | R3 | emulator | no | PASS | S7_B_M3_R3/latency.json | 2026-05-10T22:36:38Z | all latency panels satisfy bounds |
+| S7 | S7_B_M3_R3 | offline_chain | B | M3 | R3 | emulator | no | PASS | S7_B_M3_R3/offline_chain.json | 2026-05-10T22:36:38Z | decoded host rx_buffer stream |
+| S7 | S7_B_M3_R3 | offline_analysis | B | M3 | R3 | emulator | no | PASS | S7_B_M3_R3/offline_analysis.json | 2026-05-10T22:36:38Z | offline stream checks passed |
+| S7 | S7_B_M3_R4 | counter_chain | B | M3 | R4 | emulator | no | PASS | S7_B_M3_R4/counter_chain.json | 2026-05-10T22:36:38Z | all adjacent counter stages conserve |
+| S7 | S7_B_M3_R4 | rate_chain | B | M3 | R4 | emulator | no | PASS | S7_B_M3_R4/rate_chain.json | 2026-05-10T22:36:39Z | ingress and egress per-channel histograms match |
+| S7 | S7_B_M3_R4 | latency | B | M3 | R4 | emulator | no | PASS | S7_B_M3_R4/latency.json | 2026-05-10T22:36:39Z | all latency panels satisfy bounds |
+| S7 | S7_B_M3_R4 | offline_chain | B | M3 | R4 | emulator | no | PASS | S7_B_M3_R4/offline_chain.json | 2026-05-10T22:36:39Z | decoded host rx_buffer stream |
+| S7 | S7_B_M3_R4 | offline_analysis | B | M3 | R4 | emulator | no | PASS | S7_B_M3_R4/offline_analysis.json | 2026-05-10T22:36:39Z | offline stream checks passed |
+| S7 | S7_B_M4_R1 | counter_chain | B | M4 | R1 | emulator | no | PASS | S7_B_M4_R1/counter_chain.json | 2026-05-10T22:36:39Z | all adjacent counter stages conserve |
+| S7 | S7_B_M4_R1 | rate_chain | B | M4 | R1 | emulator | no | PASS | S7_B_M4_R1/rate_chain.json | 2026-05-10T22:36:39Z | ingress and egress per-channel histograms match |
+| S7 | S7_B_M4_R1 | latency | B | M4 | R1 | emulator | no | PASS | S7_B_M4_R1/latency.json | 2026-05-10T22:36:39Z | all latency panels satisfy bounds |
+| S7 | S7_B_M4_R1 | offline_chain | B | M4 | R1 | emulator | no | PASS | S7_B_M4_R1/offline_chain.json | 2026-05-10T22:36:39Z | decoded host rx_buffer stream |
+| S7 | S7_B_M4_R1 | offline_analysis | B | M4 | R1 | emulator | no | PASS | S7_B_M4_R1/offline_analysis.json | 2026-05-10T22:36:39Z | offline stream checks passed |
+| S7 | S7_B_M4_R2 | counter_chain | B | M4 | R2 | emulator | no | PASS | S7_B_M4_R2/counter_chain.json | 2026-05-10T22:36:40Z | all adjacent counter stages conserve |
+| S7 | S7_B_M4_R2 | rate_chain | B | M4 | R2 | emulator | no | PASS | S7_B_M4_R2/rate_chain.json | 2026-05-10T22:36:40Z | ingress and egress per-channel histograms match |
+| S7 | S7_B_M4_R2 | latency | B | M4 | R2 | emulator | no | PASS | S7_B_M4_R2/latency.json | 2026-05-10T22:36:40Z | all latency panels satisfy bounds |
+| S7 | S7_B_M4_R2 | offline_chain | B | M4 | R2 | emulator | no | PASS | S7_B_M4_R2/offline_chain.json | 2026-05-10T22:36:40Z | decoded host rx_buffer stream |
+| S7 | S7_B_M4_R2 | offline_analysis | B | M4 | R2 | emulator | no | PASS | S7_B_M4_R2/offline_analysis.json | 2026-05-10T22:36:40Z | offline stream checks passed |
+| S7 | S7_B_M4_R3 | counter_chain | B | M4 | R3 | emulator | no | PASS | S7_B_M4_R3/counter_chain.json | 2026-05-10T22:36:40Z | all adjacent counter stages conserve |
+| S7 | S7_B_M4_R3 | rate_chain | B | M4 | R3 | emulator | no | PASS | S7_B_M4_R3/rate_chain.json | 2026-05-10T22:36:41Z | ingress and egress per-channel histograms match |
+| S7 | S7_B_M4_R3 | latency | B | M4 | R3 | emulator | no | PASS | S7_B_M4_R3/latency.json | 2026-05-10T22:36:41Z | all latency panels satisfy bounds |
+| S7 | S7_B_M4_R3 | offline_chain | B | M4 | R3 | emulator | no | PASS | S7_B_M4_R3/offline_chain.json | 2026-05-10T22:36:41Z | decoded host rx_buffer stream |
+| S7 | S7_B_M4_R3 | offline_analysis | B | M4 | R3 | emulator | no | PASS | S7_B_M4_R3/offline_analysis.json | 2026-05-10T22:36:41Z | offline stream checks passed |
+| S7 | S7_B_M4_R4 | counter_chain | B | M4 | R4 | emulator | no | PASS | S7_B_M4_R4/counter_chain.json | 2026-05-10T22:36:41Z | all adjacent counter stages conserve |
+| S7 | S7_B_M4_R4 | rate_chain | B | M4 | R4 | emulator | no | PASS | S7_B_M4_R4/rate_chain.json | 2026-05-10T22:36:41Z | ingress and egress per-channel histograms match |
+| S7 | S7_B_M4_R4 | latency | B | M4 | R4 | emulator | no | PASS | S7_B_M4_R4/latency.json | 2026-05-10T22:36:41Z | all latency panels satisfy bounds |
+| S7 | S7_B_M4_R4 | offline_chain | B | M4 | R4 | emulator | no | PASS | S7_B_M4_R4/offline_chain.json | 2026-05-10T22:36:41Z | decoded host rx_buffer stream |
+| S7 | S7_B_M4_R4 | offline_analysis | B | M4 | R4 | emulator | no | PASS | S7_B_M4_R4/offline_analysis.json | 2026-05-10T22:36:41Z | offline stream checks passed |
+| S7 | S7_B_M5_R1 | counter_chain | B | M5 | R1 | emulator | no | PASS | S7_B_M5_R1/counter_chain.json | 2026-05-10T22:36:42Z | all adjacent counter stages conserve |
+| S7 | S7_B_M5_R1 | rate_chain | B | M5 | R1 | emulator | no | PASS | S7_B_M5_R1/rate_chain.json | 2026-05-10T22:36:42Z | ingress and egress per-channel histograms match |
+| S7 | S7_B_M5_R1 | latency | B | M5 | R1 | emulator | no | PASS | S7_B_M5_R1/latency.json | 2026-05-10T22:36:42Z | all latency panels satisfy bounds |
+| S7 | S7_B_M5_R1 | offline_chain | B | M5 | R1 | emulator | no | PASS | S7_B_M5_R1/offline_chain.json | 2026-05-10T22:36:42Z | decoded host rx_buffer stream |
+| S7 | S7_B_M5_R1 | offline_analysis | B | M5 | R1 | emulator | no | PASS | S7_B_M5_R1/offline_analysis.json | 2026-05-10T22:36:42Z | offline stream checks passed |
+| S7 | S7_B_M5_R2 | counter_chain | B | M5 | R2 | emulator | no | PASS | S7_B_M5_R2/counter_chain.json | 2026-05-10T22:36:42Z | all adjacent counter stages conserve |
+| S7 | S7_B_M5_R2 | rate_chain | B | M5 | R2 | emulator | no | PASS | S7_B_M5_R2/rate_chain.json | 2026-05-10T22:36:43Z | ingress and egress per-channel histograms match |
+| S7 | S7_B_M5_R2 | latency | B | M5 | R2 | emulator | no | PASS | S7_B_M5_R2/latency.json | 2026-05-10T22:36:43Z | all latency panels satisfy bounds |
+| S7 | S7_B_M5_R2 | offline_chain | B | M5 | R2 | emulator | no | PASS | S7_B_M5_R2/offline_chain.json | 2026-05-10T22:36:43Z | decoded host rx_buffer stream |
+| S7 | S7_B_M5_R2 | offline_analysis | B | M5 | R2 | emulator | no | PASS | S7_B_M5_R2/offline_analysis.json | 2026-05-10T22:36:43Z | offline stream checks passed |
+| S7 | S7_B_M5_R3 | counter_chain | B | M5 | R3 | emulator | no | PASS | S7_B_M5_R3/counter_chain.json | 2026-05-10T22:36:43Z | all adjacent counter stages conserve |
+| S7 | S7_B_M5_R3 | rate_chain | B | M5 | R3 | emulator | no | PASS | S7_B_M5_R3/rate_chain.json | 2026-05-10T22:36:43Z | ingress and egress per-channel histograms match |
+| S7 | S7_B_M5_R3 | latency | B | M5 | R3 | emulator | no | PASS | S7_B_M5_R3/latency.json | 2026-05-10T22:36:43Z | all latency panels satisfy bounds |
+| S7 | S7_B_M5_R3 | offline_chain | B | M5 | R3 | emulator | no | PASS | S7_B_M5_R3/offline_chain.json | 2026-05-10T22:36:43Z | decoded host rx_buffer stream |
+| S7 | S7_B_M5_R3 | offline_analysis | B | M5 | R3 | emulator | no | PASS | S7_B_M5_R3/offline_analysis.json | 2026-05-10T22:36:43Z | offline stream checks passed |
+| S7 | S7_B_M5_R4 | counter_chain | B | M5 | R4 | emulator | no | PASS | S7_B_M5_R4/counter_chain.json | 2026-05-10T22:36:44Z | all adjacent counter stages conserve |
+| S7 | S7_B_M5_R4 | rate_chain | B | M5 | R4 | emulator | no | PASS | S7_B_M5_R4/rate_chain.json | 2026-05-10T22:36:44Z | ingress and egress per-channel histograms match |
+| S7 | S7_B_M5_R4 | latency | B | M5 | R4 | emulator | no | PASS | S7_B_M5_R4/latency.json | 2026-05-10T22:36:44Z | all latency panels satisfy bounds |
+| S7 | S7_B_M5_R4 | offline_chain | B | M5 | R4 | emulator | no | PASS | S7_B_M5_R4/offline_chain.json | 2026-05-10T22:36:44Z | decoded host rx_buffer stream |
+| S7 | S7_B_M5_R4 | offline_analysis | B | M5 | R4 | emulator | no | PASS | S7_B_M5_R4/offline_analysis.json | 2026-05-10T22:36:44Z | offline stream checks passed |
+| S7 | S7_B_M6_R1 | counter_chain | B | M6 | R1 | emulator | no | PASS | S7_B_M6_R1/counter_chain.json | 2026-05-10T22:36:44Z | all adjacent counter stages conserve |
+| S7 | S7_B_M6_R1 | rate_chain | B | M6 | R1 | emulator | no | PASS | S7_B_M6_R1/rate_chain.json | 2026-05-10T22:36:44Z | ingress and egress per-channel histograms match |
+| S7 | S7_B_M6_R1 | latency | B | M6 | R1 | emulator | no | PASS | S7_B_M6_R1/latency.json | 2026-05-10T22:36:45Z | all latency panels satisfy bounds |
+| S7 | S7_B_M6_R1 | offline_chain | B | M6 | R1 | emulator | no | PASS | S7_B_M6_R1/offline_chain.json | 2026-05-10T22:36:45Z | decoded host rx_buffer stream |
+| S7 | S7_B_M6_R1 | offline_analysis | B | M6 | R1 | emulator | no | PASS | S7_B_M6_R1/offline_analysis.json | 2026-05-10T22:36:45Z | offline stream checks passed |
+| S7 | S7_B_M6_R2 | counter_chain | B | M6 | R2 | emulator | no | PASS | S7_B_M6_R2/counter_chain.json | 2026-05-10T22:36:45Z | all adjacent counter stages conserve |
+| S7 | S7_B_M6_R2 | rate_chain | B | M6 | R2 | emulator | no | PASS | S7_B_M6_R2/rate_chain.json | 2026-05-10T22:36:45Z | ingress and egress per-channel histograms match |
+| S7 | S7_B_M6_R2 | latency | B | M6 | R2 | emulator | no | PASS | S7_B_M6_R2/latency.json | 2026-05-10T22:36:45Z | all latency panels satisfy bounds |
+| S7 | S7_B_M6_R2 | offline_chain | B | M6 | R2 | emulator | no | PASS | S7_B_M6_R2/offline_chain.json | 2026-05-10T22:36:45Z | decoded host rx_buffer stream |
+| S7 | S7_B_M6_R2 | offline_analysis | B | M6 | R2 | emulator | no | PASS | S7_B_M6_R2/offline_analysis.json | 2026-05-10T22:36:45Z | offline stream checks passed |
+| S7 | S7_B_M6_R3 | counter_chain | B | M6 | R3 | emulator | no | PASS | S7_B_M6_R3/counter_chain.json | 2026-05-10T22:36:46Z | all adjacent counter stages conserve |
+| S7 | S7_B_M6_R3 | rate_chain | B | M6 | R3 | emulator | no | PASS | S7_B_M6_R3/rate_chain.json | 2026-05-10T22:36:46Z | ingress and egress per-channel histograms match |
+| S7 | S7_B_M6_R3 | latency | B | M6 | R3 | emulator | no | PASS | S7_B_M6_R3/latency.json | 2026-05-10T22:36:46Z | all latency panels satisfy bounds |
+| S7 | S7_B_M6_R3 | offline_chain | B | M6 | R3 | emulator | no | PASS | S7_B_M6_R3/offline_chain.json | 2026-05-10T22:36:46Z | decoded host rx_buffer stream |
+| S7 | S7_B_M6_R3 | offline_analysis | B | M6 | R3 | emulator | no | PASS | S7_B_M6_R3/offline_analysis.json | 2026-05-10T22:36:46Z | offline stream checks passed |
+| S7 | S7_B_M6_R4 | counter_chain | B | M6 | R4 | emulator | no | PASS | S7_B_M6_R4/counter_chain.json | 2026-05-10T22:36:46Z | all adjacent counter stages conserve |
+| S7 | S7_B_M6_R4 | rate_chain | B | M6 | R4 | emulator | no | PASS | S7_B_M6_R4/rate_chain.json | 2026-05-10T22:36:46Z | ingress and egress per-channel histograms match |
+| S7 | S7_B_M6_R4 | latency | B | M6 | R4 | emulator | no | PASS | S7_B_M6_R4/latency.json | 2026-05-10T22:36:47Z | all latency panels satisfy bounds |
+| S7 | S7_B_M6_R4 | offline_chain | B | M6 | R4 | emulator | no | PASS | S7_B_M6_R4/offline_chain.json | 2026-05-10T22:36:47Z | decoded host rx_buffer stream |
+| S7 | S7_B_M6_R4 | offline_analysis | B | M6 | R4 | emulator | no | PASS | S7_B_M6_R4/offline_analysis.json | 2026-05-10T22:36:47Z | offline stream checks passed |
+| S7 | S7_B_M7_R1 | counter_chain | B | M7 | R1 | emulator | no | PASS | S7_B_M7_R1/counter_chain.json | 2026-05-10T22:36:47Z | all adjacent counter stages conserve |
+| S7 | S7_B_M7_R1 | rate_chain | B | M7 | R1 | emulator | no | PASS | S7_B_M7_R1/rate_chain.json | 2026-05-10T22:36:47Z | ingress and egress per-channel histograms match |
+| S7 | S7_B_M7_R1 | latency | B | M7 | R1 | emulator | no | PASS | S7_B_M7_R1/latency.json | 2026-05-10T22:36:47Z | all latency panels satisfy bounds |
+| S7 | S7_B_M7_R1 | offline_chain | B | M7 | R1 | emulator | no | PASS | S7_B_M7_R1/offline_chain.json | 2026-05-10T22:36:47Z | decoded host rx_buffer stream |
+| S7 | S7_B_M7_R1 | offline_analysis | B | M7 | R1 | emulator | no | PASS | S7_B_M7_R1/offline_analysis.json | 2026-05-10T22:36:47Z | offline stream checks passed |
+| S7 | S7_B_M7_R2 | counter_chain | B | M7 | R2 | emulator | no | PASS | S7_B_M7_R2/counter_chain.json | 2026-05-10T22:36:48Z | all adjacent counter stages conserve |
+| S7 | S7_B_M7_R2 | rate_chain | B | M7 | R2 | emulator | no | PASS | S7_B_M7_R2/rate_chain.json | 2026-05-10T22:36:48Z | ingress and egress per-channel histograms match |
+| S7 | S7_B_M7_R2 | latency | B | M7 | R2 | emulator | no | PASS | S7_B_M7_R2/latency.json | 2026-05-10T22:36:48Z | all latency panels satisfy bounds |
+| S7 | S7_B_M7_R2 | offline_chain | B | M7 | R2 | emulator | no | PASS | S7_B_M7_R2/offline_chain.json | 2026-05-10T22:36:48Z | decoded host rx_buffer stream |
+| S7 | S7_B_M7_R2 | offline_analysis | B | M7 | R2 | emulator | no | PASS | S7_B_M7_R2/offline_analysis.json | 2026-05-10T22:36:48Z | offline stream checks passed |
+| S7 | S7_B_M7_R3 | counter_chain | B | M7 | R3 | emulator | no | PASS | S7_B_M7_R3/counter_chain.json | 2026-05-10T22:36:48Z | all adjacent counter stages conserve |
+| S7 | S7_B_M7_R3 | rate_chain | B | M7 | R3 | emulator | no | PASS | S7_B_M7_R3/rate_chain.json | 2026-05-10T22:36:48Z | ingress and egress per-channel histograms match |
+| S7 | S7_B_M7_R3 | latency | B | M7 | R3 | emulator | no | PASS | S7_B_M7_R3/latency.json | 2026-05-10T22:36:49Z | all latency panels satisfy bounds |
+| S7 | S7_B_M7_R3 | offline_chain | B | M7 | R3 | emulator | no | PASS | S7_B_M7_R3/offline_chain.json | 2026-05-10T22:36:49Z | decoded host rx_buffer stream |
+| S7 | S7_B_M7_R3 | offline_analysis | B | M7 | R3 | emulator | no | PASS | S7_B_M7_R3/offline_analysis.json | 2026-05-10T22:36:49Z | offline stream checks passed |
+| S7 | S7_B_M7_R4 | counter_chain | B | M7 | R4 | emulator | no | PASS | S7_B_M7_R4/counter_chain.json | 2026-05-10T22:36:49Z | all adjacent counter stages conserve |
+| S7 | S7_B_M7_R4 | rate_chain | B | M7 | R4 | emulator | no | PASS | S7_B_M7_R4/rate_chain.json | 2026-05-10T22:36:49Z | ingress and egress per-channel histograms match |
+| S7 | S7_B_M7_R4 | latency | B | M7 | R4 | emulator | no | PASS | S7_B_M7_R4/latency.json | 2026-05-10T22:36:49Z | all latency panels satisfy bounds |
+| S7 | S7_B_M7_R4 | offline_chain | B | M7 | R4 | emulator | no | PASS | S7_B_M7_R4/offline_chain.json | 2026-05-10T22:36:49Z | decoded host rx_buffer stream |
+| S7 | S7_B_M7_R4 | offline_analysis | B | M7 | R4 | emulator | no | PASS | S7_B_M7_R4/offline_analysis.json | 2026-05-10T22:36:49Z | offline stream checks passed |
+| S7 | S7_C_M0_R1 | counter_chain | C | M0 | R1 | emulator | no | PASS | S7_C_M0_R1/counter_chain.json | 2026-05-10T22:36:50Z | all adjacent counter stages conserve |
+| S7 | S7_C_M0_R1 | rate_chain | C | M0 | R1 | emulator | no | PASS | S7_C_M0_R1/rate_chain.json | 2026-05-10T22:36:50Z | ingress and egress per-channel histograms match |
+| S7 | S7_C_M0_R1 | latency | C | M0 | R1 | emulator | no | PASS | S7_C_M0_R1/latency.json | 2026-05-10T22:36:50Z | all latency panels satisfy bounds |
+| S7 | S7_C_M0_R1 | offline_chain | C | M0 | R1 | emulator | no | PASS | S7_C_M0_R1/offline_chain.json | 2026-05-10T22:36:50Z | decoded host rx_buffer stream |
+| S7 | S7_C_M0_R1 | offline_analysis | C | M0 | R1 | emulator | no | PASS | S7_C_M0_R1/offline_analysis.json | 2026-05-10T22:36:50Z | offline stream checks passed |
+| S7 | S7_C_M0_R2 | counter_chain | C | M0 | R2 | emulator | no | PASS | S7_C_M0_R2/counter_chain.json | 2026-05-10T22:36:50Z | all adjacent counter stages conserve |
+| S7 | S7_C_M0_R2 | rate_chain | C | M0 | R2 | emulator | no | PASS | S7_C_M0_R2/rate_chain.json | 2026-05-10T22:36:50Z | ingress and egress per-channel histograms match |
+| S7 | S7_C_M0_R2 | latency | C | M0 | R2 | emulator | no | PASS | S7_C_M0_R2/latency.json | 2026-05-10T22:36:51Z | all latency panels satisfy bounds |
+| S7 | S7_C_M0_R2 | offline_chain | C | M0 | R2 | emulator | no | PASS | S7_C_M0_R2/offline_chain.json | 2026-05-10T22:36:51Z | decoded host rx_buffer stream |
+| S7 | S7_C_M0_R2 | offline_analysis | C | M0 | R2 | emulator | no | PASS | S7_C_M0_R2/offline_analysis.json | 2026-05-10T22:36:51Z | offline stream checks passed |
+| S7 | S7_C_M0_R3 | counter_chain | C | M0 | R3 | emulator | no | PASS | S7_C_M0_R3/counter_chain.json | 2026-05-10T22:36:51Z | all adjacent counter stages conserve |
+| S7 | S7_C_M0_R3 | rate_chain | C | M0 | R3 | emulator | no | PASS | S7_C_M0_R3/rate_chain.json | 2026-05-10T22:36:51Z | ingress and egress per-channel histograms match |
+| S7 | S7_C_M0_R3 | latency | C | M0 | R3 | emulator | no | PASS | S7_C_M0_R3/latency.json | 2026-05-10T22:36:51Z | all latency panels satisfy bounds |
+| S7 | S7_C_M0_R3 | offline_chain | C | M0 | R3 | emulator | no | PASS | S7_C_M0_R3/offline_chain.json | 2026-05-10T22:36:51Z | decoded host rx_buffer stream |
+| S7 | S7_C_M0_R3 | offline_analysis | C | M0 | R3 | emulator | no | PASS | S7_C_M0_R3/offline_analysis.json | 2026-05-10T22:36:51Z | offline stream checks passed |
+| S7 | S7_C_M0_R4 | counter_chain | C | M0 | R4 | emulator | no | PASS | S7_C_M0_R4/counter_chain.json | 2026-05-10T22:36:52Z | all adjacent counter stages conserve |
+| S7 | S7_C_M0_R4 | rate_chain | C | M0 | R4 | emulator | no | PASS | S7_C_M0_R4/rate_chain.json | 2026-05-10T22:36:52Z | ingress and egress per-channel histograms match |
+| S7 | S7_C_M0_R4 | latency | C | M0 | R4 | emulator | no | PASS | S7_C_M0_R4/latency.json | 2026-05-10T22:36:52Z | all latency panels satisfy bounds |
+| S7 | S7_C_M0_R4 | offline_chain | C | M0 | R4 | emulator | no | PASS | S7_C_M0_R4/offline_chain.json | 2026-05-10T22:36:52Z | decoded host rx_buffer stream |
+| S7 | S7_C_M0_R4 | offline_analysis | C | M0 | R4 | emulator | no | PASS | S7_C_M0_R4/offline_analysis.json | 2026-05-10T22:36:52Z | offline stream checks passed |
+| S7 | S7_C_M1_R1 | counter_chain | C | M1 | R1 | emulator | no | PASS | S7_C_M1_R1/counter_chain.json | 2026-05-10T22:36:52Z | all adjacent counter stages conserve |
+| S7 | S7_C_M1_R1 | rate_chain | C | M1 | R1 | emulator | no | PASS | S7_C_M1_R1/rate_chain.json | 2026-05-10T22:36:52Z | ingress and egress per-channel histograms match |
+| S7 | S7_C_M1_R1 | latency | C | M1 | R1 | emulator | no | PASS | S7_C_M1_R1/latency.json | 2026-05-10T22:36:53Z | all latency panels satisfy bounds |
+| S7 | S7_C_M1_R1 | offline_chain | C | M1 | R1 | emulator | no | PASS | S7_C_M1_R1/offline_chain.json | 2026-05-10T22:36:53Z | decoded host rx_buffer stream |
+| S7 | S7_C_M1_R1 | offline_analysis | C | M1 | R1 | emulator | no | PASS | S7_C_M1_R1/offline_analysis.json | 2026-05-10T22:36:53Z | offline stream checks passed |
+| S7 | S7_C_M1_R2 | counter_chain | C | M1 | R2 | emulator | no | PASS | S7_C_M1_R2/counter_chain.json | 2026-05-10T22:36:53Z | all adjacent counter stages conserve |
+| S7 | S7_C_M1_R2 | rate_chain | C | M1 | R2 | emulator | no | PASS | S7_C_M1_R2/rate_chain.json | 2026-05-10T22:36:53Z | ingress and egress per-channel histograms match |
+| S7 | S7_C_M1_R2 | latency | C | M1 | R2 | emulator | no | PASS | S7_C_M1_R2/latency.json | 2026-05-10T22:36:53Z | all latency panels satisfy bounds |
+| S7 | S7_C_M1_R2 | offline_chain | C | M1 | R2 | emulator | no | PASS | S7_C_M1_R2/offline_chain.json | 2026-05-10T22:36:53Z | decoded host rx_buffer stream |
+| S7 | S7_C_M1_R2 | offline_analysis | C | M1 | R2 | emulator | no | PASS | S7_C_M1_R2/offline_analysis.json | 2026-05-10T22:36:53Z | offline stream checks passed |
+| S7 | S7_C_M1_R3 | counter_chain | C | M1 | R3 | emulator | no | PASS | S7_C_M1_R3/counter_chain.json | 2026-05-10T22:36:54Z | all adjacent counter stages conserve |
+| S7 | S7_C_M1_R3 | rate_chain | C | M1 | R3 | emulator | no | PASS | S7_C_M1_R3/rate_chain.json | 2026-05-10T22:36:54Z | ingress and egress per-channel histograms match |
+| S7 | S7_C_M1_R3 | latency | C | M1 | R3 | emulator | no | PASS | S7_C_M1_R3/latency.json | 2026-05-10T22:36:54Z | all latency panels satisfy bounds |
+| S7 | S7_C_M1_R3 | offline_chain | C | M1 | R3 | emulator | no | PASS | S7_C_M1_R3/offline_chain.json | 2026-05-10T22:36:54Z | decoded host rx_buffer stream |
+| S7 | S7_C_M1_R3 | offline_analysis | C | M1 | R3 | emulator | no | PASS | S7_C_M1_R3/offline_analysis.json | 2026-05-10T22:36:54Z | offline stream checks passed |
+| S7 | S7_C_M1_R4 | counter_chain | C | M1 | R4 | emulator | no | PASS | S7_C_M1_R4/counter_chain.json | 2026-05-10T22:36:54Z | all adjacent counter stages conserve |
+| S7 | S7_C_M1_R4 | rate_chain | C | M1 | R4 | emulator | no | PASS | S7_C_M1_R4/rate_chain.json | 2026-05-10T22:36:54Z | ingress and egress per-channel histograms match |
+| S7 | S7_C_M1_R4 | latency | C | M1 | R4 | emulator | no | PASS | S7_C_M1_R4/latency.json | 2026-05-10T22:36:55Z | all latency panels satisfy bounds |
+| S7 | S7_C_M1_R4 | offline_chain | C | M1 | R4 | emulator | no | PASS | S7_C_M1_R4/offline_chain.json | 2026-05-10T22:36:55Z | decoded host rx_buffer stream |
+| S7 | S7_C_M1_R4 | offline_analysis | C | M1 | R4 | emulator | no | PASS | S7_C_M1_R4/offline_analysis.json | 2026-05-10T22:36:55Z | offline stream checks passed |
+| S7 | S7_C_M2_R1 | counter_chain | C | M2 | R1 | emulator | no | PASS | S7_C_M2_R1/counter_chain.json | 2026-05-10T22:36:55Z | all adjacent counter stages conserve |
+| S7 | S7_C_M2_R1 | rate_chain | C | M2 | R1 | emulator | no | PASS | S7_C_M2_R1/rate_chain.json | 2026-05-10T22:36:55Z | ingress and egress per-channel histograms match |
+| S7 | S7_C_M2_R1 | latency | C | M2 | R1 | emulator | no | PASS | S7_C_M2_R1/latency.json | 2026-05-10T22:36:55Z | all latency panels satisfy bounds |
+| S7 | S7_C_M2_R1 | offline_chain | C | M2 | R1 | emulator | no | PASS | S7_C_M2_R1/offline_chain.json | 2026-05-10T22:36:55Z | decoded host rx_buffer stream |
+| S7 | S7_C_M2_R1 | offline_analysis | C | M2 | R1 | emulator | no | PASS | S7_C_M2_R1/offline_analysis.json | 2026-05-10T22:36:55Z | offline stream checks passed |
+| S7 | S7_C_M2_R2 | counter_chain | C | M2 | R2 | emulator | no | PASS | S7_C_M2_R2/counter_chain.json | 2026-05-10T22:36:56Z | all adjacent counter stages conserve |
+| S7 | S7_C_M2_R2 | rate_chain | C | M2 | R2 | emulator | no | PASS | S7_C_M2_R2/rate_chain.json | 2026-05-10T22:36:56Z | ingress and egress per-channel histograms match |
+| S7 | S7_C_M2_R2 | latency | C | M2 | R2 | emulator | no | PASS | S7_C_M2_R2/latency.json | 2026-05-10T22:36:56Z | all latency panels satisfy bounds |
+| S7 | S7_C_M2_R2 | offline_chain | C | M2 | R2 | emulator | no | PASS | S7_C_M2_R2/offline_chain.json | 2026-05-10T22:36:56Z | decoded host rx_buffer stream |
+| S7 | S7_C_M2_R2 | offline_analysis | C | M2 | R2 | emulator | no | PASS | S7_C_M2_R2/offline_analysis.json | 2026-05-10T22:36:56Z | offline stream checks passed |
+| S7 | S7_C_M2_R3 | counter_chain | C | M2 | R3 | emulator | no | PASS | S7_C_M2_R3/counter_chain.json | 2026-05-10T22:36:56Z | all adjacent counter stages conserve |
+| S7 | S7_C_M2_R3 | rate_chain | C | M2 | R3 | emulator | no | PASS | S7_C_M2_R3/rate_chain.json | 2026-05-10T22:36:56Z | ingress and egress per-channel histograms match |
+| S7 | S7_C_M2_R3 | latency | C | M2 | R3 | emulator | no | PASS | S7_C_M2_R3/latency.json | 2026-05-10T22:36:57Z | all latency panels satisfy bounds |
+| S7 | S7_C_M2_R3 | offline_chain | C | M2 | R3 | emulator | no | PASS | S7_C_M2_R3/offline_chain.json | 2026-05-10T22:36:57Z | decoded host rx_buffer stream |
+| S7 | S7_C_M2_R3 | offline_analysis | C | M2 | R3 | emulator | no | PASS | S7_C_M2_R3/offline_analysis.json | 2026-05-10T22:36:57Z | offline stream checks passed |
+| S7 | S7_C_M2_R4 | counter_chain | C | M2 | R4 | emulator | no | PASS | S7_C_M2_R4/counter_chain.json | 2026-05-10T22:36:57Z | all adjacent counter stages conserve |
+| S7 | S7_C_M2_R4 | rate_chain | C | M2 | R4 | emulator | no | PASS | S7_C_M2_R4/rate_chain.json | 2026-05-10T22:36:57Z | ingress and egress per-channel histograms match |
+| S7 | S7_C_M2_R4 | latency | C | M2 | R4 | emulator | no | PASS | S7_C_M2_R4/latency.json | 2026-05-10T22:36:57Z | all latency panels satisfy bounds |
+| S7 | S7_C_M2_R4 | offline_chain | C | M2 | R4 | emulator | no | PASS | S7_C_M2_R4/offline_chain.json | 2026-05-10T22:36:57Z | decoded host rx_buffer stream |
+| S7 | S7_C_M2_R4 | offline_analysis | C | M2 | R4 | emulator | no | PASS | S7_C_M2_R4/offline_analysis.json | 2026-05-10T22:36:57Z | offline stream checks passed |
+| S7 | S7_C_M3_R1 | counter_chain | C | M3 | R1 | emulator | no | PASS | S7_C_M3_R1/counter_chain.json | 2026-05-10T22:36:58Z | all adjacent counter stages conserve |
+| S7 | S7_C_M3_R1 | rate_chain | C | M3 | R1 | emulator | no | PASS | S7_C_M3_R1/rate_chain.json | 2026-05-10T22:36:58Z | ingress and egress per-channel histograms match |
+| S7 | S7_C_M3_R1 | latency | C | M3 | R1 | emulator | no | PASS | S7_C_M3_R1/latency.json | 2026-05-10T22:36:58Z | all latency panels satisfy bounds |
+| S7 | S7_C_M3_R1 | offline_chain | C | M3 | R1 | emulator | no | PASS | S7_C_M3_R1/offline_chain.json | 2026-05-10T22:36:58Z | decoded host rx_buffer stream |
+| S7 | S7_C_M3_R1 | offline_analysis | C | M3 | R1 | emulator | no | PASS | S7_C_M3_R1/offline_analysis.json | 2026-05-10T22:36:58Z | offline stream checks passed |
+| S7 | S7_C_M3_R2 | counter_chain | C | M3 | R2 | emulator | no | PASS | S7_C_M3_R2/counter_chain.json | 2026-05-10T22:36:58Z | all adjacent counter stages conserve |
+| S7 | S7_C_M3_R2 | rate_chain | C | M3 | R2 | emulator | no | PASS | S7_C_M3_R2/rate_chain.json | 2026-05-10T22:36:58Z | ingress and egress per-channel histograms match |
+| S7 | S7_C_M3_R2 | latency | C | M3 | R2 | emulator | no | PASS | S7_C_M3_R2/latency.json | 2026-05-10T22:36:59Z | all latency panels satisfy bounds |
+| S7 | S7_C_M3_R2 | offline_chain | C | M3 | R2 | emulator | no | PASS | S7_C_M3_R2/offline_chain.json | 2026-05-10T22:36:59Z | decoded host rx_buffer stream |
+| S7 | S7_C_M3_R2 | offline_analysis | C | M3 | R2 | emulator | no | PASS | S7_C_M3_R2/offline_analysis.json | 2026-05-10T22:36:59Z | offline stream checks passed |
+| S7 | S7_C_M3_R3 | counter_chain | C | M3 | R3 | emulator | no | PASS | S7_C_M3_R3/counter_chain.json | 2026-05-10T22:36:59Z | all adjacent counter stages conserve |
+| S7 | S7_C_M3_R3 | rate_chain | C | M3 | R3 | emulator | no | PASS | S7_C_M3_R3/rate_chain.json | 2026-05-10T22:36:59Z | ingress and egress per-channel histograms match |
+| S7 | S7_C_M3_R3 | latency | C | M3 | R3 | emulator | no | PASS | S7_C_M3_R3/latency.json | 2026-05-10T22:36:59Z | all latency panels satisfy bounds |
+| S7 | S7_C_M3_R3 | offline_chain | C | M3 | R3 | emulator | no | PASS | S7_C_M3_R3/offline_chain.json | 2026-05-10T22:36:59Z | decoded host rx_buffer stream |
+| S7 | S7_C_M3_R3 | offline_analysis | C | M3 | R3 | emulator | no | PASS | S7_C_M3_R3/offline_analysis.json | 2026-05-10T22:36:59Z | offline stream checks passed |
+| S7 | S7_C_M3_R4 | counter_chain | C | M3 | R4 | emulator | no | PASS | S7_C_M3_R4/counter_chain.json | 2026-05-10T22:37:00Z | all adjacent counter stages conserve |
+| S7 | S7_C_M3_R4 | rate_chain | C | M3 | R4 | emulator | no | PASS | S7_C_M3_R4/rate_chain.json | 2026-05-10T22:37:00Z | ingress and egress per-channel histograms match |
+| S7 | S7_C_M3_R4 | latency | C | M3 | R4 | emulator | no | PASS | S7_C_M3_R4/latency.json | 2026-05-10T22:37:00Z | all latency panels satisfy bounds |
+| S7 | S7_C_M3_R4 | offline_chain | C | M3 | R4 | emulator | no | PASS | S7_C_M3_R4/offline_chain.json | 2026-05-10T22:37:00Z | decoded host rx_buffer stream |
+| S7 | S7_C_M3_R4 | offline_analysis | C | M3 | R4 | emulator | no | PASS | S7_C_M3_R4/offline_analysis.json | 2026-05-10T22:37:00Z | offline stream checks passed |
+| S7 | S7_C_M4_R1 | counter_chain | C | M4 | R1 | emulator | no | PASS | S7_C_M4_R1/counter_chain.json | 2026-05-10T22:37:00Z | all adjacent counter stages conserve |
+| S7 | S7_C_M4_R1 | rate_chain | C | M4 | R1 | emulator | no | PASS | S7_C_M4_R1/rate_chain.json | 2026-05-10T22:37:00Z | ingress and egress per-channel histograms match |
+| S7 | S7_C_M4_R1 | latency | C | M4 | R1 | emulator | no | PASS | S7_C_M4_R1/latency.json | 2026-05-10T22:37:01Z | all latency panels satisfy bounds |
+| S7 | S7_C_M4_R1 | offline_chain | C | M4 | R1 | emulator | no | PASS | S7_C_M4_R1/offline_chain.json | 2026-05-10T22:37:01Z | decoded host rx_buffer stream |
+| S7 | S7_C_M4_R1 | offline_analysis | C | M4 | R1 | emulator | no | PASS | S7_C_M4_R1/offline_analysis.json | 2026-05-10T22:37:01Z | offline stream checks passed |
+| S7 | S7_C_M4_R2 | counter_chain | C | M4 | R2 | emulator | no | PASS | S7_C_M4_R2/counter_chain.json | 2026-05-10T22:37:01Z | all adjacent counter stages conserve |
+| S7 | S7_C_M4_R2 | rate_chain | C | M4 | R2 | emulator | no | PASS | S7_C_M4_R2/rate_chain.json | 2026-05-10T22:37:01Z | ingress and egress per-channel histograms match |
+| S7 | S7_C_M4_R2 | latency | C | M4 | R2 | emulator | no | PASS | S7_C_M4_R2/latency.json | 2026-05-10T22:37:01Z | all latency panels satisfy bounds |
+| S7 | S7_C_M4_R2 | offline_chain | C | M4 | R2 | emulator | no | PASS | S7_C_M4_R2/offline_chain.json | 2026-05-10T22:37:01Z | decoded host rx_buffer stream |
+| S7 | S7_C_M4_R2 | offline_analysis | C | M4 | R2 | emulator | no | PASS | S7_C_M4_R2/offline_analysis.json | 2026-05-10T22:37:01Z | offline stream checks passed |
+| S7 | S7_C_M4_R3 | counter_chain | C | M4 | R3 | emulator | no | PASS | S7_C_M4_R3/counter_chain.json | 2026-05-10T22:37:02Z | all adjacent counter stages conserve |
+| S7 | S7_C_M4_R3 | rate_chain | C | M4 | R3 | emulator | no | PASS | S7_C_M4_R3/rate_chain.json | 2026-05-10T22:37:02Z | ingress and egress per-channel histograms match |
+| S7 | S7_C_M4_R3 | latency | C | M4 | R3 | emulator | no | PASS | S7_C_M4_R3/latency.json | 2026-05-10T22:37:02Z | all latency panels satisfy bounds |
+| S7 | S7_C_M4_R3 | offline_chain | C | M4 | R3 | emulator | no | PASS | S7_C_M4_R3/offline_chain.json | 2026-05-10T22:37:02Z | decoded host rx_buffer stream |
+| S7 | S7_C_M4_R3 | offline_analysis | C | M4 | R3 | emulator | no | PASS | S7_C_M4_R3/offline_analysis.json | 2026-05-10T22:37:02Z | offline stream checks passed |
+| S7 | S7_C_M4_R4 | counter_chain | C | M4 | R4 | emulator | no | PASS | S7_C_M4_R4/counter_chain.json | 2026-05-10T22:37:02Z | all adjacent counter stages conserve |
+| S7 | S7_C_M4_R4 | rate_chain | C | M4 | R4 | emulator | no | PASS | S7_C_M4_R4/rate_chain.json | 2026-05-10T22:37:03Z | ingress and egress per-channel histograms match |
+| S7 | S7_C_M4_R4 | latency | C | M4 | R4 | emulator | no | PASS | S7_C_M4_R4/latency.json | 2026-05-10T22:37:03Z | all latency panels satisfy bounds |
+| S7 | S7_C_M4_R4 | offline_chain | C | M4 | R4 | emulator | no | PASS | S7_C_M4_R4/offline_chain.json | 2026-05-10T22:37:03Z | decoded host rx_buffer stream |
+| S7 | S7_C_M4_R4 | offline_analysis | C | M4 | R4 | emulator | no | PASS | S7_C_M4_R4/offline_analysis.json | 2026-05-10T22:37:03Z | offline stream checks passed |
+| S7 | S7_C_M5_R1 | counter_chain | C | M5 | R1 | emulator | no | PASS | S7_C_M5_R1/counter_chain.json | 2026-05-10T22:37:03Z | all adjacent counter stages conserve |
+| S7 | S7_C_M5_R1 | rate_chain | C | M5 | R1 | emulator | no | PASS | S7_C_M5_R1/rate_chain.json | 2026-05-10T22:37:03Z | ingress and egress per-channel histograms match |
+| S7 | S7_C_M5_R1 | latency | C | M5 | R1 | emulator | no | PASS | S7_C_M5_R1/latency.json | 2026-05-10T22:37:03Z | all latency panels satisfy bounds |
+| S7 | S7_C_M5_R1 | offline_chain | C | M5 | R1 | emulator | no | PASS | S7_C_M5_R1/offline_chain.json | 2026-05-10T22:37:03Z | decoded host rx_buffer stream |
+| S7 | S7_C_M5_R1 | offline_analysis | C | M5 | R1 | emulator | no | PASS | S7_C_M5_R1/offline_analysis.json | 2026-05-10T22:37:03Z | offline stream checks passed |
+| S7 | S7_C_M5_R2 | counter_chain | C | M5 | R2 | emulator | no | PASS | S7_C_M5_R2/counter_chain.json | 2026-05-10T22:37:04Z | all adjacent counter stages conserve |
+| S7 | S7_C_M5_R2 | rate_chain | C | M5 | R2 | emulator | no | PASS | S7_C_M5_R2/rate_chain.json | 2026-05-10T22:37:04Z | ingress and egress per-channel histograms match |
+| S7 | S7_C_M5_R2 | latency | C | M5 | R2 | emulator | no | PASS | S7_C_M5_R2/latency.json | 2026-05-10T22:37:04Z | all latency panels satisfy bounds |
+| S7 | S7_C_M5_R2 | offline_chain | C | M5 | R2 | emulator | no | PASS | S7_C_M5_R2/offline_chain.json | 2026-05-10T22:37:04Z | decoded host rx_buffer stream |
+| S7 | S7_C_M5_R2 | offline_analysis | C | M5 | R2 | emulator | no | PASS | S7_C_M5_R2/offline_analysis.json | 2026-05-10T22:37:04Z | offline stream checks passed |
+| S7 | S7_C_M5_R3 | counter_chain | C | M5 | R3 | emulator | no | PASS | S7_C_M5_R3/counter_chain.json | 2026-05-10T22:37:04Z | all adjacent counter stages conserve |
+| S7 | S7_C_M5_R3 | rate_chain | C | M5 | R3 | emulator | no | PASS | S7_C_M5_R3/rate_chain.json | 2026-05-10T22:37:05Z | ingress and egress per-channel histograms match |
+| S7 | S7_C_M5_R3 | latency | C | M5 | R3 | emulator | no | PASS | S7_C_M5_R3/latency.json | 2026-05-10T22:37:05Z | all latency panels satisfy bounds |
+| S7 | S7_C_M5_R3 | offline_chain | C | M5 | R3 | emulator | no | PASS | S7_C_M5_R3/offline_chain.json | 2026-05-10T22:37:05Z | decoded host rx_buffer stream |
+| S7 | S7_C_M5_R3 | offline_analysis | C | M5 | R3 | emulator | no | PASS | S7_C_M5_R3/offline_analysis.json | 2026-05-10T22:37:05Z | offline stream checks passed |
+| S7 | S7_C_M5_R4 | counter_chain | C | M5 | R4 | emulator | no | PASS | S7_C_M5_R4/counter_chain.json | 2026-05-10T22:37:05Z | all adjacent counter stages conserve |
+| S7 | S7_C_M5_R4 | rate_chain | C | M5 | R4 | emulator | no | PASS | S7_C_M5_R4/rate_chain.json | 2026-05-10T22:37:05Z | ingress and egress per-channel histograms match |
+| S7 | S7_C_M5_R4 | latency | C | M5 | R4 | emulator | no | PASS | S7_C_M5_R4/latency.json | 2026-05-10T22:37:05Z | all latency panels satisfy bounds |
+| S7 | S7_C_M5_R4 | offline_chain | C | M5 | R4 | emulator | no | PASS | S7_C_M5_R4/offline_chain.json | 2026-05-10T22:37:05Z | decoded host rx_buffer stream |
+| S7 | S7_C_M5_R4 | offline_analysis | C | M5 | R4 | emulator | no | PASS | S7_C_M5_R4/offline_analysis.json | 2026-05-10T22:37:05Z | offline stream checks passed |
+| S7 | S7_C_M6_R1 | counter_chain | C | M6 | R1 | emulator | no | PASS | S7_C_M6_R1/counter_chain.json | 2026-05-10T22:37:06Z | all adjacent counter stages conserve |
+| S7 | S7_C_M6_R1 | rate_chain | C | M6 | R1 | emulator | no | PASS | S7_C_M6_R1/rate_chain.json | 2026-05-10T22:37:06Z | ingress and egress per-channel histograms match |
+| S7 | S7_C_M6_R1 | latency | C | M6 | R1 | emulator | no | PASS | S7_C_M6_R1/latency.json | 2026-05-10T22:37:06Z | all latency panels satisfy bounds |
+| S7 | S7_C_M6_R1 | offline_chain | C | M6 | R1 | emulator | no | PASS | S7_C_M6_R1/offline_chain.json | 2026-05-10T22:37:06Z | decoded host rx_buffer stream |
+| S7 | S7_C_M6_R1 | offline_analysis | C | M6 | R1 | emulator | no | PASS | S7_C_M6_R1/offline_analysis.json | 2026-05-10T22:37:06Z | offline stream checks passed |
+| S7 | S7_C_M6_R2 | counter_chain | C | M6 | R2 | emulator | no | PASS | S7_C_M6_R2/counter_chain.json | 2026-05-10T22:37:06Z | all adjacent counter stages conserve |
+| S7 | S7_C_M6_R2 | rate_chain | C | M6 | R2 | emulator | no | PASS | S7_C_M6_R2/rate_chain.json | 2026-05-10T22:37:07Z | ingress and egress per-channel histograms match |
+| S7 | S7_C_M6_R2 | latency | C | M6 | R2 | emulator | no | PASS | S7_C_M6_R2/latency.json | 2026-05-10T22:37:07Z | all latency panels satisfy bounds |
+| S7 | S7_C_M6_R2 | offline_chain | C | M6 | R2 | emulator | no | PASS | S7_C_M6_R2/offline_chain.json | 2026-05-10T22:37:07Z | decoded host rx_buffer stream |
+| S7 | S7_C_M6_R2 | offline_analysis | C | M6 | R2 | emulator | no | PASS | S7_C_M6_R2/offline_analysis.json | 2026-05-10T22:37:07Z | offline stream checks passed |
+| S7 | S7_C_M6_R3 | counter_chain | C | M6 | R3 | emulator | no | PASS | S7_C_M6_R3/counter_chain.json | 2026-05-10T22:37:07Z | all adjacent counter stages conserve |
+| S7 | S7_C_M6_R3 | rate_chain | C | M6 | R3 | emulator | no | PASS | S7_C_M6_R3/rate_chain.json | 2026-05-10T22:37:07Z | ingress and egress per-channel histograms match |
+| S7 | S7_C_M6_R3 | latency | C | M6 | R3 | emulator | no | PASS | S7_C_M6_R3/latency.json | 2026-05-10T22:37:07Z | all latency panels satisfy bounds |
+| S7 | S7_C_M6_R3 | offline_chain | C | M6 | R3 | emulator | no | PASS | S7_C_M6_R3/offline_chain.json | 2026-05-10T22:37:07Z | decoded host rx_buffer stream |
+| S7 | S7_C_M6_R3 | offline_analysis | C | M6 | R3 | emulator | no | PASS | S7_C_M6_R3/offline_analysis.json | 2026-05-10T22:37:07Z | offline stream checks passed |
+| S7 | S7_C_M6_R4 | counter_chain | C | M6 | R4 | emulator | no | PASS | S7_C_M6_R4/counter_chain.json | 2026-05-10T22:37:08Z | all adjacent counter stages conserve |
+| S7 | S7_C_M6_R4 | rate_chain | C | M6 | R4 | emulator | no | PASS | S7_C_M6_R4/rate_chain.json | 2026-05-10T22:37:08Z | ingress and egress per-channel histograms match |
+| S7 | S7_C_M6_R4 | latency | C | M6 | R4 | emulator | no | PASS | S7_C_M6_R4/latency.json | 2026-05-10T22:37:08Z | all latency panels satisfy bounds |
+| S7 | S7_C_M6_R4 | offline_chain | C | M6 | R4 | emulator | no | PASS | S7_C_M6_R4/offline_chain.json | 2026-05-10T22:37:08Z | decoded host rx_buffer stream |
+| S7 | S7_C_M6_R4 | offline_analysis | C | M6 | R4 | emulator | no | PASS | S7_C_M6_R4/offline_analysis.json | 2026-05-10T22:37:08Z | offline stream checks passed |
+| S7 | S7_C_M7_R1 | counter_chain | C | M7 | R1 | emulator | no | PASS | S7_C_M7_R1/counter_chain.json | 2026-05-10T22:37:08Z | all adjacent counter stages conserve |
+| S7 | S7_C_M7_R1 | rate_chain | C | M7 | R1 | emulator | no | PASS | S7_C_M7_R1/rate_chain.json | 2026-05-10T22:37:09Z | ingress and egress per-channel histograms match |
+| S7 | S7_C_M7_R1 | latency | C | M7 | R1 | emulator | no | PASS | S7_C_M7_R1/latency.json | 2026-05-10T22:37:09Z | all latency panels satisfy bounds |
+| S7 | S7_C_M7_R1 | offline_chain | C | M7 | R1 | emulator | no | PASS | S7_C_M7_R1/offline_chain.json | 2026-05-10T22:37:09Z | decoded host rx_buffer stream |
+| S7 | S7_C_M7_R1 | offline_analysis | C | M7 | R1 | emulator | no | PASS | S7_C_M7_R1/offline_analysis.json | 2026-05-10T22:37:09Z | offline stream checks passed |
+| S7 | S7_C_M7_R2 | counter_chain | C | M7 | R2 | emulator | no | PASS | S7_C_M7_R2/counter_chain.json | 2026-05-10T22:37:09Z | all adjacent counter stages conserve |
+| S7 | S7_C_M7_R2 | rate_chain | C | M7 | R2 | emulator | no | PASS | S7_C_M7_R2/rate_chain.json | 2026-05-10T22:37:09Z | ingress and egress per-channel histograms match |
+| S7 | S7_C_M7_R2 | latency | C | M7 | R2 | emulator | no | PASS | S7_C_M7_R2/latency.json | 2026-05-10T22:37:09Z | all latency panels satisfy bounds |
+| S7 | S7_C_M7_R2 | offline_chain | C | M7 | R2 | emulator | no | PASS | S7_C_M7_R2/offline_chain.json | 2026-05-10T22:37:09Z | decoded host rx_buffer stream |
+| S7 | S7_C_M7_R2 | offline_analysis | C | M7 | R2 | emulator | no | PASS | S7_C_M7_R2/offline_analysis.json | 2026-05-10T22:37:09Z | offline stream checks passed |
+| S7 | S7_C_M7_R3 | counter_chain | C | M7 | R3 | emulator | no | PASS | S7_C_M7_R3/counter_chain.json | 2026-05-10T22:37:10Z | all adjacent counter stages conserve |
+| S7 | S7_C_M7_R3 | rate_chain | C | M7 | R3 | emulator | no | PASS | S7_C_M7_R3/rate_chain.json | 2026-05-10T22:37:10Z | ingress and egress per-channel histograms match |
+| S7 | S7_C_M7_R3 | latency | C | M7 | R3 | emulator | no | PASS | S7_C_M7_R3/latency.json | 2026-05-10T22:37:10Z | all latency panels satisfy bounds |
+| S7 | S7_C_M7_R3 | offline_chain | C | M7 | R3 | emulator | no | PASS | S7_C_M7_R3/offline_chain.json | 2026-05-10T22:37:10Z | decoded host rx_buffer stream |
+| S7 | S7_C_M7_R3 | offline_analysis | C | M7 | R3 | emulator | no | PASS | S7_C_M7_R3/offline_analysis.json | 2026-05-10T22:37:10Z | offline stream checks passed |
+| S7 | S7_C_M7_R4 | counter_chain | C | M7 | R4 | emulator | no | PASS | S7_C_M7_R4/counter_chain.json | 2026-05-10T22:37:10Z | all adjacent counter stages conserve |
+| S7 | S7_C_M7_R4 | rate_chain | C | M7 | R4 | emulator | no | PASS | S7_C_M7_R4/rate_chain.json | 2026-05-10T22:37:11Z | ingress and egress per-channel histograms match |
+| S7 | S7_C_M7_R4 | latency | C | M7 | R4 | emulator | no | PASS | S7_C_M7_R4/latency.json | 2026-05-10T22:37:11Z | all latency panels satisfy bounds |
+| S7 | S7_C_M7_R4 | offline_chain | C | M7 | R4 | emulator | no | PASS | S7_C_M7_R4/offline_chain.json | 2026-05-10T22:37:11Z | decoded host rx_buffer stream |
+| S7 | S7_C_M7_R4 | offline_analysis | C | M7 | R4 | emulator | no | PASS | S7_C_M7_R4/offline_analysis.json | 2026-05-10T22:37:11Z | offline stream checks passed |
 | S10 | S10_REAL_A_M0_R1 | counter_chain | A | M0 | R1 | real_mutrig | yes | PENDING | - | - | - |
 | S10 | S10_REAL_A_M0_R1 | rate_chain | A | M0 | R1 | real_mutrig | yes | PENDING | - | - | - |
 | S10 | S10_REAL_A_M0_R1 | latency | A | M0 | R1 | real_mutrig | yes | PENDING | - | - | - |
@@ -981,4 +981,4 @@ Generated from JSON evidence under `test_plan/evidence/`.
 - S8 math review is tracked by `test_plan/MATH_REVIEW.md`.
 - S9 final signoff is `test_plan/scripts/ci_verify_checklist.sh`.
 - S10 real-MuTRiG rows are optional and do not block the main emulator pass.
-<!-- evidence_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855; checklist_sha256: c68672bfd2c6fdfc3a5d610aa96c15db20c2d2af8f60fe6030e110d4f8dff8d8; generated_at: 1970-01-01T00:00:00Z -->
+<!-- evidence_sha256: bf633430cc9540cfb4a56dc148897bff0dbe1bb133c503a146e2c822cdff40ec; checklist_sha256: a86c414e0c403cf4b451b7aeddbd8abca9bcd575a16b0f5e1816f9ab0236f4ec; generated_at: 2026-05-10T22:37:11Z -->
