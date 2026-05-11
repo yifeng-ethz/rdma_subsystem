@@ -1,1 +1,1 @@
-chain=bring_up status=PASS stage=BU detail=UID=0x44514f50_LINK_LOCKED_LOW=0x2f00_LINK_LOCKED_HIGH=0x0_STATUS=0x0_HALT=0x0_OPQ_W=0x0_BYTES_W=0x0_zero_leakage
+chain=bring_up status=PASS stage=BU detail=UID=0x44514f50_LINK_LOCKED_LOW=0xf00_LINK_LOCKED_HIGH=0x0_STATUS=0x0_HALT=0x0_OPQ_W=0x0_BYTES_W=0x0_zero_leakage

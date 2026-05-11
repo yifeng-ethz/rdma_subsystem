@@ -1,14 +1,14 @@
 {
   "chains": {
     "bring_up": {
-      "detail": "UID=0x44514f50_LINK_LOCKED_LOW=0x2f00_LINK_LOCKED_HIGH=0x0_STATUS=0x0_HALT=0x0_OPQ_W=0x0_BYTES_W=0x0_zero_leakage",
+      "detail": "UID=0x44514f50_LINK_LOCKED_LOW=0xf00_LINK_LOCKED_HIGH=0x0_STATUS=0x0_HALT=0x0_OPQ_W=0x0_BYTES_W=0x0_zero_leakage",
       "stage": "BU",
       "status": "PASS"
     }
   },
   "cohort": "S0",
   "evidence_kind": "run_ledger",
-  "generated_at": "2026-05-10T23:06:13Z",
+  "generated_at": "2026-05-10T23:52:20Z",
   "mask": "-",
   "matrix_id": "S0_BU",
   "mode": "-",
