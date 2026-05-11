@@ -238,6 +238,31 @@ def extract_detail(data: dict[str, Any]) -> str:
     return ""
 
 
+def enforce_real_traffic_gate(
+    data: dict[str, Any], chain: str, status: str, stage: str, detail: str
+) -> tuple[str, str, str]:
+    if chain not in TRAFFIC_CHAINS or status != "PASS":
+        return status, stage, detail
+    if str(data.get("mode", "-")) in {"-", ""} or str(data.get("rate", "-")) in {"-", ""}:
+        return status, stage, detail
+    if data.get("real_traffic") is True or "real_traffic=1" in detail:
+        return status, stage, detail
+    if data.get("evidence_kind") == "run_ledger":
+        zero_detail = "opq_w_d=0" in detail or "bytes_w_d=0" in detail or "sqe_d=0" in detail
+        if zero_detail or "run=1s" in detail:
+            return (
+                "FAIL_AT_C1",
+                "C1",
+                "legacy zero-traffic run_ledger PASS rejected; missing positive FEB/rate_emulator delta",
+            )
+        return (
+            "FAIL_AT_C1",
+            "C1",
+            "run_ledger traffic PASS rejected; missing real_traffic=1 first-stage proof",
+        )
+    return status, stage, detail
+
+
 def evidence_items_from_json(
     path: Path, evidence_root: Path, data: dict[str, Any]
 ) -> list[EvidenceResult]:
@@ -258,6 +283,8 @@ def evidence_items_from_json(
             else:
                 merged["status"] = chain_data
             status, stage = normalize_status(chain, merged)
+            detail = extract_detail(merged)
+            status, stage, detail = enforce_real_traffic_gate(merged, chain, status, stage, detail)
             items.append(
                 EvidenceResult(
                     str(merged.get("cohort") or cohort),
@@ -265,7 +292,7 @@ def evidence_items_from_json(
                     chain,
                     status,
                     stage,
-                    extract_detail(merged),
+                    detail,
                     best_timestamp(merged),
                     rel,
                 )
@@ -282,6 +309,8 @@ def evidence_items_from_json(
             merged = dict(data)
             merged.update(entry)
             status, stage = normalize_status(chain, merged)
+            detail = extract_detail(merged)
+            status, stage, detail = enforce_real_traffic_gate(merged, chain, status, stage, detail)
             items.append(
                 EvidenceResult(
                     str(merged.get("cohort") or cohort),
@@ -289,7 +318,7 @@ def evidence_items_from_json(
                     chain,
                     status,
                     stage,
-                    extract_detail(merged),
+                    detail,
                     best_timestamp(merged),
                     rel,
                 )
@@ -298,6 +327,8 @@ def evidence_items_from_json(
     direct_chain = normalize_chain(data.get("chain") or data.get("checkpoint_chain"))
     if direct_chain is not None:
         status, stage = normalize_status(direct_chain, data)
+        detail = extract_detail(data)
+        status, stage, detail = enforce_real_traffic_gate(data, direct_chain, status, stage, detail)
         items.append(
             EvidenceResult(
                 cohort,
@@ -305,7 +336,7 @@ def evidence_items_from_json(
                 direct_chain,
                 status,
                 stage,
-                extract_detail(data),
+                detail,
                 best_timestamp(data),
                 rel,
             )

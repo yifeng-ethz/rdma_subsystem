@@ -10,6 +10,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from traffic_expectations import expected_total, tolerance_for
+
 PANEL_ORDER = ("pre_rbcam", "post_rbcam", "feb_egress", "opq_ingress", "opq_egress")
 DEFAULT_BOUNDS = {
     "pre_rbcam": (0, 2000),
@@ -25,6 +27,11 @@ def utc_now() -> str:
 
 
 def synthetic_input() -> dict[str, Any]:
+    mode = "A"
+    mask = "M4"
+    rate = "R1"
+    run_seconds = 30.0
+    sample_count = int(expected_total(mode, mask, rate, run_seconds))
     panels: dict[str, Any] = {}
     for name, (lo, hi) in DEFAULT_BOUNDS.items():
         mid = (lo + hi) // 2
@@ -35,13 +42,17 @@ def synthetic_input() -> dict[str, Any]:
             "p50": mid,
             "p95": hi - max(1, (hi - lo) // 20),
             "in_bound_fraction": 1.0,
-            "histogram": [[mid, 10]],
+            "sample_count": sample_count,
+            "histogram": [[mid, sample_count]],
         }
     return {
         "schema_version": 1,
         "cohort": "SYN",
-        "matrix_id": "SYN_A_M0_R1",
-        "mode": "A",
+        "matrix_id": "SYN_A_M4_R1",
+        "mode": mode,
+        "mask": mask,
+        "rate": rate,
+        "run_seconds": run_seconds,
         "source": "synthetic",
         "panels": panels,
     }
@@ -110,11 +121,32 @@ def panel_status(name: str, panel: dict[str, Any]) -> tuple[bool, dict[str, Any]
     return ok, summary
 
 
+def panel_sample_count(panel: dict[str, Any]) -> int:
+    if "sample_count" in panel:
+        return int(panel["sample_count"])
+    histogram = panel.get("histogram")
+    if isinstance(histogram, list):
+        total = 0
+        for item in histogram:
+            if isinstance(item, list) and len(item) >= 2:
+                total += int(item[1])
+            elif isinstance(item, dict):
+                total += int(item.get("count", item.get("samples", 0)))
+        return total
+    return 0
+
+
 def build_manifest(data: dict[str, Any], reference: str | None) -> dict[str, Any]:
     raw_panels = data.get("panels")
     if not isinstance(raw_panels, dict):
         raise SystemExit("ERROR: latency input must contain a panels object")
 
+    mode = str(data.get("mode") or "A").upper()
+    mask = str(data.get("mask") or "M0").upper()
+    rate = data.get("rate_hz", data.get("rate", "R1"))
+    run_seconds = float(data.get("run_seconds") or 30.0)
+    expected_samples = expected_total(mode, mask, rate, run_seconds)
+    sample_tolerance = tolerance_for(mode, expected_samples, data.get("tolerance"))
     failures: list[dict[str, Any]] = []
     panel_summaries: list[dict[str, Any]] = []
     for index, name in enumerate(PANEL_ORDER, start=1):
@@ -124,7 +156,29 @@ def build_manifest(data: dict[str, Any], reference: str | None) -> dict[str, Any
             failures.append(failure)
             panel_summaries.append({"panel": name, "pass": False, "reason": "missing"})
             continue
+        samples = panel_sample_count(raw_panel)
+        if expected_samples > 0 and abs(float(samples) - expected_samples) > sample_tolerance:
+            failure = {
+                "stage": f"L{index}",
+                "panel": name,
+                "reason": "sample count does not match programmed traffic",
+                "expected": expected_samples,
+                "observed": samples,
+                "tolerance": sample_tolerance,
+            }
+            if not failures:
+                failures.append(failure)
+            panel_summaries.append(
+                {
+                    "panel": name,
+                    "pass": False,
+                    "sample_count": samples,
+                    "reason": failure["reason"],
+                }
+            )
+            continue
         ok, summary = panel_status(name, raw_panel)
+        summary["sample_count"] = samples
         panel_summaries.append(summary)
         if not ok and not failures:
             failures.append({"stage": f"L{index}", "panel": name, "summary": summary})
@@ -146,7 +200,11 @@ def build_manifest(data: dict[str, Any], reference: str | None) -> dict[str, Any
         "status": status,
         "stage": failures[0]["stage"] if failures else "L5",
         "detail": detail,
-        "mode": data.get("mode", "UNKNOWN"),
+        "mode": mode,
+        "mask": mask,
+        "rate": rate,
+        "run_seconds": run_seconds,
+        "expected_samples": expected_samples,
         "reference_generator": reference,
         "plot_png": data.get("plot_png"),
         "todo": (

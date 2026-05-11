@@ -1,0 +1,50 @@
+Info: *******************************************************************
+Info: Running Quartus Prime Signal Tap
+    Info: Version 18.1.0 Build 625 09/12/2018 SJ Standard Edition
+    Info: Copyright (C) 2018  Intel Corporation. All rights reserved.
+    Info: Your use of Intel Corporation's design tools, logic functions 
+    Info: and other software and tools, and its AMPP partner logic 
+    Info: functions, and any output files from any of the foregoing 
+    Info: (including device programming or simulation files), and any 
+    Info: associated documentation or information are expressly subject 
+    Info: to the terms and conditions of the Intel Program License 
+    Info: Subscription Agreement, the Intel Quartus Prime License Agreement,
+    Info: the Intel FPGA IP License Agreement, or other applicable license
+    Info: agreement, including, without limitation, that your use is for
+    Info: the sole purpose of programming logic devices manufactured by
+    Info: Intel and sold by Intel or its authorized distributors.  Please
+    Info: refer to the applicable agreement for further details.
+    Info: Processing started: Mon May 11 02:26:57 2026
+Info: Command: quartus_stp -t /dev/stdin
+Error (261005): Can't find the instance.  Download a design with SRAM Object File containing this instance.
+Internal Error: Sub-system: SDR, File: /quartus/sld/sdr/sdr_data_log.cpp, Line: 789
+this->m_trigger_pos >= 0 && this->m_trigger_pos < samples_allocated
+Stack Trace:
+    0xa30b2: SDR_DATA_LOG::extend_fast_bit_streams() + 0x104 (sld_sdr)
+    0xa33b0: SDR_DATA_LOG::get_bit(int, int) + 0x3c (sld_sdr)
+    0x23ce8: SLI_DATA_LOG_EXPORTER::create_vector_database(SDR_DATA_LOG*, SLI_DATA_LOG_EXPORTER_OUTPUT_FORMAT, long long) + 0x10de (sld_sli)
+    0x20f41: SLI_STP_CONTROL_CMD::export_file(char const*, char const*, char const*, char const*, char const*, char const*, char const*, unsigned int) + 0x291 (sld_sli)
+    0x1a85c: SLI_TCL_CONTROL::export_file(char const*, char const*, char const*, char const*, char const*, char const*, unsigned int, Tcl_Interp*) + 0x70 (sld_sli)
+    0x1b029: sli_export_data_log + 0x122 (sld_sli)
+    0x4d671: TclInvokeStringCommand + 0x81 (tcl8.6)
+    0x51ec7: TclNRRunCallbacks + 0x47 (tcl8.6)
+    0x536e7: TclEvalEx + 0x947 (tcl8.6)
+    0xfb366: Tcl_FSEvalFileEx + 0x266 (tcl8.6)
+    0xfb47e: Tcl_EvalFile + 0x2e (tcl8.6)
+    0x11ebc: qexe_evaluate_tcl_script(std::string const&) + 0x382 (comp_qexe)
+    0x18dcf: qexe_do_tcl(QEXE_FRAMEWORK*, std::string const&, std::string const&, std::list<std::string, std::allocator<std::string> > const&, bool, bool) + 0x597 (comp_qexe)
+    0x1c3d9: qexe_standard_main(QEXE_FRAMEWORK*, QEXE_OPTION_DEFINITION const**, int, char const**) + 0x506 (comp_qexe)
+     0x523d: ice_main(int, char const**) + 0x59 (quartus_stp)
+    0x40720: msg_main_thread(void*) + 0x10 (ccl_msg)
+     0x602c: thr_final_wrapper + 0xc (ccl_thr)
+    0x407df: msg_thread_wrapper(void* (*)(void*), void*) + 0x62 (ccl_msg)
+     0xa559: mem_thread_wrapper(void* (*)(void*), void*) + 0x99 (ccl_mem)
+     0x8f92: err_thread_wrapper(void* (*)(void*), void*) + 0x27 (ccl_err)
+     0x63f2: thr_thread_wrapper + 0x15 (ccl_thr)
+    0x427e2: msg_exe_main(int, char const**, int (*)(int, char const**)) + 0xa3 (ccl_msg)
+     0x595b: main + 0x26 (quartus_stp)
+    0x3524d: __libc_start_main + 0xef (c.so.6)
+
+
+End-trace
+

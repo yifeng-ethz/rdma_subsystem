@@ -19,3 +19,4 @@ tb_int/uvm/logs/
 transcript
 __pycache__/
 *.pyc
+cr_ie_info.json

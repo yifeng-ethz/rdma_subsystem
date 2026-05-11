@@ -11,6 +11,15 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable
 
+from traffic_expectations import (
+    N_CHANNELS,
+    active_channels,
+    expected_per_channel,
+    expected_total,
+    rate_hz,
+    tolerance_for,
+)
+
 
 def utc_now() -> str:
     return datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
@@ -128,20 +137,118 @@ def decode(args: argparse.Namespace) -> tuple[dict[str, Any], dict[str, Any]]:
     offline_status = "PASS" if not frame_errors else "FAIL_AT_O4"
     offline_detail = "decoded host rx_buffer stream" if not frame_errors else frame_errors[0]
 
-    analysis_failures: list[str] = []
+    analysis_failures: list[dict[str, Any]] = []
     if args.truth_count is not None and records_count != args.truth_count:
-        analysis_failures.append(f"decoded count {records_count} != truth count {args.truth_count}")
+        analysis_failures.append(
+            {
+                "stage": "A2",
+                "reason": f"decoded count {records_count} != truth count {args.truth_count}",
+            }
+        )
     if args.expected_active_channel is not None:
         active_count = channel_counts.get(args.expected_active_channel, 0)
         if active_count != records_count:
-            analysis_failures.append("records outside expected active channel")
+            analysis_failures.append({"stage": "A1", "reason": "records outside expected active channel"})
     if args.require_inter_event and not inter_event:
-        analysis_failures.append("missing inter-event samples")
+        analysis_failures.append({"stage": "A3", "reason": "missing inter-event samples"})
 
-    analysis_status = "PASS" if not analysis_failures else "FAIL_AT_A2"
+    strict_expected = args.mode is not None and args.mask is not None and args.rate is not None
+    expected_ch = None
+    expected_all = None
+    generator_delta = args.generator_delta
+    total_tolerance = None
+    if strict_expected:
+        mode = str(args.mode).upper()
+        mask = str(args.mask).upper()
+        expected_rate = rate_hz(args.rate)
+        expected_ch = expected_per_channel(mode, expected_rate, args.run_seconds)
+        expected_all = expected_total(mode, mask, expected_rate, args.run_seconds)
+        count_tolerance = tolerance_for(mode, expected_ch, args.tolerance)
+        total_tolerance = tolerance_for(mode, expected_all, args.tolerance)
+        if expected_all > 0 and generator_delta is None:
+            analysis_failures.append(
+                {
+                    "stage": "C1",
+                    "reason": "missing FEB/rate_emulator first-stage delta",
+                    "expected_min_delta": 1,
+                }
+            )
+        elif expected_all > 0 and generator_delta is not None and generator_delta <= 0:
+            analysis_failures.append(
+                {
+                    "stage": "C1",
+                    "reason": "programmed nonzero traffic produced zero FEB-side delta",
+                    "expected_min_delta": 1,
+                    "observed": generator_delta,
+                }
+            )
+        elif generator_delta is not None and expected_all is not None:
+            if abs(float(generator_delta) - expected_all) > total_tolerance:
+                analysis_failures.append(
+                    {
+                        "stage": "A2",
+                        "reason": "first-stage delta does not match programmed traffic",
+                        "expected": expected_all,
+                        "observed": generator_delta,
+                        "tolerance": total_tolerance,
+                    }
+                )
+            if abs(float(records_count) - float(generator_delta)) > total_tolerance:
+                analysis_failures.append(
+                    {
+                        "stage": "A2",
+                        "reason": "decoded count does not match first-stage delta",
+                        "expected": generator_delta,
+                        "observed": records_count,
+                        "tolerance": total_tolerance,
+                    }
+                )
+        if expected_all is not None and abs(float(records_count) - expected_all) > total_tolerance:
+            analysis_failures.append(
+                {
+                    "stage": "A1",
+                    "reason": "decoded count does not match programmed traffic",
+                    "expected": expected_all,
+                    "observed": records_count,
+                    "tolerance": total_tolerance,
+                }
+            )
+        active = active_channels(mask)
+        for ch in range(N_CHANNELS):
+            observed = channel_counts.get(ch, 0)
+            if ch not in active:
+                if observed != 0:
+                    analysis_failures.append(
+                        {"stage": "A1", "channel": ch, "expected": 0, "observed": observed}
+                    )
+                    break
+                continue
+            if abs(float(observed) - expected_ch) > count_tolerance:
+                analysis_failures.append(
+                    {
+                        "stage": "A1",
+                        "channel": ch,
+                        "expected": expected_ch,
+                        "observed": observed,
+                        "tolerance": count_tolerance,
+                    }
+                )
+                break
+        if (
+            offline_status == "PASS"
+            and expected_all is not None
+            and total_tolerance is not None
+            and abs(float(records_count) - expected_all) > total_tolerance
+        ):
+            offline_status = "FAIL_AT_O4"
+            offline_detail = (
+                "decoded host rx_buffer record count does not match programmed traffic"
+            )
+
+    analysis_status = "PASS" if not analysis_failures else f"FAIL_AT_{analysis_failures[0]['stage']}"
     if args.require_inter_event and analysis_status == "PASS" and len(set(inter_event)) > 1:
         analysis_status = "FAIL_AT_A3"
-        analysis_failures.append("inter-event period is not constant")
+        analysis_failures.append({"stage": "A3", "reason": "inter-event period is not constant"})
 
     common = {
         "schema_version": 1,
@@ -171,9 +278,16 @@ def decode(args: argparse.Namespace) -> tuple[dict[str, Any], dict[str, Any]]:
         "chain": "offline_analysis",
         "status": analysis_status,
         "stage": "A3" if analysis_status == "PASS" else analysis_status.replace("FAIL_AT_", ""),
-        "detail": "offline stream checks passed" if not analysis_failures else analysis_failures[0],
+        "detail": "offline stream checks passed" if not analysis_failures else str(analysis_failures[0]),
         "failures": analysis_failures,
         "inter_event_histogram": histogram(inter_event),
+        "mode": args.mode,
+        "mask": args.mask,
+        "rate": args.rate,
+        "run_seconds": args.run_seconds,
+        "expected_per_channel": expected_ch,
+        "expected_total": expected_all,
+        "generator_delta": generator_delta,
     }
     return offline_chain, offline_analysis
 
@@ -188,6 +302,12 @@ def main() -> int:
     parser.add_argument("--expected-active-channel", type=int)
     parser.add_argument("--require-inter-event", action="store_true")
     parser.add_argument("--synthetic", action="store_true", help="create a small synthetic dma.bin if missing")
+    parser.add_argument("--mode", help="traffic mode for strict per-channel checks")
+    parser.add_argument("--mask", help="mask pattern for strict per-channel checks")
+    parser.add_argument("--rate", help="rate token or Hz for strict per-channel checks")
+    parser.add_argument("--run-seconds", type=float, default=30.0)
+    parser.add_argument("--generator-delta", type=int, help="FEB/rate_emulator delta for CP-A2")
+    parser.add_argument("--tolerance", type=float)
     args = parser.parse_args()
 
     offline_chain, offline_analysis = decode(args)

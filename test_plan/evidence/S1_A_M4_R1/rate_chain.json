@@ -2,18 +2,29 @@
   "active_channels": 1,
   "chain": "rate_chain",
   "cohort": "S1",
-  "detail": "ingress and egress per-channel histograms match",
+  "detail": "{\"counter\": \"first_stage_delta\", \"expected_min_delta\": 1, \"observed\": 0, \"reason\": \"programmed nonzero traffic produced zero FEB-side delta\", \"stage\": \"C1\"}",
   "evidence_kind": "E2_rate_histogram",
-  "failures": [],
-  "generated_at": "2026-05-10T22:35:48Z",
+  "expected_per_channel": 300000.0,
+  "expected_total": 300000.0,
+  "failures": [
+    {
+      "counter": "first_stage_delta",
+      "expected_min_delta": 1,
+      "observed": 0,
+      "reason": "programmed nonzero traffic produced zero FEB-side delta",
+      "stage": "C1"
+    }
+  ],
+  "first_stage_delta": 0,
+  "generated_at": "2026-05-11T02:37:57Z",
   "mask": "M4",
   "matrix_id": "S1_A_M4_R1",
   "mode": "A",
   "rate_hz": 10000.0,
   "run_seconds": 30.0,
   "schema_version": 1,
-  "stage": "R6",
-  "status": "PASS",
-  "total_egress": 300000,
-  "total_ingress": 300000
+  "stage": "C1",
+  "status": "FAIL_AT_C1",
+  "total_egress": 0,
+  "total_ingress": 0
 }

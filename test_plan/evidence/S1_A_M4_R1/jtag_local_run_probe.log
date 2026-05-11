@@ -1,0 +1,512 @@
+configure_generator
++ /home/yifeng/packages/online_dpv2/online/install/bin/sc_tool 2 write 0x08800 0x00000003 0x00000000 0x00000001 0x0000ace1 0x00000008 0x00000000 0x00000001
++ /home/yifeng/packages/online_dpv2/online/install/bin/sc_tool 2 write 0x08810 0x00000000
++ /home/yifeng/packages/online_dpv2/online/install/bin/sc_tool 2 write 0x08820 0x00000000
++ /home/yifeng/packages/online_dpv2/online/install/bin/sc_tool 2 write 0x08830 0x00000000
++ /home/yifeng/packages/online_dpv2/online/install/bin/sc_tool 2 write 0x08840 0x00000000
++ /home/yifeng/packages/online_dpv2/online/install/bin/sc_tool 2 write 0x08850 0x00000000
++ /home/yifeng/packages/online_dpv2/online/install/bin/sc_tool 2 write 0x08860 0x00000000
++ /home/yifeng/packages/online_dpv2/online/install/bin/sc_tool 2 write 0x08870 0x00000000
+# NOTE: FEB_MASK_CSR_ADDR not set; no live per-channel FEB mask CSR write emitted for M4.
++ /home/yifeng/packages/online_dpv2/online/install/bin/sc_tool 2 write 0x00AC80 0x00000000
++ /home/yifeng/packages/online_dpv2/online/install/bin/sc_tool 2 write 0x04C00 0x00000000
++ /home/yifeng/packages/online_dpv2/online/install/bin/sc_tool 2 write 0x00AC80 0x00000000 0x00000064 0x0000000e 0x00000001 0x00000000 0x000030d4 0x00000005 0x00001869 0x00000001 0x0000ace1 0x00000004
++ /home/yifeng/packages/online_dpv2/online/install/bin/sc_tool 2 write 0x00AC80 0x00000002
++ /home/yifeng/packages/online_dpv2/online/install/bin/sc_tool 2 read 0x00AC80 11
+status_before
+lane=0 status=0x00000000
+lane=1 status=0x00000000
+lane=2 status=0x00000000
+lane=3 status=0x00000000
+lane=4 status=0x00000000
+lane=5 status=0x00000000
+lane=6 status=0x00000000
+lane=7 status=0x00000000
+jtag_run_sequence
+inject 0x00000030
+SELECTED master=/channels/local/t002/master_1 uid=0x52434d48
+PRE  status=0x00000003 last_cmd=0x00000031
+POST status=0x00000033 last_cmd=0x00000030
+INJECT_RESULT status=OK cmd=0x00000030 pre_last_cmd=0x00000031 post_last_cmd=0x00000030
+java.lang.Exception: invalid command name "exit"
+inject 0x00000031
+SELECTED master=/channels/local/t002/master_1 uid=0x52434d48
+PRE  status=0x00000033 last_cmd=0x00000030
+POST status=0x00000003 last_cmd=0x00000031
+INJECT_RESULT status=OK cmd=0x00000031 pre_last_cmd=0x00000030 post_last_cmd=0x00000031
+java.lang.Exception: invalid command name "exit"
+inject 0x00000032
+SELECTED master=/channels/local/t002/master_1 uid=0x52434d48
+PRE  status=0x00000003 last_cmd=0x00000031
+POST status=0x00000003 last_cmd=0x00000032
+INJECT_RESULT status=OK cmd=0x00000032 pre_last_cmd=0x00000031 post_last_cmd=0x00000032
+java.lang.Exception: invalid command name "exit"
+inject 0x34567810
+SELECTED master=/channels/local/t002/master_1 uid=0x52434d48
+PRE  status=0x00000003 last_cmd=0x00000032
+POST status=0x00000003 last_cmd=0x00000010
+INJECT_RESULT status=OK cmd=0x34567810 pre_last_cmd=0x00000032 post_last_cmd=0x00000010
+java.lang.Exception: invalid command name "exit"
+inject 0x00000011
+SELECTED master=/channels/local/t002/master_1 uid=0x52434d48
+PRE  status=0x00000003 last_cmd=0x00000010
+POST status=0x00000003 last_cmd=0x00000011
+INJECT_RESULT status=OK cmd=0x00000011 pre_last_cmd=0x00000010 post_last_cmd=0x00000011
+java.lang.Exception: invalid command name "exit"
+inject 0x00000012
+SELECTED master=/channels/local/t002/master_1 uid=0x52434d48
+PRE  status=0x00000003 last_cmd=0x00000011
+POST status=0x00000003 last_cmd=0x00000012
+INJECT_RESULT status=OK cmd=0x00000012 pre_last_cmd=0x00000011 post_last_cmd=0x00000012
+java.lang.Exception: invalid command name "exit"
+sleep 5
+status_after
+lane=0 status=0x00000000
+lane=1 status=0x00000000
+lane=2 status=0x00000000
+lane=3 status=0x00000000
+lane=4 status=0x00000000
+lane=5 status=0x00000000
+lane=6 status=0x00000000
+lane=7 status=0x00000000
+disable_generator
++ /home/yifeng/packages/online_dpv2/online/install/bin/sc_tool 2 write 0x00AC80 0x00000000
+board:
+  PLL_LOCKED_REGISTER_R      = 0x00000000
+  LINK_LOCKED_HIGH_REGISTER_R= 0x00000F00
+  RESET_LINK_STATUS_REGISTER_R = 0x00000000
+info: request summary:
+  type               : WR
+  link               : 2
+  addr               : 0x0AC80
+  request length     : 1 word(s)
+  main length reg    : 3
+  expected reply words (actual)   : 4
+  expected reply words (declared) : 4
+info: request words written to SC main:
+  wmem[0] = 0x1D0002BC
+  wmem[1] = 0x0000AC80
+  wmem[2] = 0x00000001
+  wmem[3] = 0x00000000
+  wmem[4] = 0x0000009C
+  timing main ready   : 58 us
+  timing matched      : 67 us
+  timing total        : 67 us
+  secondary before    : 0x0000
+  secondary after     : 0x0004
+  secondary delta     : 4 word(s)
+  SC main status      : 0x00000001
+  SC state            : 0x20000001
+info: observed packet:
+  ring start          : 0x0000
+  ring end            : 0x0004
+  type                : WR
+  link                : 2
+  addr                : 0x0AC80
+  rsp                 : OK (0)
+  ack                 : 1
+  echoed length       : 1
+  declared payload    : 0
+  actual payload      : 0
+  declared ring words : 4
+  actual ring words   : 4
+  raw header          : 0x1D0002BC
+  raw addr word       : 0x0000AC80
+  raw len word        : 0x00010001
+  raw trailer         : 0x0000009C
++ /home/yifeng/packages/online_dpv2/online/install/bin/sc_tool 2 write 0x04C00 0x00000000
+board:
+  PLL_LOCKED_REGISTER_R      = 0x00000000
+  LINK_LOCKED_HIGH_REGISTER_R= 0x00008F00
+  RESET_LINK_STATUS_REGISTER_R = 0x00000000
+info: request summary:
+  type               : WR
+  link               : 2
+  addr               : 0x04C00
+  request length     : 1 word(s)
+  main length reg    : 3
+  expected reply words (actual)   : 4
+  expected reply words (declared) : 4
+info: request words written to SC main:
+  wmem[0] = 0x1D0002BC
+  wmem[1] = 0x00004C00
+  wmem[2] = 0x00000001
+  wmem[3] = 0x00000000
+  wmem[4] = 0x0000009C
+  timing main ready   : 58 us
+  timing matched      : 67 us
+  timing total        : 67 us
+  secondary before    : 0x35F1
+  secondary after     : 0x35F5
+  secondary delta     : 4 word(s)
+  SC main status      : 0x00000001
+  SC state            : 0x20000001
+info: observed packet:
+  ring start          : 0x35F1
+  ring end            : 0x35F5
+  type                : WR
+  link                : 2
+  addr                : 0x04C00
+  rsp                 : OK (0)
+  ack                 : 1
+  echoed length       : 1
+  declared payload    : 0
+  actual payload      : 0
+  declared ring words : 4
+  actual ring words   : 4
+  raw header          : 0x1D0002BC
+  raw addr word       : 0x00004C00
+  raw len word        : 0x00010001
+  raw trailer         : 0x0000009C
++ /home/yifeng/packages/online_dpv2/online/install/bin/sc_tool 2 write 0x08800 0x00000000
+board:
+  PLL_LOCKED_REGISTER_R      = 0x00000000
+  LINK_LOCKED_HIGH_REGISTER_R= 0x00000F00
+  RESET_LINK_STATUS_REGISTER_R = 0x00000000
+info: request summary:
+  type               : WR
+  link               : 2
+  addr               : 0x08800
+  request length     : 1 word(s)
+  main length reg    : 3
+  expected reply words (actual)   : 4
+  expected reply words (declared) : 4
+info: request words written to SC main:
+  wmem[0] = 0x1D0002BC
+  wmem[1] = 0x00008800
+  wmem[2] = 0x00000001
+  wmem[3] = 0x00000000
+  wmem[4] = 0x0000009C
+  timing main ready   : 58 us
+  timing matched      : 67 us
+  timing total        : 67 us
+  secondary before    : 0x00F6
+  secondary after     : 0x00FA
+  secondary delta     : 4 word(s)
+  SC main status      : 0x00000001
+  SC state            : 0x20000001
+info: observed packet:
+  ring start          : 0x00F6
+  ring end            : 0x00FA
+  type                : WR
+  link                : 2
+  addr                : 0x08800
+  rsp                 : OK (0)
+  ack                 : 1
+  echoed length       : 1
+  declared payload    : 0
+  actual payload      : 0
+  declared ring words : 4
+  actual ring words   : 4
+  raw header          : 0x1D0002BC
+  raw addr word       : 0x00008800
+  raw len word        : 0x00010001
+  raw trailer         : 0x0000009C
++ /home/yifeng/packages/online_dpv2/online/install/bin/sc_tool 2 write 0x08810 0x00000000
+board:
+  PLL_LOCKED_REGISTER_R      = 0x00000000
+  LINK_LOCKED_HIGH_REGISTER_R= 0x00002F00
+  RESET_LINK_STATUS_REGISTER_R = 0x00000000
+info: request summary:
+  type               : WR
+  link               : 2
+  addr               : 0x08810
+  request length     : 1 word(s)
+  main length reg    : 3
+  expected reply words (actual)   : 4
+  expected reply words (declared) : 4
+info: request words written to SC main:
+  wmem[0] = 0x1D0002BC
+  wmem[1] = 0x00008810
+  wmem[2] = 0x00000001
+  wmem[3] = 0x00000000
+  wmem[4] = 0x0000009C
+  timing main ready   : 61 us
+  timing matched      : 72 us
+  timing total        : 72 us
+  secondary before    : 0x00AF
+  secondary after     : 0x00B3
+  secondary delta     : 4 word(s)
+  SC main status      : 0x00000001
+  SC state            : 0x20000001
+info: observed packet:
+  ring start          : 0x00AF
+  ring end            : 0x00B3
+  type                : WR
+  link                : 2
+  addr                : 0x08810
+  rsp                 : OK (0)
+  ack                 : 1
+  echoed length       : 1
+  declared payload    : 0
+  actual payload      : 0
+  declared ring words : 4
+  actual ring words   : 4
+  raw header          : 0x1D0002BC
+  raw addr word       : 0x00008810
+  raw len word        : 0x00010001
+  raw trailer         : 0x0000009C
++ /home/yifeng/packages/online_dpv2/online/install/bin/sc_tool 2 write 0x08820 0x00000000
+board:
+  PLL_LOCKED_REGISTER_R      = 0x00000000
+  LINK_LOCKED_HIGH_REGISTER_R= 0x00000F00
+  RESET_LINK_STATUS_REGISTER_R = 0x00000000
+info: request summary:
+  type               : WR
+  link               : 2
+  addr               : 0x08820
+  request length     : 1 word(s)
+  main length reg    : 3
+  expected reply words (actual)   : 4
+  expected reply words (declared) : 4
+info: request words written to SC main:
+  wmem[0] = 0x1D0002BC
+  wmem[1] = 0x00008820
+  wmem[2] = 0x00000001
+  wmem[3] = 0x00000000
+  wmem[4] = 0x0000009C
+  timing main ready   : 58 us
+  timing matched      : 67 us
+  timing total        : 67 us
+  secondary before    : 0x0000
+  secondary after     : 0x0004
+  secondary delta     : 4 word(s)
+  SC main status      : 0x00000001
+  SC state            : 0x20000001
+info: observed packet:
+  ring start          : 0x0000
+  ring end            : 0x0004
+  type                : WR
+  link                : 2
+  addr                : 0x08820
+  rsp                 : OK (0)
+  ack                 : 1
+  echoed length       : 1
+  declared payload    : 0
+  actual payload      : 0
+  declared ring words : 4
+  actual ring words   : 4
+  raw header          : 0x1D0002BC
+  raw addr word       : 0x00008820
+  raw len word        : 0x00010001
+  raw trailer         : 0x0000009C
++ /home/yifeng/packages/online_dpv2/online/install/bin/sc_tool 2 write 0x08830 0x00000000
+board:
+  PLL_LOCKED_REGISTER_R      = 0x00000000
+  LINK_LOCKED_HIGH_REGISTER_R= 0x00000F00
+  RESET_LINK_STATUS_REGISTER_R = 0x00000000
+info: request summary:
+  type               : WR
+  link               : 2
+  addr               : 0x08830
+  request length     : 1 word(s)
+  main length reg    : 3
+  expected reply words (actual)   : 4
+  expected reply words (declared) : 4
+info: request words written to SC main:
+  wmem[0] = 0x1D0002BC
+  wmem[1] = 0x00008830
+  wmem[2] = 0x00000001
+  wmem[3] = 0x00000000
+  wmem[4] = 0x0000009C
+  timing main ready   : 58 us
+  timing matched      : 67 us
+  timing total        : 67 us
+  secondary before    : 0x007F
+  secondary after     : 0x0083
+  secondary delta     : 4 word(s)
+  SC main status      : 0x00000001
+  SC state            : 0x20000001
+info: observed packet:
+  ring start          : 0x007F
+  ring end            : 0x0083
+  type                : WR
+  link                : 2
+  addr                : 0x08830
+  rsp                 : OK (0)
+  ack                 : 1
+  echoed length       : 1
+  declared payload    : 0
+  actual payload      : 0
+  declared ring words : 4
+  actual ring words   : 4
+  raw header          : 0x1D0002BC
+  raw addr word       : 0x00008830
+  raw len word        : 0x00010001
+  raw trailer         : 0x0000009C
++ /home/yifeng/packages/online_dpv2/online/install/bin/sc_tool 2 write 0x08840 0x00000000
+board:
+  PLL_LOCKED_REGISTER_R      = 0x00000000
+  LINK_LOCKED_HIGH_REGISTER_R= 0x00000F00
+  RESET_LINK_STATUS_REGISTER_R = 0x00000000
+info: request summary:
+  type               : WR
+  link               : 2
+  addr               : 0x08840
+  request length     : 1 word(s)
+  main length reg    : 3
+  expected reply words (actual)   : 4
+  expected reply words (declared) : 4
+info: request words written to SC main:
+  wmem[0] = 0x1D0002BC
+  wmem[1] = 0x00008840
+  wmem[2] = 0x00000001
+  wmem[3] = 0x00000000
+  wmem[4] = 0x0000009C
+  timing main ready   : 58 us
+  timing matched      : 67 us
+  timing total        : 67 us
+  secondary before    : 0x147A
+  secondary after     : 0x147E
+  secondary delta     : 4 word(s)
+  SC main status      : 0x00000001
+  SC state            : 0x20000001
+info: observed packet:
+  ring start          : 0x147A
+  ring end            : 0x147E
+  type                : WR
+  link                : 2
+  addr                : 0x08840
+  rsp                 : OK (0)
+  ack                 : 1
+  echoed length       : 1
+  declared payload    : 0
+  actual payload      : 0
+  declared ring words : 4
+  actual ring words   : 4
+  raw header          : 0x1D0002BC
+  raw addr word       : 0x00008840
+  raw len word        : 0x00010001
+  raw trailer         : 0x0000009C
++ /home/yifeng/packages/online_dpv2/online/install/bin/sc_tool 2 write 0x08850 0x00000000
+board:
+  PLL_LOCKED_REGISTER_R      = 0x00000000
+  LINK_LOCKED_HIGH_REGISTER_R= 0x00008F00
+  RESET_LINK_STATUS_REGISTER_R = 0x00000000
+info: request summary:
+  type               : WR
+  link               : 2
+  addr               : 0x08850
+  request length     : 1 word(s)
+  main length reg    : 3
+  expected reply words (actual)   : 4
+  expected reply words (declared) : 4
+info: request words written to SC main:
+  wmem[0] = 0x1D0002BC
+  wmem[1] = 0x00008850
+  wmem[2] = 0x00000001
+  wmem[3] = 0x00000000
+  wmem[4] = 0x0000009C
+  timing main ready   : 59 us
+  timing matched      : 67 us
+  timing total        : 67 us
+  secondary before    : 0x0000
+  secondary after     : 0x0004
+  secondary delta     : 4 word(s)
+  SC main status      : 0x00000001
+  SC state            : 0x20000001
+info: observed packet:
+  ring start          : 0x0000
+  ring end            : 0x0004
+  type                : WR
+  link                : 2
+  addr                : 0x08850
+  rsp                 : OK (0)
+  ack                 : 1
+  echoed length       : 1
+  declared payload    : 0
+  actual payload      : 0
+  declared ring words : 4
+  actual ring words   : 4
+  raw header          : 0x1D0002BC
+  raw addr word       : 0x00008850
+  raw len word        : 0x00010001
+  raw trailer         : 0x0000009C
++ /home/yifeng/packages/online_dpv2/online/install/bin/sc_tool 2 write 0x08860 0x00000000
+board:
+  PLL_LOCKED_REGISTER_R      = 0x00000000
+  LINK_LOCKED_HIGH_REGISTER_R= 0x00008F00
+  RESET_LINK_STATUS_REGISTER_R = 0x00000000
+info: request summary:
+  type               : WR
+  link               : 2
+  addr               : 0x08860
+  request length     : 1 word(s)
+  main length reg    : 3
+  expected reply words (actual)   : 4
+  expected reply words (declared) : 4
+info: request words written to SC main:
+  wmem[0] = 0x1D0002BC
+  wmem[1] = 0x00008860
+  wmem[2] = 0x00000001
+  wmem[3] = 0x00000000
+  wmem[4] = 0x0000009C
+  timing main ready   : 58 us
+  timing matched      : 67 us
+  timing total        : 67 us
+  secondary before    : 0x00DF
+  secondary after     : 0x00E3
+  secondary delta     : 4 word(s)
+  SC main status      : 0x00000001
+  SC state            : 0x20000001
+info: observed packet:
+  ring start          : 0x00DF
+  ring end            : 0x00E3
+  type                : WR
+  link                : 2
+  addr                : 0x08860
+  rsp                 : OK (0)
+  ack                 : 1
+  echoed length       : 1
+  declared payload    : 0
+  actual payload      : 0
+  declared ring words : 4
+  actual ring words   : 4
+  raw header          : 0x1D0002BC
+  raw addr word       : 0x00008860
+  raw len word        : 0x00010001
+  raw trailer         : 0x0000009C
++ /home/yifeng/packages/online_dpv2/online/install/bin/sc_tool 2 write 0x08870 0x00000000
+board:
+  PLL_LOCKED_REGISTER_R      = 0x00000000
+  LINK_LOCKED_HIGH_REGISTER_R= 0x00000F00
+  RESET_LINK_STATUS_REGISTER_R = 0x00000000
+info: request summary:
+  type               : WR
+  link               : 2
+  addr               : 0x08870
+  request length     : 1 word(s)
+  main length reg    : 3
+  expected reply words (actual)   : 4
+  expected reply words (declared) : 4
+info: request words written to SC main:
+  wmem[0] = 0x1D0002BC
+  wmem[1] = 0x00008870
+  wmem[2] = 0x00000001
+  wmem[3] = 0x00000000
+  wmem[4] = 0x0000009C
+  timing main ready   : 58 us
+  timing matched      : 67 us
+  timing total        : 67 us
+  secondary before    : 0x2C58
+  secondary after     : 0x2C5C
+  secondary delta     : 4 word(s)
+  SC main status      : 0x00000001
+  SC state            : 0x20000001
+info: observed packet:
+  ring start          : 0x2C58
+  ring end            : 0x2C5C
+  type                : WR
+  link                : 2
+  addr                : 0x08870
+  rsp                 : OK (0)
+  ack                 : 1
+  echoed length       : 1
+  declared payload    : 0
+  actual payload      : 0
+  declared ring words : 4
+  actual ring words   : 4
+  raw header          : 0x1D0002BC
+  raw addr word       : 0x00008870
+  raw len word        : 0x00010001
+  raw trailer         : 0x0000009C

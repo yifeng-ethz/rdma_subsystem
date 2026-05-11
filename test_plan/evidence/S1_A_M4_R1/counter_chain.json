@@ -2,31 +2,46 @@
   "chain": "counter_chain",
   "cohort": "S1",
   "counters": {
-    "CNT_BYTES_WRITTEN": 1000,
-    "CNT_CQE_POSTED": 1,
+    "CNT_BYTES_WRITTEN": 0,
+    "CNT_CQE_POSTED": 0,
+    "CNT_EOE_OBSERVED": 0,
     "CNT_HALT": 0,
-    "CNT_OPQ_INPUT_W": 250,
-    "CNT_SQE_CONSUMED": 1,
+    "CNT_OPQ_INPUT_W": 0,
+    "CNT_SQE_CONSUMED": 0,
     "EVENT_SKIP_EVENT_DMA_R": 0
   },
-  "detail": "all adjacent counter stages conserve",
+  "detail": "{\"counter\": \"first_stage_delta\", \"expected_min_delta\": 1, \"observed\": 0, \"reason\": \"programmed nonzero traffic produced zero FEB-side delta\", \"stage\": \"C1\"}",
   "evidence_kind": "E1_counter_lossless",
-  "failures": [],
-  "generated_at": "2026-05-10T22:35:48Z",
+  "expected_per_channel": 300000.0,
+  "expected_total": 300000.0,
+  "failures": [
+    {
+      "counter": "first_stage_delta",
+      "expected_min_delta": 1,
+      "observed": 0,
+      "reason": "programmed nonzero traffic produced zero FEB-side delta",
+      "stage": "C1"
+    }
+  ],
+  "first_stage_delta": 0,
+  "generated_at": "2026-05-11T02:37:57Z",
+  "mask": "M4",
   "matrix_id": "S1_A_M4_R1",
   "mode": "A",
+  "rate": "R1",
+  "run_seconds": 30.0,
   "schema_version": 1,
-  "stage": "C9",
+  "stage": "C1",
   "stage_counts": {
-    "C1": 1000,
-    "C2": 1000,
-    "C3": 1000,
-    "C4": 1000,
-    "C5": 1000,
-    "C6": 1000,
-    "C7": 1000,
-    "C8": 1000,
-    "C9": 1000
+    "C1": 0,
+    "C2": 0,
+    "C3": 0,
+    "C4": 0,
+    "C5": 0,
+    "C6": 0,
+    "C7": 0,
+    "C8": 0,
+    "C9": 0
   },
-  "status": "PASS"
+  "status": "FAIL_AT_C1"
 }

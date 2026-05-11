@@ -1,0 +1,9 @@
+matrix_id=S1_A_M4_R1 mode=A mask=M4 rate=R1 run_seconds=30
+generator_rc=0
+run_control_rc=3 run_control_stop_rc=3 run_control_mode=dbg_mm2runctrl run_number=1778467007 feb_rc_feb=7 rc_settle_us=500000 dbg_mm2runctrl_base=0x08880
+emulator_status_t0=0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000
+emulator_status_t1=0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000
+feb_rate_emulator_delta=0
+t0 opq_w=0x0 bytes_w=0x0 sqe=0x0 cqe=0x0 halt=0x0 eoe=0x0 skip=0x0 link_low=0xf00 link_high=0x0
+t1 opq_w=0x0 bytes_w=0x0 sqe=0x0 cqe=0x0 halt=0x0 eoe=0x0 skip=0x0 link_low=0xf00 link_high=0x0
+delta opq_w=0 bytes_w=0 sqe=0 cqe=0 halt=0 eoe=0 skip=0

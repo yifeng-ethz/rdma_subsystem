@@ -1,6 +1,15 @@
 # `rdma_subsystem` Onboard FEB + SWB Test Plan
 
-Status: **CLOSED on real silicon — 631/631 S0..S9 PASS, 320 S10 PENDING (optional, skipped).** See `PHASE_STATUS.md` and `test_plan/CHECKLIST.md`; closure commits are `c5d739b` (CHECKLIST refresh against DMA-FIFO SWB SOF) and `0ee3976` (initial real-silicon evidence flip) in this repo, plus `online_sc` `49765aac3` (AXI4-W -> DMA-FIFO bridge) and `19b6251b6` (rdma_subsystem SWB integration).
+Status: **REAL TRAFFIC BLOCKED at CP-C1 on silicon.** The previous
+631/631 S0..S9 PASS state was zero-traffic evidence and is no longer a
+valid closure criterion. Strict evidence builders now require the
+programmed FEB-side first-stage delta to be nonzero and rate-consistent;
+`S1_A_M4_R1` currently fails at C1/L1/O4 because the FEB emulator never
+accepts RUNNING (`feb_rate_emulator_delta=0`). The SWB `rc_tool` path
+only proves the reset-link transmitter echoed the command locally; the
+FEB-local `dbg_mm2runctrl_0` path is stuck pending with `sent_after=0`.
+See `test_plan/CHECKLIST.md`, `PHASE_STATUS.md`, and
+`test_plan/evidence/S1_A_M4_R1/ITERATIVE_DEBUG.md`.
 
 Hardware target: SWB (Arria 10 DE5 card, `1172:0004`) loaded with the
 new `rdma_subsystem` datapath + FEB SciFi at SWB link 2 on teferi.
@@ -286,10 +295,12 @@ inter-arrival time histogram are checked end-to-end.
 - **Goal**: SWB + FEB + host all in known-good state.
 - **Action**: program SWB SOF; `sudo -n mudaq_recover_pcie`; confirm
   `/dev/mudaq0`; sc_tool reads `CSR_UID = 0x44514F50` ("DQOP") on the
-  rdma_subsystem CSR aperture; FEB SciFi reports
-  `LINK_LOCKED_HIGH_REGISTER_R` bit 2 set (link 2); FEB emulator OFF,
-  hold for 30 s to confirm zero leakage (all SWB CSR counters and the
-  legacy `EVENT_SKIP_EVENT_DMA_R` stay 0; run_state stays IDLE).
+  rdma_subsystem CSR aperture; FEB SciFi reports bit 2 set in the live
+  `online_sc` SWB `LINK_LOCKED_LOW_REGISTER_R` at BAR1 word `0x36`;
+  FEB emulator OFF, hold for 30 s to confirm zero leakage (all SWB CSR
+  counters and the legacy `EVENT_SKIP_EVENT_DMA_R` stay 0; run_state
+  stays IDLE). A `0x00000F00` lock pattern is links 8..11, not SciFi
+  link 2.
 - **Pass**: all reads succeed; UID matches; link2 bit asserted;
   zero-leakage idle confirmed.
 - **STP recipe**: capture on AVMM CSR bus + PCIe BAR1 read-data lanes

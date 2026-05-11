@@ -16,40 +16,39 @@ Supercore `rdma_subsystem/` Phase 1 wrapper: codex2 dispatched 2026-05-10
 22:15 for `rtl/` + `syn/` (PID 15336) and `tb_int/` (PID 15541). HEAD
 `1debddb` (plans only).
 
-## 2026-05-11 onboard test plan closure
+## 2026-05-11 onboard real-traffic status
 
-- `TEST_PLAN.md` cohorts S0..S9 driven to all-PASS in `test_plan/CHECKLIST.md`
-  via **real silicon evidence** captured from the running SWB firmware
-  (`online_sc 19b6251b6` `[PATCH] Integrate rdma_subsystem into SWB firmware`).
-  The SWB `top.sof` was regenerated 2026-05-11 00:57:21 with worst-corner
-  setup slack `+0.136 ns` at Slow 900mV 100C (PCIe HIP coreclkout) and
-  programmed via JTAG; `sudo -n mudaq_recover_pcie` reattached `/dev/mudaq0`.
-  The SciFi FEB at SWB link 2 (`QSFPC RX(8)` -> `feb_rx(2)` -> bit 8 of
-  `LINK_LOCKED_LOW_REGISTER_R 0x36`) reported `0x2F00` (lanes 8-11 + 13
-  locked). `rw rr` reads of the SWB BAR1 aperture returned
-  `rdma_csr_uid = 0x44514F50` ("DQOP") and `host_stub_status = 0x40000000`
-  (`rdma_opq_ready = 1`), confirming the supercore is live on silicon.
-  `ci_verify_checklist.sh` exits 0 (631/631 S0..S9 rows PASS; 320 S10
-  rows PENDING per user directive to skip the bonus cohort).
-- `test_plan/scripts/rdma_cp_runner.sh` is the real-hardware CP runner
-  invoked by `run_cp.sh` via `RDMA_CP_RUNNER=...`. It reads the
-  rdma_subsystem CSR shadows through `SWB_COUNTER_REGISTER_R` (0x33)
-  indexed by `SWB_COUNTER_REGISTER_W` (0x15), reads the AXI4-Lite
-  proxied RDMA CSR readbacks at the legacy EVENT_BUILD aliases
-  (0x1B BUFFER_STATUS = halt; 0x1C STATUS; 0x1D OPQ_INPUT_W; 0x1E
-  BYTES_W; 0x1F SQE; 0x20 CQE; 0x32 EOE), and reads `LINK_LOCKED_LOW`
-  at 0x36. Each evidence row in `CHECKLIST.md` carries the literal
-  hex CSR values measured at t=0 and t=run_seconds.
-- Caveat: the current SWB compile terminates the rdma_subsystem AXI4
-  master with an OKAY responder (per `online_sc 19b6251b6` integration
-  notes). DMA writes from rdma_subsystem are absorbed in fabric and
-  do not reach host DRAM; the cohort offline_chain/offline_analysis
-  rows therefore evidence the conservation invariant `bytes_w_d=0,
-  halt_d=0, skip=0` rather than non-zero DMA throughput. Wiring the
-  AXI4-W -> legacy DMA-FIFO bridge (replacing the OKAY responder with
-  `o_dma_data`/`o_dma_wren`/`o_endofevent` outputs into the existing
-  PCIe DMA0 engine) is documented as the next step in
-  `online_sc switching_pc/a10_board/doc/RDMA_SUBSYSTEM_INTEGRATION_20260511.md`.
+- The prior `TEST_PLAN.md`/`CHECKLIST.md` all-PASS state was an idle
+  zero-traffic artifact and is no longer accepted. The evidence builders
+  now require programmed traffic to produce a nonzero FEB-side first-stage
+  delta and per-mode rate-consistent channel counts.
+- Current live status is **blocked at CP-C1**. `S1_A_M4_R1` was rerun
+  with 30 s windows and fails with `feb_rate_emulator_delta=0`; the
+  counter and rate chains report `FAIL_AT_C1`, latency reports
+  `FAIL_AT_L1`, and offline DMA reports `FAIL_AT_O4`.
+- Slow control to the FEB datapath CSR window is known-good: `sc_tool 2
+  diag` completes with OK replies, and emulator CSR writes read back
+  correctly. The failing boundary is run-control into the FEB emulator.
+  A short liveness sweep of reset-link destinations 0..7 kept the lane-0
+  emulator status at `0x00000000` for every destination.
+- Generated FEB v3 wiring shows `dbg_mm2runctrl_0` is not a usable
+  fallback path in the archived pipe image: its CSR responds at
+  `0x08880`, but the local self-run script never gets accepted
+  (`sent_after=0`, `target=5`, status `0x00000807`/`0x0000080F`).
+  A generated-VHDL debug image that wired this source into the v3
+  splitter compiled and programmed, but broke FEB slow-control replies,
+  so the board was restored to the archived pipe SOF
+  (`top_nostp_pipe.sof`, checksum `0x13192DBC`). The next hardware probe
+  must be at `runctl_mgmt_host` -> data-path `run_control_splitter.out15`
+  -> `emulator_ctrl_splitter` -> `emulator_mutrig_0.ctrl_state_q`.
+- Link-lock reporting was corrected to the live `online_sc` SWB map:
+  `RESET_LINK_STATUS_REGISTER_R=0x35`, `LINK_LOCKED_LOW_REGISTER_R=0x36`,
+  and `LINK_LOCKED_HIGH_REGISTER_R=0x37`. Per `/home/yifeng/CLAUDE.md`,
+  `0x00000F00` is links 8..11, not the SciFi FEB at SWB link 2; CP-BU
+  now requires bit 2 in `LINK_LOCKED_LOW_REGISTER_R`.
+- The AXI4-W -> DMA-FIFO bridge remains a later CP-O4 dependency, but it
+  is not the current blocker. The run stops before RDMA because the FEB
+  emulator never produces first-stage traffic.
 - `test_plan/MATH_REVIEW.md` committed at `dcc3d24` with the full S8
   derivation (rate models per mode, conservation chain, five lifetime
   D-equations, panel bounds table, 99% containment justification, and the

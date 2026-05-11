@@ -1,20 +1,15 @@
 {
   "chain": "offline_chain",
-  "channel_counts": {
-    "0": 10
-  },
   "cohort": "S1",
-  "detail": "decoded host rx_buffer stream",
-  "dma_bin": "/home/yifeng/packages/mu3e_ip_dev/mu3e-ip-cores/rdma_subsystem/test_plan/evidence/S1_A_M4_R1/dma.bin",
-  "eop_count": 1,
+  "detail": "missing CP-O4 dma.bin host rx_buffer dump",
   "evidence_kind": "E4_offline_dma_decode",
-  "frame_errors": [],
-  "generated_at": "2026-05-10T22:35:49Z",
+  "generated_at": "2026-05-11T02:37:58Z",
+  "mask": "M4",
   "matrix_id": "S1_A_M4_R1",
-  "records_count": 10,
-  "records_path": "/home/yifeng/packages/mu3e_ip_dev/mu3e-ip-cores/rdma_subsystem/test_plan/evidence/S1_A_M4_R1/decoded_hits.ndjson",
+  "mode": "A",
+  "rate": "R1",
+  "run_seconds": 30.0,
   "schema_version": 1,
-  "sop_count": 1,
   "stage": "O4",
-  "status": "PASS"
+  "status": "FAIL_AT_O4"
 }

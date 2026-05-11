@@ -5,59 +5,32 @@ from __future__ import annotations
 
 import argparse
 import json
-import math
 import os
-import random
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-N_CHANNELS = 256
+from traffic_expectations import (
+    N_CHANNELS,
+    active_channels,
+    expected_per_channel,
+    expected_total,
+    get_first_stage_delta,
+    rate_hz,
+    tolerance_for,
+)
 
 
 def utc_now() -> str:
     return datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
 
 
-def active_channels(mask: str) -> set[int]:
-    mask = mask.upper()
-    all_channels = set(range(N_CHANNELS))
-    if mask == "M0":
-        return all_channels
-    if mask == "M1":
-        return set(range(128, N_CHANNELS))
-    if mask == "M2":
-        return set(range(0, 128))
-    if mask == "M3":
-        return {ch for ch in range(N_CHANNELS) if ch % 2 == 1}
-    if mask == "M4":
-        return {0}
-    if mask == "M5":
-        return all_channels - {0}
-    rng = random.Random(1)
-    if mask == "M6":
-        masked = set(rng.sample(range(N_CHANNELS), int(N_CHANNELS * 0.75)))
-        return all_channels - masked
-    if mask == "M7":
-        masked = set(rng.sample(range(N_CHANNELS), int(N_CHANNELS * 0.25)))
-        return all_channels - masked
-    raise SystemExit(f"ERROR: unknown mask {mask}")
-
-
-def rate_hz(rate: str | int | float) -> float:
-    if isinstance(rate, (int, float)):
-        return float(rate)
-    text = str(rate).upper()
-    table = {"R1": 10_000.0, "R2": 100_000.0, "R3": 500_000.0, "R4": 1_000_000.0}
-    if text in table:
-        return table[text]
-    return float(text)
-
-
 def synthetic_input() -> dict[str, Any]:
     mask = "M4"
+    mode = "A"
+    rate = "R1"
     run_seconds = 30.0
-    count = int(rate_hz("R1") * run_seconds)
+    count = int(expected_per_channel(mode, rate, run_seconds))
     ingress = [0] * N_CHANNELS
     egress = [0] * N_CHANNELS
     ingress[0] = count
@@ -66,10 +39,11 @@ def synthetic_input() -> dict[str, Any]:
         "schema_version": 1,
         "cohort": "SYN",
         "matrix_id": "SYN_A_M4_R1",
-        "mode": "A",
+        "mode": mode,
         "mask": mask,
-        "rate": "R1",
+        "rate": rate,
         "run_seconds": run_seconds,
+        "feb_rate_emulator_delta": sum(ingress),
         "ingress_bins": ingress,
         "egress_bins": egress,
     }
@@ -96,14 +70,6 @@ def get_bins(data: dict[str, Any], key: str) -> list[int]:
     return [int(value) for value in bins]
 
 
-def tolerance_for(mode: str, expected: int, configured: float | int | None) -> float:
-    if configured is not None:
-        return float(configured)
-    if mode.upper() == "C":
-        return 5.0 * math.sqrt(max(float(expected), 1.0))
-    return max(1.0, abs(float(expected)) * 0.01)
-
-
 def check_rate_histogram(data: dict[str, Any]) -> dict[str, Any]:
     ingress = get_bins(data, "ingress_bins")
     egress = get_bins(data, "egress_bins")
@@ -114,11 +80,55 @@ def check_rate_histogram(data: dict[str, Any]) -> dict[str, Any]:
     active = active_channels(mask)
     tolerance = data.get("tolerance")
     failures: list[dict[str, Any]] = []
+    expected_ch = expected_per_channel(mode, expected_rate, run_seconds)
+    expected_all = expected_total(mode, mask, expected_rate, run_seconds)
+    expected_all_tol = tolerance_for(mode, expected_all, tolerance)
+    first_stage_delta = get_first_stage_delta(data, ingress)
+
+    if expected_all > 0:
+        if first_stage_delta is None:
+            failures.append(
+                {
+                    "stage": "C1",
+                    "reason": "missing FEB/rate_emulator first-stage delta",
+                    "expected_min_delta": 1,
+                }
+            )
+        elif first_stage_delta <= 0:
+            failures.append(
+                {
+                    "stage": "C1",
+                    "counter": "first_stage_delta",
+                    "expected_min_delta": 1,
+                    "observed": first_stage_delta,
+                    "reason": "programmed nonzero traffic produced zero FEB-side delta",
+                }
+            )
+        elif abs(float(first_stage_delta) - expected_all) > expected_all_tol:
+            failures.append(
+                {
+                    "stage": "C1",
+                    "counter": "first_stage_delta",
+                    "expected": expected_all,
+                    "observed": first_stage_delta,
+                    "tolerance": expected_all_tol,
+                }
+            )
 
     for ch in range(N_CHANNELS):
+        if failures:
+            break
         if ch not in active:
-            if egress[ch] != 0:
-                failures.append({"stage": "R3", "channel": ch, "expected": 0, "observed": egress[ch]})
+            if ingress[ch] != 0 or egress[ch] != 0:
+                failures.append(
+                    {
+                        "stage": "R1",
+                        "channel": ch,
+                        "expected": 0,
+                        "observed_ingress": ingress[ch],
+                        "observed_egress": egress[ch],
+                    }
+                )
                 break
             continue
         hist_tol = tolerance_for(mode, ingress[ch], tolerance)
@@ -133,14 +143,13 @@ def check_rate_histogram(data: dict[str, Any]) -> dict[str, Any]:
                 }
             )
             break
-        expected_count = expected_rate * run_seconds
-        rate_tol = tolerance_for(mode, int(expected_count), tolerance)
-        if abs(egress[ch] - expected_count) > rate_tol:
+        rate_tol = tolerance_for(mode, expected_ch, tolerance)
+        if abs(float(egress[ch]) - expected_ch) > rate_tol:
             failures.append(
                 {
                     "stage": "R1",
                     "channel": ch,
-                    "expected": expected_count,
+                    "expected": expected_ch,
                     "observed": egress[ch],
                     "tolerance": rate_tol,
                 }
@@ -168,6 +177,9 @@ def check_rate_histogram(data: dict[str, Any]) -> dict[str, Any]:
         "mask": mask,
         "rate_hz": expected_rate,
         "run_seconds": run_seconds,
+        "expected_per_channel": expected_ch,
+        "expected_total": expected_all,
+        "first_stage_delta": first_stage_delta,
         "active_channels": len(active),
         "total_ingress": sum(ingress),
         "total_egress": sum(egress),

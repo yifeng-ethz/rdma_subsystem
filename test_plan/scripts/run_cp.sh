@@ -155,19 +155,32 @@ else
       --rate "${rate}"
   else
     if [[ "${overall_rc}" -eq 0 ]] && should_run "counter_chain"; then
-      python3 - "${out_dir}/counter_input.json" "${cohort}" "${matrix_id}" "${mode}" <<'PY'
+      python3 - "${script_dir}" "${out_dir}/counter_input.json" "${cohort}" "${matrix_id}" "${mode}" "${mask}" "${rate}" <<'PY'
 import json
 import sys
-path, cohort, matrix_id, mode = sys.argv[1:5]
+script_dir, path, cohort, matrix_id, mode, mask, rate = sys.argv[1:8]
+sys.path.insert(0, script_dir)
+from traffic_expectations import N_CHANNELS, active_channels, expected_per_channel, expected_total
+run_seconds = 30.0
+per_channel = int(expected_per_channel(mode, rate, run_seconds))
+total = int(expected_total(mode, mask, rate, run_seconds))
+channel_counts = [0] * N_CHANNELS
+for ch in active_channels(mask):
+    channel_counts[ch] = per_channel
 data = {
     "schema_version": 1,
     "cohort": cohort,
     "matrix_id": matrix_id,
     "mode": mode,
-    "stage_counts": {f"C{i}": 1000 for i in range(1, 10)},
+    "mask": mask,
+    "rate": rate,
+    "run_seconds": run_seconds,
+    "feb_rate_emulator_delta": total,
+    "channel_counts": channel_counts,
+    "stage_counts": {f"C{i}": total for i in range(1, 10)},
     "bar1": {
-        "CNT_OPQ_INPUT_W": 250,
-        "CNT_BYTES_WRITTEN": 1000,
+        "CNT_OPQ_INPUT_W": total,
+        "CNT_BYTES_WRITTEN": total * 4,
         "CNT_SQE_CONSUMED": 1,
         "CNT_CQE_POSTED": 1,
         "CNT_HALT": 0,
@@ -183,31 +196,16 @@ PY
         --out "${out_dir}/counter_chain.json"
     fi
     if [[ "${overall_rc}" -eq 0 ]] && should_run "rate_chain"; then
-      python3 - "${out_dir}/rate_input.json" "${cohort}" "${matrix_id}" "${mode}" "${mask}" "${rate}" <<'PY'
+      python3 - "${script_dir}" "${out_dir}/rate_input.json" "${cohort}" "${matrix_id}" "${mode}" "${mask}" "${rate}" <<'PY'
 import json
-import random
 import sys
-path, cohort, matrix_id, mode, mask, rate = sys.argv[1:7]
-rates = {"R1": 10000, "R2": 100000, "R3": 500000, "R4": 1000000}
-all_ch = set(range(256))
-if mask == "M0":
-    active = all_ch
-elif mask == "M1":
-    active = set(range(128, 256))
-elif mask == "M2":
-    active = set(range(0, 128))
-elif mask == "M3":
-    active = {ch for ch in range(256) if ch % 2 == 1}
-elif mask == "M4":
-    active = {0}
-elif mask == "M5":
-    active = all_ch - {0}
-else:
-    rng = random.Random(1)
-    frac = 0.75 if mask == "M6" else 0.25
-    active = all_ch - set(rng.sample(range(256), int(256 * frac)))
-count = int(rates.get(rate, 10000) * 30)
-ingress = [count if ch in active else 0 for ch in range(256)]
+script_dir, path, cohort, matrix_id, mode, mask, rate = sys.argv[1:8]
+sys.path.insert(0, script_dir)
+from traffic_expectations import N_CHANNELS, active_channels, expected_per_channel
+run_seconds = 30.0
+count = int(expected_per_channel(mode, rate, run_seconds))
+active = active_channels(mask)
+ingress = [count if ch in active else 0 for ch in range(N_CHANNELS)]
 egress = list(ingress)
 data = {
     "schema_version": 1,
@@ -216,7 +214,8 @@ data = {
     "mode": mode,
     "mask": mask,
     "rate": rate,
-    "run_seconds": 30,
+    "run_seconds": run_seconds,
+    "feb_rate_emulator_delta": sum(ingress),
     "ingress_bins": ingress,
     "egress_bins": egress,
 }
@@ -229,10 +228,14 @@ PY
         --out "${out_dir}/rate_chain.json"
     fi
     if [[ "${overall_rc}" -eq 0 ]] && should_run "latency"; then
-      python3 - "${out_dir}/latency_input.json" "${cohort}" "${matrix_id}" "${mode}" <<'PY'
+      python3 - "${script_dir}" "${out_dir}/latency_input.json" "${cohort}" "${matrix_id}" "${mode}" "${mask}" "${rate}" <<'PY'
 import json
 import sys
-path, cohort, matrix_id, mode = sys.argv[1:5]
+script_dir, path, cohort, matrix_id, mode, mask, rate = sys.argv[1:8]
+sys.path.insert(0, script_dir)
+from traffic_expectations import expected_total
+run_seconds = 30.0
+sample_count = int(expected_total(mode, mask, rate, run_seconds))
 bounds = {
     "pre_rbcam": (0, 2000),
     "post_rbcam": (2000, 2200),
@@ -250,9 +253,19 @@ for name, (lo, hi) in bounds.items():
         "p50": (lo + hi) // 2,
         "p95": hi - max(1, span // 20),
         "in_bound_fraction": 1.0,
-        "histogram": [[(lo + hi) // 2, 10]],
+        "sample_count": sample_count,
+        "histogram": [[(lo + hi) // 2, sample_count]],
     }
-data = {"schema_version": 1, "cohort": cohort, "matrix_id": matrix_id, "mode": mode, "panels": panels}
+data = {
+    "schema_version": 1,
+    "cohort": cohort,
+    "matrix_id": matrix_id,
+    "mode": mode,
+    "mask": mask,
+    "rate": rate,
+    "run_seconds": run_seconds,
+    "panels": panels,
+}
 with open(path, "w", encoding="utf-8") as handle:
     json.dump(data, handle, indent=2, sort_keys=True)
     handle.write("\n")

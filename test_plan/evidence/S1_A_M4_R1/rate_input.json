@@ -1,7 +1,7 @@
 {
   "cohort": "S1",
   "egress_bins": [
-    300000,
+    0,
     0,
     0,
     0,
@@ -258,8 +258,9 @@
     0,
     0
   ],
+  "feb_rate_emulator_delta": 0,
   "ingress_bins": [
-    300000,
+    0,
     0,
     0,
     0,
@@ -520,6 +521,6 @@
   "matrix_id": "S1_A_M4_R1",
   "mode": "A",
   "rate": "R1",
-  "run_seconds": 30,
+  "run_seconds": 30.0,
   "schema_version": 1
 }
