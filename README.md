@@ -1,12 +1,12 @@
 # rdma_subsystem &mdash; Post-OPQ datapath supercore
 
-Mu3e SWB post-OPQ datapath supercore integrating rdma_dma_engine plus rdma_sq_fetcher plus rdma_cq_pusher plus rdma_run_manager into one Qsys system.
+Mu3e SWB post-OPQ datapath supercore integrating rdma_dma_engine plus rdma_rq_fetcher plus rdma_cq_pusher plus rdma_run_manager into one Qsys system.
 
 ## 2. Architectural map
 
 `rdma_subsystem` is the SWB-side Qsys wrapper that replaces the legacy
 post-OPQ event-builder path. It consumes the OPQ egress stream, fetches
-host-posted SQEs, writes OPQ bytes into host DRAM, posts CQEs, and exposes the
+host-posted RQEs, writes OPQ bytes into host DRAM, posts CQEs, and exposes the
 single BAR1 CSR aperture owned by `rdma_run_manager`.
 
 ```
@@ -18,8 +18,8 @@ single BAR1 CSR aperture owned by `rdma_run_manager`.
                                   +-------+--------+
                                           |
                                           v
-  host SQ ring --AXI4 read--> +-----------+-------+   job/cfg   +---------------+
-                              | rdma_sq_fetcher  |----SQE AXIS->| rdma_run_mgr  |
+  host RQ ring --AXI4 read--> +-----------+-------+   job/cfg   +---------------+
+                              | rdma_rq_fetcher  |----RQE AXIS->| rdma_run_mgr  |
                               +------------------+              | CSR + FSM     |
                                                                   +-------+------+
                                                                           |
@@ -33,7 +33,7 @@ single BAR1 CSR aperture owned by `rdma_run_manager`.
                                                         host_axi master
                                                         host DRAM buffers
 
-  reset_n -> reset_chain -> sq_fetcher, dma_engine, cq_pusher, run_manager,
+  reset_n -> reset_chain -> rq_fetcher, dma_engine, cq_pusher, run_manager,
                              csr_decoder, xbar
 ```
 
@@ -42,11 +42,11 @@ single BAR1 CSR aperture owned by `rdma_run_manager`.
 | `rdma_subsystem_top` | Top-level SystemVerilog wrapper and Qsys component top. | `opq_in` AXIS sink, `host_axi` AXI4 master, `msix` conduit. | `csr` AXI4-Lite slave forwards to `rdma_run_manager`. |
 | `rdma_subsystem_csr_decoder` | BAR1 AXI4-Lite passthrough. | None. | Routes all CSR reads/writes to `rdma_run_manager`; no local registers. |
 | `rdma_subsystem_reset_chain` | Reset distribution. | None. | Synchronizes the external active-low reset to each internal block. |
-| `rdma_subsystem_axi_xbar` | Phase-1 3-master to 1-host AXI4 merge. | SQ read path, DMA write path, CQ write path, one external host master. | No CSR. |
-| `rdma_sq_fetcher` | Fetches 64-byte SQEs from host SQ ring. | AXI4 read master in, SQE AXIS source out. | Configured by run-manager sideband: SQ base, depth, enable, tail doorbell. |
+| `rdma_subsystem_axi_xbar` | Phase-1 3-master to 1-host AXI4 merge. | RQ read path, DMA write path, CQ write path, one external host master. | No CSR. |
+| `rdma_rq_fetcher` | Fetches 64-byte RQEs from host RQ ring. | AXI4 read master in, RQE AXIS source out. | Configured by run-manager sideband: RQ base, depth, enable, tail doorbell. |
 | `rdma_dma_engine` | Packs OPQ 36-bit words into 256-bit AXI4 host writes. | OPQ AXIS sink, AXI4 write master, job req/done sideband. | Job fields and clear-counter pulse from `rdma_run_manager`. |
 | `rdma_cq_pusher` | Writes 64-byte CQEs to host CQ ring. | CQE AXIS sink, AXI4 write master, MSI-X conduit. | Configured by run-manager sideband: CQ base, depth, enable, head doorbell. |
-| `rdma_run_manager` | BAR1 CSR owner and SQE-to-DMA-to-CQE coordinator. | SQE AXIS sink, CQE AXIS source, job req/done sideband. | Owns UID/META/CTRL/STATUS/ring/counter CSR map. |
+| `rdma_run_manager` | BAR1 CSR owner and RQE-to-DMA-to-CQE coordinator. | RQE AXIS sink, CQE AXIS source, job req/done sideband. | Owns UID/META/CTRL/STATUS/ring/counter CSR map. |
 
 The top-level RTL has no direct JTAG port. In system integration, the same CSR
 aperture may be reached through a PCIe BAR1 proxy or an embedded JTAG master
@@ -101,10 +101,10 @@ Standard AXI4 channel signals are omitted here; the top-level port names use
 | ID width | 4 bits; current sibling writers/readers drive ID 0, and the xbar preserves the 4-bit field |
 | Burst type | INCR only |
 | External `arsize` / `awsize` | 5, meaning 32 bytes per 256-bit host beat |
-| SQE reads | One 64-byte SQE is requested as two 256-bit host beats; external `arlen=1` |
+| RQE reads | One 64-byte RQE is requested as two 256-bit host beats; external `arlen=1` |
 | CQE writes | One 64-byte CQE is split into two 256-bit host beats; external `awlen=1`, full byte strobes |
 | DMA writes | 256-bit beats, `MAX_BURST_BEATS=16`, capped at 4 KB page boundaries |
-| Max outstanding | The Phase-1 xbar serializes writes to one AW/W/B transaction at a time and accepts one SQ read transaction at a time; one read and one write may be live in the separate read/write FSMs |
+| Max outstanding | The Phase-1 xbar serializes writes to one AW/W/B transaction at a time and accepts one RQ read transaction at a time; one read and one write may be live in the separate read/write FSMs |
 | Write arbitration | DMA and CQ writes share one host write channel; simultaneous AW requests alternate with a last-grant round-robin bit |
 | Byte strobes | DMA writes use per-byte `WSTRB` for partial final beats; CQ writes use all byte lanes |
 | Ordering | Per-channel ordering is preserved by the xbar state machines; no interleaved write responses are expected |
@@ -113,8 +113,8 @@ Standard AXI4 channel signals are omitted here; the top-level port names use
 
 | Stream | Width | Producer -> Consumer | Contract |
 |---|---:|---|---|
-| SQE | 512 data + 16 user | `rdma_sq_fetcher` -> `rdma_run_manager` | One 64-byte SQE per beat, `tlast=1`, `tuser[15:0]=sqe_id`. |
-| CQE | 512 data + 16 user | `rdma_run_manager` -> `rdma_cq_pusher` | One 64-byte CQE per beat, `tlast=1`, `tuser[15:0]=sqe_id`, and `tdata[159:144]` must match the same SQE ID. |
+| RQE | 512 data + 16 user | `rdma_rq_fetcher` -> `rdma_run_manager` | One 64-byte RQE per beat, `tlast=1`, `tuser[15:0]=rqe_id`. |
+| CQE | 512 data + 16 user | `rdma_run_manager` -> `rdma_cq_pusher` | One 64-byte CQE per beat, `tlast=1`, `tuser[15:0]=rqe_id`, and `tdata[159:144]` must match the same RQE ID. |
 
 ### 3.5 Run-control AVST system contract
 
@@ -141,9 +141,9 @@ depends on it.
 | 7 | `RESET` | Defined by decode table; current v26.3 host suppresses reset fanout and handles reset through the hard-reset path |
 | 8 | `OUT_OF_DAQ` | `CMD_DISABLE` (`0x33`) |
 
-### 3.6 SQE layout, 64 bytes
+### 3.6 RQE layout, 64 bytes
 
-All SQEs are exactly one 64-byte host cacheline, little-endian, and move on the
+All RQEs are exactly one 64-byte host cacheline, little-endian, and move on the
 512-bit WQE plane.
 
 | Word | Byte off | Name | Width | Description |
@@ -152,12 +152,12 @@ All SQEs are exactly one 64-byte host cacheline, little-endian, and move on the
 | 1 | `0x08` | `seg0_span` | 64 | Segment-0 capacity in bytes; 4 KB multiple and nonzero. |
 | 2 | `0x10` | `seg1_addr` | 64 | Host physical address for segment 1; 4 KB aligned when `seg1_span != 0`. |
 | 3 | `0x18` | `seg1_span` | 64 | Segment-1 capacity in bytes; 4 KB multiple; zero disables segment 1. |
-| 4 | `0x20` | `opcode_id` | 64 | `[15:0]=opcode`, `[31:16]=sqe_id`, `[63:32]=flags`. |
+| 4 | `0x20` | `opcode_id` | 64 | `[15:0]=opcode`, `[31:16]=rqe_id`, `[63:32]=flags`. |
 | 5 | `0x28` | `reserved0` | 64 | Reserved for future timestamp or key fields. |
 | 6 | `0x30` | `reserved1` | 64 | Reserved. |
 | 7 | `0x38` | `reserved2` | 64 | Reserved. |
 
-SQE constraints enforced by the DMA writer:
+RQE constraints enforced by the DMA writer:
 
 | Constraint | Value |
 |---|---|
@@ -165,17 +165,17 @@ SQE constraints enforced by the DMA writer:
 | Segment span alignment | `seg*_span[11:0] == 0` for any used segment |
 | Segment 0 span | Must be nonzero |
 | Segment 1 | Optional; disabled with `seg1_span=0` |
-| Phase-1 opcode | `0x0001` = drain OPQ until EOE or full SQE span |
+| Phase-1 opcode | `0x0001` = drain OPQ until EOE or full RQE span |
 | Error return | Alignment/span violations return `ALIGN_ERR` in the CQE status |
 
 ### 3.7 CQE layout, 64 bytes
 
 | Word | Byte off | Name | Width | Description |
 |---:|---:|---|---:|---|
-| 0 | `0x00` | `bytes_written_total` | 64 | Total bytes written across both SQE segments. |
+| 0 | `0x00` | `bytes_written_total` | 64 | Total bytes written across both RQE segments. |
 | 1 | `0x08` | `seg0_bytes_written` | 32 | Low half: bytes written into segment 0. |
 | 1 | `0x0C` | `seg1_bytes_written` | 32 | High half: bytes written into segment 1. |
-| 2 | `0x10` | `status_id` | 64 | `[15:0]=status`, `[31:16]=sqe_id`, `[63:32]=flags`. |
+| 2 | `0x10` | `status_id` | 64 | `[15:0]=status`, `[31:16]=rqe_id`, `[63:32]=flags`. |
 | 3 | `0x18` | `event_count` | 64 | Number of OPQ EOE boundaries observed in this drain. |
 | 4 | `0x20` | `first_event_ts` | 64 | OPQ-side timestamp of first observed event. |
 | 5 | `0x28` | `last_event_ts` | 64 | OPQ-side timestamp of last observed event. |
@@ -185,11 +185,11 @@ SQE constraints enforced by the DMA writer:
 | Status bit | Name | Meaning |
 |---:|---|---|
 | 0 | `EOE` | Drain ended after OPQ asserted EOP. |
-| 1 | `FULL` | Drain ended because the SQE segment capacity was exhausted. |
+| 1 | `FULL` | Drain ended because the RQE segment capacity was exhausted. |
 | 2 | `HALT` | OPQ word was dropped because downstream packing could not accept it. |
 | 3 | `SEG_BOUNDARY_HIT` | Drain crossed from segment 0 into segment 1. |
 | 4 | `SEG0_ONLY` | Segment 1 was not used. |
-| 5 | `ALIGN_ERR` | SQE address/span contract was invalid. |
+| 5 | `ALIGN_ERR` | RQE address/span contract was invalid. |
 | 6 | `AXI_ERR` | Host AXI4 write response was not OKAY. |
 | 15:7 | reserved | Reserved, read as zero unless a future status bit is added. |
 
@@ -248,16 +248,16 @@ metadata. `META` reads the version page at reset because `meta_sel` resets to 0.
 | `0x04` | `META` | RW/RO | 32 | `0x1A0101FE` | Page-muxed metadata; reset page 0 reads VERSION. |
 | `0x08` | `CTRL` | RW | 32 | `0x00000000` | Enable, reset-counters pulse, and halt control. |
 | `0x0C` | `STATUS` | RO | 32 | `0x00000000` | Dispatch FSM and live worker handshake snapshot. |
-| `0x10` | `SQ_BASE_LO` | RW | 32 | `0x00000000` | Low 32 bits of host SQ ring base address. |
-| `0x14` | `SQ_BASE_HI` | RW | 32 | `0x00000000` | High 32 bits of host SQ ring base address. |
-| `0x18` | `SQ_DEPTH` | RW | 32 | `0x00000000` | Low 16 bits hold SQ ring depth in entries. |
-| `0x1C` | `SQ_TAIL_DBL` | WO | 32 | `0x00000000` | Host SQ tail doorbell; readback is debug-only latched tail. |
+| `0x10` | `RQ_BASE_LO` | RW | 32 | `0x00000000` | Low 32 bits of host RQ ring base address. |
+| `0x14` | `RQ_BASE_HI` | RW | 32 | `0x00000000` | High 32 bits of host RQ ring base address. |
+| `0x18` | `RQ_DEPTH` | RW | 32 | `0x00000000` | Low 16 bits hold RQ ring depth in entries. |
+| `0x1C` | `RQ_TAIL_DBL` | WO | 32 | `0x00000000` | Host RQ tail doorbell; readback is debug-only latched tail. |
 | `0x20` | `CQ_BASE_LO` | RW | 32 | `0x00000000` | Low 32 bits of host CQ ring base address. |
 | `0x24` | `CQ_BASE_HI` | RW | 32 | `0x00000000` | High 32 bits of host CQ ring base address. |
 | `0x28` | `CQ_DEPTH` | RW | 32 | `0x00000000` | Low 16 bits hold CQ ring depth in entries. |
 | `0x2C` | `CQ_TAIL` | RO | 32 | `0x00000000` | Firmware CQ producer pointer; host polls this. |
 | `0x30` | `CQ_HEAD_DBL` | WO | 32 | `0x00000000` | Host CQ head-credit doorbell; readback is debug-only latched head. |
-| `0x34` | `CNT_SQE_CONSUMED` | RO | 32 | `0x00000000` | SQEs consumed since last reset-counter baseline. |
+| `0x34` | `CNT_RQE_CONSUMED` | RO | 32 | `0x00000000` | RQEs consumed since last reset-counter baseline. |
 | `0x38` | `CNT_CQE_POSTED` | RO | 32 | `0x00000000` | CQEs posted since last reset-counter baseline. |
 | `0x3C` | `CNT_BYTES_WRITTEN` | RO | 32 | `0x00000000` | Host-buffer bytes written by DMA engine. |
 | `0x40` | `CNT_OPQ_INPUT_W` | RO | 32 | `0x00000000` | OPQ input words observed by DMA packer. |
@@ -282,9 +282,9 @@ metadata. `META` reads the version page at reset because `meta_sel` resets to 0.
 
 | Bits | Field | Default | Description |
 |------|-------|---------|-------------|
-| `0` | `enable` | `0` | Master enable for SQE consumption and CQ posting. |
+| `0` | `enable` | `0` | Master enable for RQE consumption and CQ posting. |
 | `1` | `reset_counters` | `0` | Write-1 pulse; captures current counter baselines and clears CSR counter shadows. |
-| `2` | `halt` | `0` | Soft halt; dispatch FSM stays idle and ignores new SQEs. |
+| `2` | `halt` | `0` | Soft halt; dispatch FSM stays idle and ignores new RQEs. |
 | `31:3` | reserved | `0` | Reads as zero; writes ignored. |
 
 ### 5.3 `STATUS` bit fields, offset `0x0C`
@@ -292,23 +292,23 @@ metadata. `META` reads the version page at reset because `meta_sel` resets to 0.
 | Bits | Field | Default | Description |
 |------|-------|---------|-------------|
 | `3:0` | `fsm_state` | `0` | Dispatch FSM: 0=IDLE, 1=DECODE, 2=DISPATCH_DMA, 3=BUILD_CQE, 4=RETIRE. |
-| `4` | `sqf_sqe_valid` | `0` | Mirrored SQE stream valid from `rdma_sq_fetcher`. |
+| `4` | `rqf_rqe_valid` | `0` | Mirrored RQE stream valid from `rdma_rq_fetcher`. |
 | `5` | `dma_job_req` | `0` | DMA job request asserted by run-manager FSM. |
 | `6` | `dma_job_done` | `0` | DMA job completion observed. |
 | `7` | `cqp_cqe_valid` | `0` | CQE stream valid toward `rdma_cq_pusher`. |
 | `8` | `cqp_cqe_ready` | `0` | CQE stream ready from `rdma_cq_pusher`. |
 | `9` | `halt_status` | `0` | Mirror of `CTRL.halt`. |
 | `15:10` | reserved | `0` | Reads as zero. |
-| `31:16` | `sq_head` | `0` | Current SQ consumer head from `rdma_sq_fetcher`. |
+| `31:16` | `rq_head` | `0` | Current RQ consumer head from `rdma_rq_fetcher`. |
 
 ### 5.4 Ring and doorbell bit fields
 
 | Register | Bits | Field | Default | Description |
 |---|---|---|---|---|
-| `SQ_DEPTH` | `15:0` | `depth` | `0` | SQ ring depth in SQE entries; host programs a power of two. |
-| `SQ_DEPTH` | `31:16` | reserved | `0` | Reads as zero. |
-| `SQ_TAIL_DBL` | `15:0` | `tail` | `0` | Host producer pointer; any write strobe creates one `sqf_sq_tail_dbl_pulse`. |
-| `SQ_TAIL_DBL` | `31:16` | reserved | `0` | Ignored. |
+| `RQ_DEPTH` | `15:0` | `depth` | `0` | RQ ring depth in RQE entries; host programs a power of two. |
+| `RQ_DEPTH` | `31:16` | reserved | `0` | Reads as zero. |
+| `RQ_TAIL_DBL` | `15:0` | `tail` | `0` | Host producer pointer; any write strobe creates one `rqf_rq_tail_dbl_pulse`. |
+| `RQ_TAIL_DBL` | `31:16` | reserved | `0` | Ignored. |
 | `CQ_DEPTH` | `15:0` | `depth` | `0` | CQ ring depth in CQE entries; host programs a power of two. |
 | `CQ_DEPTH` | `31:16` | reserved | `0` | Reads as zero. |
 | `CQ_HEAD_DBL` | `15:0` | `head` | `0` | Host consumer pointer credit; any write strobe creates one `cqp_cq_head_dbl_pulse`. |
@@ -333,7 +333,7 @@ Phase state, following `PHASE_STATUS.md`:
 | IP | Phase A | Phase B | Phase C | Phase D | Unique-cov audit |
 |---|---|---|---|---|---|
 | `rdma_dma_engine` | DONE all 9 | PARTIAL: P bucket complete, X001-X016 done, X017-X128 user-authorized skip | DONE `QUEUE_MATH.md` | DONE `a6523a6` | RUNNING sweep |
-| `rdma_sq_fetcher` | DONE all 9 | DONE all 512 evidenced | DONE `QUEUE_MATH.md` | DONE | DONE `6052c07` |
+| `rdma_rq_fetcher` | DONE all 9 | DONE all 512 evidenced | DONE `QUEUE_MATH.md` | DONE | DONE `6052c07` |
 | `rdma_cq_pusher` | DONE all 9 | DONE all 512 evidenced | DONE `QUEUE_MATH.md` | DONE with authorized band relax | DONE `2e1ca03` |
 | `rdma_run_manager` | DONE all 9 plus SVD | DONE all 512 evidenced | DONE `QUEUE_MATH.md` | DONE `8e58743` | DONE `64e4db8` |
 | `rdma_subsystem` | Wrapper/Qsys/syn present in this repo | `tb_int/DV_REPORT.md` reports 512/512 evidenced and PASS | `test_plan/MATH_REVIEW.md` committed for system CP math | `syn/SYN_REPORT.md` reports GREEN standalone compile | No separate PHASE_STATUS row; generated tb_int scorecards and `make unique_coverage` are the local audit path |
@@ -349,14 +349,14 @@ standalone `tb_int` and `syn` evidence above.
 |---|---|---|
 | Parent supercore | This repository | `rdma_subsystem` is the parent post-OPQ RDMA supercore; there is no higher-level `rdma_*` supercore repo. |
 | `rdma_dma_engine` | `https://github.com/yifeng-ethz/rdma_dma_engine` | OPQ packer, DMA FIFO, host-buffer AXI4 writer. |
-| `rdma_sq_fetcher` | `https://github.com/yifeng-ethz/rdma_sq_fetcher` | Host SQ ring reader and SQE stream source. |
+| `rdma_rq_fetcher` | `https://github.com/yifeng-ethz/rdma_rq_fetcher` | Host RQ ring reader and RQE stream source. |
 | `rdma_cq_pusher` | `https://github.com/yifeng-ethz/rdma_cq_pusher` | CQE stream sink, CQ ring writer, MSI-X stub. |
-| `rdma_run_manager` | `https://github.com/yifeng-ethz/rdma_run_manager` | CSR/SVD owner and SQE-to-DMA-to-CQE coordinator. |
+| `rdma_run_manager` | `https://github.com/yifeng-ethz/rdma_run_manager` | CSR/SVD owner and RQE-to-DMA-to-CQE coordinator. |
 | Run-control readyless fanout | `../run-control_mgmt/doc/RTL_PLAN.md`, `../run-control_mgmt/runctl_mgmt_host_hw.tcl` | System-level run-control AVST contract used by FEB/SWB integration. |
 | SWB integration consumer | `/home/yifeng/packages/online_sc/online/switching_pc/a10_board/doc/RDMA_SUBSYSTEM_INTEGRATION_20260511.md` | Active SWB compile notes for replacing the post-OPQ mux/event-builder chain. |
 | FEB SciFi style and integration context | `/home/yifeng/packages/online_dpv2/online/fe_board/fe_scifi/README.md` | Style reference and FEB-side run-control/upload context. |
 | mu3e-ip-cores IP table | `https://github.com/yifeng-ethz/mu3e-ip-cores/blob/24582494f019ac7c46f3bbb7fe3e482173fee386/README.md` | Parent README auto-tracked IP table and pinned repo pointers. |
-| Local architecture plan | `ARCHITECTURE_PLAN.md` | Host/FW SQ/CQ contract and Phase-1/Phase-2 split. |
+| Local architecture plan | `ARCHITECTURE_PLAN.md` | Host/FW RQ/CQ contract and Phase-1/Phase-2 split. |
 | Local RTL plan | `RTL_PLAN_INT.md` | Supercore wrapper file set, top ports, xbar, CSR decode, reset plan. |
 | Local DV plan | `DV_PLAN_INT.md` | Integration UVM scope and 4 bucket x 128 case plan. |
 | Local CSR authority | `../rdma_run_manager/rdma_run_manager.svd`, `../rdma_run_manager/doc/csr_map.md` | SVD and generated CSR map consumed by this supercore package. |

@@ -38,7 +38,7 @@ BUCKETS: dict[str, tuple[str, str, str, list[Group]]] = {
     "BASIC": (
         "B",
         "DV_BASIC.md",
-        "Nominal bring-up, SQ/CQ programming, frame drain, and CQE field proof.",
+        "Nominal bring-up, RQ/CQ programming, frame drain, and CQE field proof.",
         [
             Group("Reset and CSR Bring-Up", 1, 16, "D", 1,
                   "reset release, UID/META/CTRL/STATUS, and idle counters",
@@ -46,28 +46,28 @@ BUCKETS: dict[str, tuple[str, str, str, list[Group]]] = {
                   "CSR readbacks match ARCHITECTURE_PLAN.md section 6; cov:basic_csr_reset",
                   "ARCHITECTURE_PLAN.md section 6 BAR1 CSR aperture",
                   "basic_csr_reset"),
-            Group("Single SQE EOE Drain", 17, 32, "D", 1,
-                  "one SQE drains a generated mu3e frame and retires on EOE",
-                  "post one single-segment SQE, inject one OPQ frame with K28.5/K28.4 markers",
+            Group("Single RQE EOE Drain", 17, 32, "D", 1,
+                  "one RQE drains a generated mu3e frame and retires on EOE",
+                  "post one single-segment RQE, inject one OPQ frame with K28.5/K28.4 markers",
                   "CQE status has EOE and SEG0_ONLY; byte ledger equals rx_buffer bytes; cov:basic_single_eoe",
                   "DV_PLAN_INT.md section 4 byte conservation and EOE matching",
                   "basic_single_eoe"),
-            Group("Single SQE FULL Drain", 33, 48, "D", 1,
-                  "single-segment SQE fills before OPQ frame end",
-                  "post one short-span SQE, inject a longer OPQ frame",
-                  "CQE status has FULL; next SQE would resume at next source byte; cov:basic_full_term",
+            Group("Single RQE FULL Drain", 33, 48, "D", 1,
+                  "single-segment RQE fills before OPQ frame end",
+                  "post one short-span RQE, inject a longer OPQ frame",
+                  "CQE status has FULL; next RQE would resume at next source byte; cov:basic_full_term",
                   "ARCHITECTURE_PLAN.md section 5 CQE status bit FULL",
                   "basic_full_term"),
             Group("Two-Segment Boundary Drain", 49, 64, "D", 1,
-                  "seg0 to seg1 crossing within one SQE",
-                  "post two-segment SQE with seg0_span varied across 4 KB quanta",
+                  "seg0 to seg1 crossing within one RQE",
+                  "post two-segment RQE with seg0_span varied across 4 KB quanta",
                   "CQE SEG_BOUNDARY_HIT and seg0/seg1 byte fields match writes; cov:basic_two_segment",
                   "ARCHITECTURE_PLAN.md section 5 two-segment scatter semantics",
                   "basic_two_segment"),
-            Group("Back-To-Back SQEs", 65, 80, "R", 4,
-                  "SQ ring sequencing for N adjacent SQEs",
-                  "pre-stage 2, 4, 8, or depth-1 SQEs and stream adjacent OPQ frames",
-                  "count(CQE)==retired SQE count and byte order crosses SQE boundaries; cov:basic_back_to_back",
+            Group("Back-To-Back RQEs", 65, 80, "R", 4,
+                  "RQ ring sequencing for N adjacent RQEs",
+                  "pre-stage 2, 4, 8, or depth-1 RQEs and stream adjacent OPQ frames",
+                  "count(CQE)==retired RQE count and byte order crosses RQE boundaries; cov:basic_back_to_back",
                   "DV_PLAN_INT.md section 3.2 RUNNING top-up and CQ harvest",
                   "basic_back_to_back"),
             Group("Run-State Traversal", 81, 96, "D", 1,
@@ -77,10 +77,10 @@ BUCKETS: dict[str, tuple[str, str, str, list[Group]]] = {
                   "DV_PLAN_INT.md section 3.1 run_tool state machine",
                   "basic_state_traversal"),
             Group("Doorbell Coalescing", 97, 112, "R", 4,
-                  "SQ tail doorbell coalesces multiple posted SQEs",
-                  "post 1, 2, 4, or 8 SQEs per SQ_TAIL_DBL write",
-                  "FW observes all posted SQEs exactly once and CQ credit returns by CQ_HEAD_DBL; cov:basic_doorbell_coalesce",
-                  "ARCHITECTURE_PLAN.md section 6 SQ_TAIL_DBL and CQ_HEAD_DBL",
+                  "RQ tail doorbell coalesces multiple posted RQEs",
+                  "post 1, 2, 4, or 8 RQEs per RQ_TAIL_DBL write",
+                  "FW observes all posted RQEs exactly once and CQ credit returns by CQ_HEAD_DBL; cov:basic_doorbell_coalesce",
+                  "ARCHITECTURE_PLAN.md section 6 RQ_TAIL_DBL and CQ_HEAD_DBL",
                   "basic_doorbell_coalesce"),
             Group("CQE Field Ground Truth", 113, 128, "D", 1,
                   "all eight CQE words are checked against source and memory evidence",
@@ -95,12 +95,12 @@ BUCKETS: dict[str, tuple[str, str, str, list[Group]]] = {
         "DV_EDGE.md",
         "Ring wrap, span and address boundaries, idle periods, and race edges.",
         [
-            Group("SQ Ring Wraparound", 1, 16, "R", 8,
-                  "SQ head/tail wrap at depths 2, 4, 16, and 65536",
-                  "post enough SQEs to force masked tail and head wrap",
-                  "no skipped or double-fetched SQE across wrap; cov:edge_sq_wrap",
-                  "ARCHITECTURE_PLAN.md section 6 SQ_DEPTH and SQ_TAIL_DBL",
-                  "edge_sq_wrap"),
+            Group("RQ Ring Wraparound", 1, 16, "R", 8,
+                  "RQ head/tail wrap at depths 2, 4, 16, and 65536",
+                  "post enough RQEs to force masked tail and head wrap",
+                  "no skipped or double-fetched RQE across wrap; cov:edge_rq_wrap",
+                  "ARCHITECTURE_PLAN.md section 6 RQ_DEPTH and RQ_TAIL_DBL",
+                  "edge_rq_wrap"),
             Group("CQ Ring Wraparound", 17, 32, "R", 8,
                   "CQ tail wrap and minimum credit windows",
                   "withhold and return CQ_HEAD_DBL credit around tail wrap",
@@ -109,14 +109,14 @@ BUCKETS: dict[str, tuple[str, str, str, list[Group]]] = {
                   "edge_cq_wrap"),
             Group("4 KB Span Boundaries", 33, 48, "D", 1,
                   "legal span quanta at 4 KB, 8 KB, and 1 MB",
-                  "post SQEs with exact 4 KB multiples and boundary-sized OPQ frames",
+                  "post RQEs with exact 4 KB multiples and boundary-sized OPQ frames",
                   "ALIGN_ERR is never asserted for legal spans and bytes do not cross span capacity; cov:edge_span_quantum",
                   "ARCHITECTURE_PLAN.md section 5 4 KB span quantum",
                   "edge_span_quantum"),
             Group("Address Alignment Extremes", 49, 64, "D", 1,
                   "low, high, and near-boundary host buffer addresses",
                   "allocate aligned rx_buffers near selected 64-bit address boundaries",
-                  "all AXI writes remain within the SQE-named region; cov:edge_addr_alignment",
+                  "all AXI writes remain within the RQE-named region; cov:edge_addr_alignment",
                   "ARCHITECTURE_PLAN.md section 5 seg address alignment",
                   "edge_addr_alignment"),
             Group("Long Idle OPQ", 65, 80, "D", 1,
@@ -125,21 +125,21 @@ BUCKETS: dict[str, tuple[str, str, str, list[Group]]] = {
                   "CQ_TAIL and CNT_CQE_POSTED do not advance while no frame bytes arrive; cov:edge_idle_opq",
                   "DV_PLAN_INT.md section 4 byte conservation",
                   "edge_idle_opq"),
-            Group("Concurrent SQ/CQ/OPQ", 81, 96, "R", 8,
+            Group("Concurrent RQ/CQ/OPQ", 81, 96, "R", 8,
                   "host posts, drains CQ, and source streams concurrently",
-                  "overlap SQ_TAIL_DBL writes, CQ_HEAD_DBL returns, and OPQ frames",
+                  "overlap RQ_TAIL_DBL writes, CQ_HEAD_DBL returns, and OPQ frames",
                   "runtool model observes legal state actions and scoreboard remains ordered; cov:edge_concurrent_ops",
                   "DV_PLAN_INT.md section 3.2 RUNNING",
                   "edge_concurrent_ops"),
             Group("Doorbell Race", 97, 112, "R", 8,
-                  "host writes SQ tail while fetch is active",
-                  "issue SQ_TAIL_DBL updates at fetch/write/CQE boundaries",
-                  "tail capture is monotonic modulo depth and no fetched SQE is duplicated; cov:edge_doorbell_race",
+                  "host writes RQ tail while fetch is active",
+                  "issue RQ_TAIL_DBL updates at fetch/write/CQE boundaries",
+                  "tail capture is monotonic modulo depth and no fetched RQE is duplicated; cov:edge_doorbell_race",
                   "ARCHITECTURE_PLAN.md section 3 control plane",
                   "edge_doorbell_race"),
             Group("Power-Of-Two Mask Boundaries", 113, 128, "D", 1,
                   "depth masks and pointer boundaries",
-                  "vary SQ/CQ depth power-of-two encodings and pointer values",
+                  "vary RQ/CQ depth power-of-two encodings and pointer values",
                   "masked head/tail values match selected depth and do not alias invalid entries; cov:edge_depth_mask",
                   "DV_PLAN_INT.md section 5.2 power-of-2 depth boundaries",
                   "edge_depth_mask"),
@@ -156,12 +156,12 @@ BUCKETS: dict[str, tuple[str, str, str, list[Group]]] = {
                   "all practical-mode bytes retire with no order drift; cov:prof_sustained_opq",
                   "DV_PLAN_INT.md section 5.3 sustained throughput",
                   "prof_sustained_opq"),
-            Group("Full SQ Depth", 33, 64, "R", 16,
-                  "SQ depth occupancy and slow CQ polling",
-                  "fill SQ ring to selected depths and poll CQ at varied cadences",
-                  "SQE consumed/CQE posted counters stay equal after STOPPING drain; cov:prof_full_sq_depth",
+            Group("Full RQ Depth", 33, 64, "R", 16,
+                  "RQ depth occupancy and slow CQ polling",
+                  "fill RQ ring to selected depths and poll CQ at varied cadences",
+                  "RQE consumed/CQE posted counters stay equal after STOPPING drain; cov:prof_full_rq_depth",
                   "DV_PLAN_INT.md section 3.2 STOPPING counter checks",
-                  "prof_full_sq_depth"),
+                  "prof_full_rq_depth"),
             Group("AXI Host Stall Profiles", 65, 96, "R", 16,
                   "AW/W/B and AR/R latency tolerance",
                   "configure host AXI completer latency at 25, 50, and 75 percent stall classes",
@@ -179,7 +179,7 @@ BUCKETS: dict[str, tuple[str, str, str, list[Group]]] = {
     "ERROR": (
         "X",
         "DV_ERROR.md",
-        "AXI errors, malformed SQEs, resets, halt, CQ full, and forced backpressure.",
+        "AXI errors, malformed RQEs, resets, halt, CQ full, and forced backpressure.",
         [
             Group("BRESP Error Recovery", 1, 16, "D", 1,
                   "host write response errors on DMA/CQ paths",
@@ -188,23 +188,23 @@ BUCKETS: dict[str, tuple[str, str, str, list[Group]]] = {
                   "DV_PLAN_INT.md section 5.4 BRESP=SLVERR",
                   "error_bresp"),
             Group("RRESP Error Recovery", 17, 32, "D", 1,
-                  "host read response errors during SQ fetch",
-                  "queue SLVERR/DECERR RRESP responses for SQE fetches",
-                  "bad SQE fetch does not create a spurious CQE and status is observable; cov:error_rresp",
+                  "host read response errors during RQ fetch",
+                  "queue SLVERR/DECERR RRESP responses for RQE fetches",
+                  "bad RQE fetch does not create a spurious CQE and status is observable; cov:error_rresp",
                   "DV_PLAN_INT.md section 5.4 RRESP=SLVERR",
                   "error_rresp"),
-            Group("SQE Alignment Errors", 33, 48, "D", 1,
+            Group("RQE Alignment Errors", 33, 48, "D", 1,
                   "misaligned address and non-4 KB span rejection",
-                  "post SQEs with misaligned seg addresses or spans",
+                  "post RQEs with misaligned seg addresses or spans",
                   "CQE status has ALIGN_ERR and no DMA writes hit the illegal buffer; cov:error_align",
                   "ARCHITECTURE_PLAN.md section 5 ALIGN_ERR",
                   "error_align"),
-            Group("Malformed SQE", 49, 64, "D", 1,
+            Group("Malformed RQE", 49, 64, "D", 1,
                   "invalid opcode and zero buffer length handling",
-                  "post SQEs with opcode 0, reserved opcode, or zero legal span",
-                  "malformed SQE retires through error status without consuming OPQ bytes; cov:error_malformed_sqe",
-                  "ARCHITECTURE_PLAN.md section 5 opcodes and SQE constraints",
-                  "error_malformed_sqe"),
+                  "post RQEs with opcode 0, reserved opcode, or zero legal span",
+                  "malformed RQE retires through error status without consuming OPQ bytes; cov:error_malformed_rqe",
+                  "ARCHITECTURE_PLAN.md section 5 opcodes and RQE constraints",
+                  "error_malformed_rqe"),
             Group("Reset During Run States", 65, 80, "D", 1,
                   "reset in PREPARING, RUNNING, STOPPING",
                   "pulse reset after selected run_tool and DUT milestones",
@@ -350,7 +350,7 @@ Boundary agents attach only to the subsystem ports:
   supercore `m_axi_*` port.  It owns AW/W/B and AR/R latency knobs and response
   injection.
 - `runtool_model_agent` is the software-behavioral host orchestrator.  It drives
-  BAR1 AXI4-Lite CSR, writes SQEs into the sparse host memory, polls CQEs, and
+  BAR1 AXI4-Lite CSR, writes RQEs into the sparse host memory, polls CQEs, and
   returns CQ credit.
 
 ## 2. Scoreboard Views
@@ -359,14 +359,14 @@ The shared subsystem scoreboard correlates four independent views required by
 DV_PLAN_INT.md section 4:
 - OPQ source ledger: byte stream and marker identity generated by the source.
 - DMA write trace: AXI4 W-channel writes observed by the host completer.
-- Host rx_buffer reconstruction: sparse memory contents named by each SQE.
+- Host rx_buffer reconstruction: sparse memory contents named by each RQE.
 - CQE ledger: 64 B CQEs polled by the run_tool model.
 
 ## 3. DEBUG=1/2 Evidence
 
 `make regress` runs the same catalog in DEBUG_LEVEL=1 and DEBUG_LEVEL=2.
 `env_dbg1` monitors functional payload and CSR-visible counters.  `env_dbg2`
-monitors lineage tokens derived from SQE id, DMA write order, and CQE retire
+monitors lineage tokens derived from RQE id, DMA write order, and CQE retire
 sequence.  `scripts/cross_validate_dbg.py` checks that both debug levels report
 the same pass/fail outcome and observed transaction count.
 
@@ -392,7 +392,7 @@ def cross_md() -> str:
 | Coverpoint | Bins | Contract |
 |---|---|---|
 | run_state | idle, preparing, running, stopping, stopped | DV_PLAN_INT.md section 3.1 |
-| sq_depth | 2, 4, 16, 256, 4096, 65536 | ARCHITECTURE_PLAN.md section 6 |
+| rq_depth | 2, 4, 16, 256, 4096, 65536 | ARCHITECTURE_PLAN.md section 6 |
 | cq_depth | 2, 4, 16, 256, 4096, 65536 | ARCHITECTURE_PLAN.md section 6 |
 | seg_mode | single, two_segment, boundary_hit | ARCHITECTURE_PLAN.md section 5 |
 | termination | EOE, FULL, ALIGN_ERR, HALT | ARCHITECTURE_PLAN.md section 5 |
@@ -405,7 +405,7 @@ def cross_md() -> str:
 |---|---|
 | run_state x termination | legal stop and error outcomes in each host state |
 | seg_mode x termination | EOE/FULL/error behavior across segment layouts |
-| sq_depth x cq_depth x doorbell_coalesce | ring pointer and credit interaction |
+| rq_depth x cq_depth x doorbell_coalesce | ring pointer and credit interaction |
 | axi_profile x termination | host latency/error influence on completion status |
 | debug_level x case_bucket | dbg1/dbg2 parity for every bucket |
 
@@ -456,9 +456,9 @@ Historical formal note:
 | bug_id | class | severity | encounterability | status | first seen | commit | summary |
 |---|---|---|---|---|---|---|---|
 | [BUG-001-H](#bug-001-h-initial-tb-int-catalog-had-no-scorecard-or-ucdb-contract) | H | non-datapath-refactor | `directed-only (reporting flow)` | fixed | `tb_int` bootstrap | `pending` | Initial integration catalog needed generated scorecard, UCDB, and unique-coverage audit plumbing before cases could be evidenced. |
-| [BUG-002-H](#bug-002-h-host-axi-read-completer-held-the-first-r-beat-for-two-handshakes) | H | hard stuck error | `common (nominal SQE fetch)` | fixed | `B017` DEBUG=1 isolated | `pending` | The host AXI completer held the first read beat for two handshakes, corrupting the 512-bit SQE assembled by the DUT. |
-| [BUG-003-H](#bug-003-h-runtool-model-used-one-based-sqe-ids-and-unbounded-cq-tail-polling) | H | hard stuck error | `common (multi-SQE nominal drain)` | fixed | `B065` DEBUG=1 isolated | `pending` | The runtool model mismatched the RTL zero-based SQE id contract and polled CQ entries before the mirrored OPQ and CQ state had settled. |
-| [BUG-004-H](#bug-004-h-forced-halt-stress-used-an-unreachable-two-segment-pressure-profile) | H | soft error | `directed-only (forced halt pressure)` | fixed | `X115` DEBUG=1 regression | `pending` | Forced-HALT ERROR variants mixed a two-segment SQE with a pressure frame that could not reach the intended HALT path before timeout. |
+| [BUG-002-H](#bug-002-h-host-axi-read-completer-held-the-first-r-beat-for-two-handshakes) | H | hard stuck error | `common (nominal RQE fetch)` | fixed | `B017` DEBUG=1 isolated | `pending` | The host AXI completer held the first read beat for two handshakes, corrupting the 512-bit RQE assembled by the DUT. |
+| [BUG-003-H](#bug-003-h-runtool-model-used-one-based-rqe-ids-and-unbounded-cq-tail-polling) | H | hard stuck error | `common (multi-RQE nominal drain)` | fixed | `B065` DEBUG=1 isolated | `pending` | The runtool model mismatched the RTL zero-based RQE id contract and polled CQ entries before the mirrored OPQ and CQ state had settled. |
+| [BUG-004-H](#bug-004-h-forced-halt-stress-used-an-unreachable-two-segment-pressure-profile) | H | soft error | `directed-only (forced halt pressure)` | fixed | `X115` DEBUG=1 regression | `pending` | Forced-HALT ERROR variants mixed a two-segment RQE with a pressure frame that could not reach the intended HALT path before timeout. |
 
 ## 2026-05-10
 
@@ -504,15 +504,15 @@ Historical formal note:
   - `make -C tb_int/uvm DEBUG_LEVEL=1 TEST=test_b017_catalog CASE_ID=B017 run_one`
     on `2026-05-10`
 - Symptom:
-  - B017 posts one legal SQE and injects one OPQ frame, but the first CQE
-    observed by the run_tool model has `sqe_id=0`, `status=0x0020`,
+  - B017 posts one legal RQE and injects one OPQ frame, but the first CQE
+    observed by the run_tool model has `rqe_id=0`, `status=0x0020`,
     `bytes=0`, `seg0=0`, and `seg1=0`
   - the host AXI completer observes only two host writes, matching the CQE
     write split, and no DMA rx_buffer writes before the CQE
 - Root cause:
   - the host AXI completer advanced to the next read beat only after an extra
     clock following `m_axi_rready`, so the DUT saw beat 0 twice during a
-    two-beat 512-bit SQE fetch
+    two-beat 512-bit RQE fetch
   - the repeated beat duplicated `word0` into the upper half of the WQE and
     made the run-manager decode the opcode/span fields as malformed data
 - Fix status:
@@ -525,7 +525,7 @@ Historical formal note:
     - B017 DEBUG=1 isolated regression emits UVM_ERROR
       `expected EOE status got=0x0020`
     - diagnostic log includes
-      `TB_INT_DIAG SQE_ACCEPT ... opcode_id=0x0000400000111000 ...`
+      `TB_INT_DIAG RQE_ACCEPT ... opcode_id=0x0000400000111000 ...`
   - after_fix_outcome:
     - B017 DEBUG=1/2 isolated reruns pass and the full catalog sweeps include
       the B017 scorecards with `passed=true`
@@ -540,17 +540,17 @@ Historical formal note:
 - Commit:
   - pending
 
-### BUG-003-H: Runtool model used one-based SQE ids and unbounded CQ tail polling
+### BUG-003-H: Runtool model used one-based RQE ids and unbounded CQ tail polling
 - First seen in:
   - `make -C tb_int/uvm DEBUG_LEVEL=1 TEST=test_b065_catalog CASE_ID=B065 run_one`
     on `2026-05-10`
 - Symptom:
-  - back-to-back SQE cases could observe missing or mismatched CQEs even after
-    the single-SQE path was clean
+  - back-to-back RQE cases could observe missing or mismatched CQEs even after
+    the single-RQE path was clean
   - CQ polling sometimes read a tail slot before the corresponding CQ memory
     write had settled through the host completer
 - Root cause:
-  - the runtool model generated one-based SQE ids while the RTL and scoreboard
+  - the runtool model generated one-based RQE ids while the RTL and scoreboard
     use zero-based ring slots
   - the CQ poll loop tracked an unbounded software tail instead of the masked
     CQ ring tail and sampled CQ memory in the same scheduling window as the
@@ -559,18 +559,18 @@ Historical formal note:
   - state:
     - fixed in the tb_int runtool model and scoreboard expectations
   - mechanism:
-    - SQE generation now uses zero-based ids and the scoreboard address model
+    - RQE generation now uses zero-based ids and the scoreboard address model
       follows the same id contract
     - CQ polling masks the observed tail and waits for the CQ memory write to
       settle before reading the entry
   - before_fix_outcome:
     - B065 DEBUG=1 isolated regression failed with missing or mismatched CQE
-      evidence after posting multiple SQEs
+      evidence after posting multiple RQEs
   - after_fix_outcome:
     - B065 and the full DEBUG=1/2 catalog sweeps pass with matching
       `actual_txn_count` between debug levels
   - potential_hazard:
-    - low; the change aligns the TB model to the documented SQ/CQ ring
+    - low; the change aligns the TB model to the documented RQ/CQ ring
       contract and does not modify RTL
   - Claude Opus 4.7 xhigh review decision:
     - pending / not run in this turn
@@ -606,7 +606,7 @@ Historical formal note:
       bucket sweep records HALT-path scorecards
   - potential_hazard:
     - low; the bucket still drives directed forced-HALT pressure while staying
-      within a reachable SQE shape
+      within a reachable RQE shape
   - Claude Opus 4.7 xhigh review decision:
     - pending / not run in this turn
 - Runtime / coverage context:
@@ -743,9 +743,9 @@ def report_json() -> dict:
         "seed": 1,
         "signoff_scope": {
             "DUT_IMPL": "rtl" if (TB_DIR.parent / "rtl" / "rdma_subsystem_top.sv").exists() else "tb_int_stub",
-            "SQE_BYTES": "64",
+            "RQE_BYTES": "64",
             "CQE_BYTES": "64",
-            "SQE_SEGMENTS": "2",
+            "RQE_SEGMENTS": "2",
             "SPAN_QUANTUM": "4096",
             "DEBUG_LEVELS": "1,2",
             "FEB": "abstracted OPQ source",
@@ -970,7 +970,7 @@ def readme_md() -> str:
 Integration UVM cosim for the four-IP RDMA subsystem.  The FEB is abstracted at
 the OPQ egress boundary; the source agent emits byte-level mu3e frames with OPQ
 K-character markers.  The run_tool behavior is modeled in SystemVerilog and
-owns host CSR/SQ/CQ sequencing.
+owns host CSR/RQ/CQ sequencing.
 
 Primary commands:
 

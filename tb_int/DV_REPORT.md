@@ -28,8 +28,8 @@ This page is the chief-architect dashboard. All per-case evidence lives under [`
 | DUT_IMPL | `rtl` |
 | FEB | `abstracted OPQ source` |
 | SPAN_QUANTUM | `4096` |
-| SQE_BYTES | `64` |
-| SQE_SEGMENTS | `2` |
+| RQE_BYTES | `64` |
+| RQE_SEGMENTS | `2` |
 | probe_only_exclusions |  |
 | runtool_model | `software-behavioral SV agent` |
 

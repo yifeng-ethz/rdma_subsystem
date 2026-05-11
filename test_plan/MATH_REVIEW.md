@@ -15,7 +15,7 @@ Source documents reviewed:
 - `TEST_PLAN.md`
 - `ARCHITECTURE_PLAN.md`
 - `../rdma_dma_engine/doc/QUEUE_MATH.md`
-- `../rdma_sq_fetcher/doc/QUEUE_MATH.md`
+- `../rdma_rq_fetcher/doc/QUEUE_MATH.md`
 - `../rdma_cq_pusher/doc/QUEUE_MATH.md`
 - `../rdma_run_manager/doc/QUEUE_MATH.md`
 - `../emulator_mutrig/tlm/mutrig_tlm_contract_pkg.sv`
@@ -222,7 +222,7 @@ Definitions:
 | CP-C5 | hist IP | `H5 = sum histogram bins` |
 | CP-C6 | FEB TX framer | `H6 = decoded hit payloads sent on link 2` |
 | CP-C7 | `CNT_OPQ_INPUT_W` | `B7 = 4 * CNT_OPQ_INPUT_W` bytes at OPQ ingress |
-| CP-C8 | `CNT_BYTES_WRITTEN`, `CNT_SQE_CONSUMED` | `B8 = CNT_BYTES_WRITTEN` host payload bytes |
+| CP-C8 | `CNT_BYTES_WRITTEN`, `CNT_RQE_CONSUMED` | `B8 = CNT_BYTES_WRITTEN` host payload bytes |
 | CP-C9 | `CNT_CQE_POSTED` | `Q9 = CNT_CQE_POSTED` retired drains |
 
 The CP-C hit chain checks adjacent equalities in hit units through
@@ -292,11 +292,11 @@ the decoded-hit-payload convention.
 Finally:
 
 ```
-CP-C8 -> CP-C9:  CNT_CQE_POSTED == CNT_SQE_CONSUMED
+CP-C8 -> CP-C9:  CNT_CQE_POSTED == CNT_RQE_CONSUMED
 ```
 
-after the drain completes, and every consumed SQE must have exactly
-one CQE with the same `sqe_id`.
+after the drain completes, and every consumed RQE must have exactly
+one CQE with the same `rqe_id`.
 
 ### 3.3 Framing overhead form
 
@@ -574,7 +574,7 @@ OPQ egress upper = max(99134, 6159 + W_99(mode, rate, mask, service))
 `99134` is the user-supplied reference operating-point upper edge
 for the header-sync OPQ-egress panel. It remains the default
 non-saturating gate because it covers deterministic burst drain,
-SQE/CQE orchestration, and DMA writer startup overhead that are not
+RQE/CQE orchestration, and DMA writer startup overhead that are not
 visible in the first four panels.
 
 For Mode C, an exponential tail approximation is the conservative

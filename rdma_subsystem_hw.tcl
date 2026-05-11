@@ -54,7 +54,7 @@ proc validate {} {
         send_message error "DMA_DATA_W is fixed at 256 bits for Phase 1 A10 host-DMA signoff."
     }
     if {$wqe_bus_w != 512} {
-        send_message error "WQE_BUS_W is fixed at 512 bits for one 64 B SQE/CQE cacheline beat."
+        send_message error "WQE_BUS_W is fixed at 512 bits for one 64 B RQE/CQE cacheline beat."
     }
     if {$debug_level < 0 || $debug_level > 2} {
         send_message error "DEBUG_LEVEL must be 0, 1, or 2."
@@ -66,9 +66,9 @@ proc add_subsystem_files {fileset_name} {
     add_fileset_file rdma_subsystem_reset_chain.sv SYSTEM_VERILOG PATH rtl/rdma_subsystem_reset_chain.sv
     add_fileset_file rdma_subsystem_axi_xbar.sv SYSTEM_VERILOG PATH rtl/rdma_subsystem_axi_xbar.sv
     add_fileset_file rdma_subsystem_csr_decoder.sv SYSTEM_VERILOG PATH rtl/rdma_subsystem_csr_decoder.sv
-    add_fileset_file rdma_sq_ring_state.sv SYSTEM_VERILOG PATH ../rdma_sq_fetcher/rtl/rdma_sq_ring_state.sv
-    add_fileset_file rdma_sq_axi_reader.sv SYSTEM_VERILOG PATH ../rdma_sq_fetcher/rtl/rdma_sq_axi_reader.sv
-    add_fileset_file rdma_sq_fetcher.sv SYSTEM_VERILOG PATH ../rdma_sq_fetcher/rtl/rdma_sq_fetcher.sv
+    add_fileset_file rdma_rq_ring_state.sv SYSTEM_VERILOG PATH ../rdma_rq_fetcher/rtl/rdma_rq_ring_state.sv
+    add_fileset_file rdma_rq_axi_reader.sv SYSTEM_VERILOG PATH ../rdma_rq_fetcher/rtl/rdma_rq_axi_reader.sv
+    add_fileset_file rdma_rq_fetcher.sv SYSTEM_VERILOG PATH ../rdma_rq_fetcher/rtl/rdma_rq_fetcher.sv
     add_fileset_file rdma_dma_packer.sv SYSTEM_VERILOG PATH ../rdma_dma_engine/rtl/rdma_dma_packer.sv
     add_fileset_file rdma_dma_data_fifo.sv SYSTEM_VERILOG PATH ../rdma_dma_engine/rtl/rdma_dma_data_fifo.sv
     add_fileset_file rdma_dma_writer.sv SYSTEM_VERILOG PATH ../rdma_dma_engine/rtl/rdma_dma_writer.sv
@@ -108,7 +108,7 @@ set_parameter_property WQE_BUS_W DISPLAY_NAME "WQE Bus Width"
 set_parameter_property WQE_BUS_W UNITS Bits
 set_parameter_property WQE_BUS_W ALLOWED_RANGES {512}
 set_parameter_property WQE_BUS_W HDL_PARAMETER true
-set_parameter_property WQE_BUS_W DESCRIPTION "Internal SQE and CQE AXI4-Stream width. Phase 1 fixes this at one 64 B WQE per beat."
+set_parameter_property WQE_BUS_W DESCRIPTION "Internal RQE and CQE AXI4-Stream width. Phase 1 fixes this at one 64 B WQE per beat."
 
 add_parameter DEBUG_LEVEL NATURAL $DEFAULT_DEBUG_LEVEL_CONST
 set_parameter_property DEBUG_LEVEL DISPLAY_NAME "Debug Level"
@@ -175,7 +175,7 @@ add_display_item $TAB_CONFIGURATION "Debug" GROUP
 add_display_item "Sizing" DMA_DATA_W parameter
 add_display_item "Sizing" WQE_BUS_W parameter
 add_display_item "Debug" DEBUG_LEVEL parameter
-add_html_text "Overview" overview_html {<html><b>Role</b><br/>The RDMA subsystem supercore wires rdma_sq_fetcher, rdma_dma_engine, rdma_cq_pusher, and rdma_run_manager behind one BAR1 CSR slave and one host AXI4 master. Phase 1 keeps a single queue pair, a pure RTL AXI4 xbar, 512-bit SQ/CQ cacheline beats, and a 256-bit host DMA beat.</html>}
+add_html_text "Overview" overview_html {<html><b>Role</b><br/>The RDMA subsystem supercore wires rdma_rq_fetcher, rdma_dma_engine, rdma_cq_pusher, and rdma_run_manager behind one BAR1 CSR slave and one host AXI4 master. Phase 1 keeps a single queue pair, a pure RTL AXI4 xbar, 512-bit RQ/CQ cacheline beats, and a 256-bit host DMA beat.</html>}
 
 add_display_item $TAB_IDENTITY "Delivered Profile" GROUP
 add_display_item "Delivered Profile" IP_UID parameter
@@ -196,11 +196,11 @@ add_display_item $TAB_INTERFACES "MSI-X" GROUP
 add_html_text "Clock / Reset" clk_rst_html {<html>One clock input <b>clk</b> and active-low reset input <b>reset_n</b>. The wrapper generates per-block reset deassertion synchronizers.</html>}
 add_html_text "BAR1 CSR" csr_html {<html>AXI4-Lite slave, 32-bit data, 8-bit byte address. The supercore decoder passes all traffic to rdma_run_manager, which owns the CSR map and SVD.</html>}
 add_html_text "OPQ Stream" opq_html {<html>AXI4-Stream sink for OPQ egress. TDATA is 36 bits with {datak[3:0], data[31:0]}; TUSER[0] carries SOP and TLAST carries OPQ EOP.</html>}
-add_html_text "Host AXI4" host_html {<html>Single AXI4 master toward host DRAM. Internal SQ/CQ 512-bit cacheline transactions are adapted to the 256-bit host data path by rdma_subsystem_axi_xbar.</html>}
+add_html_text "Host AXI4" host_html {<html>Single AXI4 master toward host DRAM. Internal RQ/CQ 512-bit cacheline transactions are adapted to the 256-bit host data path by rdma_subsystem_axi_xbar.</html>}
 add_html_text "MSI-X" msix_html {<html>Phase 1 exposes the MSI-X conduit but the embedded CQ pusher keeps msix_req low. Phase 2 replaces the quiet stub with real interrupt generation.</html>}
 
 add_display_item $TAB_REGMAP "CSR Words" GROUP
-add_html_text "CSR Words" regmap_html {<html><table border="1" cellpadding="3"><tr><th>Word</th><th>Name</th><th>Access</th><th>Description</th></tr><tr><td>0x00</td><td>UID</td><td>RO</td><td>ASCII DQOP from rdma_run_manager.</td></tr><tr><td>0x01</td><td>META</td><td>RW/RO</td><td>Page mux: page 0=VERSION, page 1=DATE, page 2=GIT, page 3=INSTANCE_ID.</td></tr><tr><td>0x02</td><td>CTRL</td><td>RW</td><td>enable, reset_counters W1P, halt.</td></tr><tr><td>0x03</td><td>STATUS</td><td>RO</td><td>Run-manager FSM and live worker handshake snapshot.</td></tr><tr><td>0x04..0x0C</td><td>SQ/CQ config and doorbells</td><td>RW/RO/WO</td><td>Host-side SQ/CQ ring bases, depths, tail/head doorbells, and CQ tail.</td></tr><tr><td>0x0D..0x12</td><td>CNT_*</td><td>RO</td><td>Sideband counter shadows from SQ fetcher, DMA engine, and CQ pusher.</td></tr></table><br/>Full field-level authority remains <b>../rdma_run_manager/rdma_run_manager.svd</b> and <b>../rdma_run_manager/doc/csr_map.md</b>.</html>}
+add_html_text "CSR Words" regmap_html {<html><table border="1" cellpadding="3"><tr><th>Word</th><th>Name</th><th>Access</th><th>Description</th></tr><tr><td>0x00</td><td>UID</td><td>RO</td><td>ASCII DQOP from rdma_run_manager.</td></tr><tr><td>0x01</td><td>META</td><td>RW/RO</td><td>Page mux: page 0=VERSION, page 1=DATE, page 2=GIT, page 3=INSTANCE_ID.</td></tr><tr><td>0x02</td><td>CTRL</td><td>RW</td><td>enable, reset_counters W1P, halt.</td></tr><tr><td>0x03</td><td>STATUS</td><td>RO</td><td>Run-manager FSM and live worker handshake snapshot.</td></tr><tr><td>0x04..0x0C</td><td>RQ/CQ config and doorbells</td><td>RW/RO/WO</td><td>Host-side RQ/CQ ring bases, depths, tail/head doorbells, and CQ tail.</td></tr><tr><td>0x0D..0x12</td><td>CNT_*</td><td>RO</td><td>Sideband counter shadows from RQ fetcher, DMA engine, and CQ pusher.</td></tr></table><br/>Full field-level authority remains <b>../rdma_run_manager/rdma_run_manager.svd</b> and <b>../rdma_run_manager/doc/csr_map.md</b>.</html>}
 
 proc elaborate {} {
     set dma_data_w [get_parameter_value DMA_DATA_W]

@@ -70,17 +70,17 @@ module rdma_subsystem_top #(
   localparam logic [31:0] UID_CONST = 32'h4451_4f50;
 
   typedef struct packed {
-    logic [63:0] sq_base;
+    logic [63:0] rq_base;
     logic [63:0] cq_base;
     logic [31:0] ctrl;
     logic [31:0] status;
-    logic [15:0] sq_depth;
+    logic [15:0] rq_depth;
     logic [15:0] cq_depth;
-    logic [15:0] sq_tail;
-    logic [15:0] sq_head;
+    logic [15:0] rq_tail;
+    logic [15:0] rq_head;
     logic [15:0] cq_tail;
     logic [15:0] cq_head;
-    logic [31:0] cnt_sqe_consumed;
+    logic [31:0] cnt_rqe_consumed;
     logic [31:0] cnt_cqe_posted;
     logic [31:0] cnt_bytes_written;
     logic [31:0] cnt_opq_input_w;
@@ -148,7 +148,7 @@ module rdma_subsystem_top #(
           8'h08: begin
             csr.ctrl <= apply_wstrb(csr.ctrl, s_axil_wdata, s_axil_wstrb);
             if (s_axil_wdata[1]) begin
-              csr.cnt_sqe_consumed <= '0;
+              csr.cnt_rqe_consumed <= '0;
               csr.cnt_cqe_posted <= '0;
               csr.cnt_bytes_written <= '0;
               csr.cnt_opq_input_w <= '0;
@@ -156,10 +156,10 @@ module rdma_subsystem_top #(
               csr.cnt_eoe_observed <= '0;
             end
           end
-          8'h10: csr.sq_base[31:0] <= apply_wstrb(csr.sq_base[31:0], s_axil_wdata, s_axil_wstrb);
-          8'h14: csr.sq_base[63:32] <= apply_wstrb(csr.sq_base[63:32], s_axil_wdata, s_axil_wstrb);
-          8'h18: csr.sq_depth <= s_axil_wdata[15:0];
-          8'h1c: csr.sq_tail <= s_axil_wdata[15:0];
+          8'h10: csr.rq_base[31:0] <= apply_wstrb(csr.rq_base[31:0], s_axil_wdata, s_axil_wstrb);
+          8'h14: csr.rq_base[63:32] <= apply_wstrb(csr.rq_base[63:32], s_axil_wdata, s_axil_wstrb);
+          8'h18: csr.rq_depth <= s_axil_wdata[15:0];
+          8'h1c: csr.rq_tail <= s_axil_wdata[15:0];
           8'h20: csr.cq_base[31:0] <= apply_wstrb(csr.cq_base[31:0], s_axil_wdata, s_axil_wstrb);
           8'h24: csr.cq_base[63:32] <= apply_wstrb(csr.cq_base[63:32], s_axil_wdata, s_axil_wstrb);
           8'h28: csr.cq_depth <= s_axil_wdata[15:0];
@@ -178,16 +178,16 @@ module rdma_subsystem_top #(
           8'h04: s_axil_rdata <= {24'h0, DEBUG_LEVEL[7:0]};
           8'h08: s_axil_rdata <= csr.ctrl;
           8'h0c: s_axil_rdata <= csr.status | {31'h0, worker_busy};
-          8'h10: s_axil_rdata <= csr.sq_base[31:0];
-          8'h14: s_axil_rdata <= csr.sq_base[63:32];
-          8'h18: s_axil_rdata <= {16'h0, csr.sq_depth};
-          8'h1c: s_axil_rdata <= {16'h0, csr.sq_tail};
+          8'h10: s_axil_rdata <= csr.rq_base[31:0];
+          8'h14: s_axil_rdata <= csr.rq_base[63:32];
+          8'h18: s_axil_rdata <= {16'h0, csr.rq_depth};
+          8'h1c: s_axil_rdata <= {16'h0, csr.rq_tail};
           8'h20: s_axil_rdata <= csr.cq_base[31:0];
           8'h24: s_axil_rdata <= csr.cq_base[63:32];
           8'h28: s_axil_rdata <= {16'h0, csr.cq_depth};
           8'h2c: s_axil_rdata <= {16'h0, csr.cq_tail};
           8'h30: s_axil_rdata <= {16'h0, csr.cq_head};
-          8'h34: s_axil_rdata <= csr.cnt_sqe_consumed;
+          8'h34: s_axil_rdata <= csr.cnt_rqe_consumed;
           8'h38: s_axil_rdata <= csr.cnt_cqe_posted;
           8'h3c: s_axil_rdata <= csr.cnt_bytes_written;
           8'h40: s_axil_rdata <= csr.cnt_opq_input_w;
@@ -276,7 +276,7 @@ module rdma_subsystem_top #(
     resp = resp0 | resp1;
   endtask
 
-  function automatic logic [511:0] make_cqe(input logic [15:0] sqe_id,
+  function automatic logic [511:0] make_cqe(input logic [15:0] rqe_id,
                                             input logic [63:0] bytes_total,
                                             input logic [31:0] seg0_bytes,
                                             input logic [31:0] seg1_bytes,
@@ -288,7 +288,7 @@ module rdma_subsystem_top #(
     cqe[95:64] = seg0_bytes;
     cqe[127:96] = seg1_bytes;
     cqe[143:128] = status;
-    cqe[159:144] = sqe_id;
+    cqe[159:144] = rqe_id;
     cqe[191:160] = 32'h0;
     cqe[255:192] = event_count;
     cqe[319:256] = csr.cnt_opq_input_w;
@@ -298,13 +298,13 @@ module rdma_subsystem_top #(
     return cqe;
   endfunction
 
-  task automatic drain_one_sqe(input logic [511:0] sqe);
+  task automatic drain_one_rqe(input logic [511:0] rqe);
     logic [63:0] seg0_addr;
     logic [63:0] seg0_span;
     logic [63:0] seg1_addr;
     logic [63:0] seg1_span;
     logic [15:0] opcode;
-    logic [15:0] sqe_id;
+    logic [15:0] rqe_id;
     logic [15:0] status;
     logic [63:0] write_addr;
     logic [63:0] bytes_total;
@@ -315,12 +315,12 @@ module rdma_subsystem_top #(
     logic [1:0] resp;
     logic done;
 
-    seg0_addr = sqe[63:0];
-    seg0_span = sqe[127:64];
-    seg1_addr = sqe[191:128];
-    seg1_span = sqe[255:192];
-    opcode = sqe[271:256];
-    sqe_id = sqe[303:288];
+    seg0_addr = rqe[63:0];
+    seg0_span = rqe[127:64];
+    seg1_addr = rqe[191:128];
+    seg1_span = rqe[255:192];
+    opcode = rqe[271:256];
+    rqe_id = rqe[303:288];
     status = 16'h0;
     bytes_total = 64'h0;
     seg0_bytes = 32'h0;
@@ -378,12 +378,12 @@ module rdma_subsystem_top #(
     end
 
     axi_write_wqe(csr.cq_base + (longint'(csr.cq_tail % csr.cq_depth) << 6),
-                  make_cqe(sqe_id, bytes_total, seg0_bytes, seg1_bytes, status,
+                  make_cqe(rqe_id, bytes_total, seg0_bytes, seg1_bytes, status,
                            status[0] ? 64'd1 : 64'd0),
                   resp);
     csr.retire_seq <= csr.retire_seq + 1;
     csr.cq_tail <= csr.cq_tail + 1;
-    csr.cnt_sqe_consumed <= csr.cnt_sqe_consumed + 1;
+    csr.cnt_rqe_consumed <= csr.cnt_rqe_consumed + 1;
     csr.cnt_cqe_posted <= csr.cnt_cqe_posted + 1;
   endtask
 
@@ -394,13 +394,13 @@ module rdma_subsystem_top #(
     forever begin
       while (reset_n !== 1'b1)
         @(posedge clk);
-      if (csr.ctrl[0] && csr.sq_head != csr.sq_tail && !worker_busy) begin
-        logic [511:0] sqe;
+      if (csr.ctrl[0] && csr.rq_head != csr.rq_tail && !worker_busy) begin
+        logic [511:0] rqe;
         logic [1:0] resp;
         worker_busy = 1'b1;
-        axi_read_wqe(csr.sq_base + (longint'(csr.sq_head % csr.sq_depth) << 6), sqe, resp);
-        csr.sq_head <= csr.sq_head + 1;
-        drain_one_sqe(sqe);
+        axi_read_wqe(csr.rq_base + (longint'(csr.rq_head % csr.rq_depth) << 6), rqe, resp);
+        csr.rq_head <= csr.rq_head + 1;
+        drain_one_rqe(rqe);
         worker_busy = 1'b0;
       end else begin
         @(posedge clk);

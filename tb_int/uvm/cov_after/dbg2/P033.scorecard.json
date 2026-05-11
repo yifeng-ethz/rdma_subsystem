@@ -11,8 +11,8 @@
   "cqe_count": 2,
   "last_cqe_status": 17,
   "last_cqe_bytes": 48,
-  "coverage_bin": "prof_full_sq_depth_p033",
-  "contract_anchor": "DV_PROF.md P033 cov:prof_full_sq_depth_p033",
+  "coverage_bin": "prof_full_rq_depth_p033",
+  "contract_anchor": "DV_PROF.md P033 cov:prof_full_rq_depth_p033",
   "unique_coverage_delta": 1,
   "duplicate_justification": "",
   "log_summary": {

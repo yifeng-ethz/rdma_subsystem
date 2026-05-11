@@ -2,9 +2,9 @@
 ../../rtl/rdma_subsystem_reset_chain.sv
 ../../rtl/rdma_subsystem_axi_xbar.sv
 ../../rtl/rdma_subsystem_csr_decoder.sv
-../../../rdma_sq_fetcher/rtl/rdma_sq_ring_state.sv
-../../../rdma_sq_fetcher/rtl/rdma_sq_axi_reader.sv
-../../../rdma_sq_fetcher/rtl/rdma_sq_fetcher.sv
+../../../rdma_rq_fetcher/rtl/rdma_rq_ring_state.sv
+../../../rdma_rq_fetcher/rtl/rdma_rq_axi_reader.sv
+../../../rdma_rq_fetcher/rtl/rdma_rq_fetcher.sv
 ../../../rdma_dma_engine/rtl/rdma_dma_packer.sv
 ../../../rdma_dma_engine/rtl/rdma_dma_data_fifo.sv
 ../../../rdma_dma_engine/rtl/rdma_dma_writer.sv

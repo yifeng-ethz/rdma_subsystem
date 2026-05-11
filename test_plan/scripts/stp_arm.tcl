@@ -35,7 +35,7 @@ namespace eval rdma_stp {
             {07_swb_opq_ingress {s_axis_opq_tvalid s_axis_opq_tready s_axis_opq_tdata s_axis_opq_tlast cnt_opq_input_w}}
         }
         CP-C8 {
-            {08_dma_writer {m_axi_awvalid m_axi_awready m_axi_wvalid m_axi_wready m_axi_wdata cnt_bytes_written cnt_sqe_consumed}}
+            {08_dma_writer {m_axi_awvalid m_axi_awready m_axi_wvalid m_axi_wready m_axi_wdata cnt_bytes_written cnt_rqe_consumed}}
         }
         CP-C9 {
             {09_cq_pusher {s_axis_cqe_tvalid s_axis_cqe_tready s_axis_cqe_tdata cnt_cqe_posted cq_tail}}

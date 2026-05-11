@@ -8,7 +8,7 @@ supercore wrapper itself. Snapshots the HEAD of each independent submodule.
 | IP                  | Phase A     | Phase B (RTL+UVM all-green) | Phase C (math) | Phase D (signoff) | Unique-cov audit | HEAD       |
 |---------------------|:-----------:|:---------------------------:|:--------------:|:-----------------:|:----------------:|------------|
 | `rdma_dma_engine`   | DONE all 9  | PARTIAL (P-bucket complete, X001-X016 done, X017-X128 pending — user-authorized skip) | DONE QUEUE_MATH.md | DONE (a6523a6)     | RUNNING (sweep) | `0fe4901` |
-| `rdma_sq_fetcher`   | DONE all 9  | DONE all 512 evidenced       | DONE QUEUE_MATH.md | DONE          | DONE (`6052c07`) | `6052c07` |
+| `rdma_rq_fetcher`   | DONE all 9  | DONE all 512 evidenced       | DONE QUEUE_MATH.md | DONE          | DONE (`6052c07`) | `6052c07` |
 | `rdma_cq_pusher`    | DONE all 9  | DONE all 512 evidenced       | DONE QUEUE_MATH.md | DONE (band-relax authorized) | DONE (`2e1ca03`) | `2e1ca03` |
 | `rdma_run_manager`  | DONE all 9 + SVD | DONE all 512 evidenced   | DONE QUEUE_MATH.md | DONE (`8e58743`) | DONE (`64e4db8`) | `64e4db8` |
 
@@ -63,7 +63,7 @@ Supercore `rdma_subsystem/` Phase 1 wrapper: codex2 dispatched 2026-05-10
 | IP                  | RTL files | RTL lines | UVM files | UVM lines |
 |---------------------|----------:|----------:|----------:|----------:|
 | `rdma_dma_engine`   |         4 |     1,205 |     1,050 |    30,050 |
-| `rdma_sq_fetcher`   |         3 |       461 |        33 |     4,097 |
+| `rdma_rq_fetcher`   |         3 |       461 |        33 |     4,097 |
 | `rdma_cq_pusher`    |         4 |       597 |        38 |    10,099 |
 | `rdma_run_manager`  |         4 |     1,018 |        20 |     3,557 |
 | **subtotal**        |    **15** |  **3,281** |  **1,141** | **47,803** |
@@ -72,7 +72,7 @@ Supercore `rdma_subsystem/` Phase 1 wrapper: codex2 dispatched 2026-05-10
 
 ## Phase B closure status
 
-- `rdma_sq_fetcher`: all-green Phase B closed at `5baa39b`, with 7 [FIX]
+- `rdma_rq_fetcher`: all-green Phase B closed at `5baa39b`, with 7 [FIX]
   commits (`402e969`, `c28c574`, `b2ee7dc`, `eb17cbc`, `24802c0`,
   `6100ca0`, `8389852`) catching real catalog/doorbell bugs along the way.
   Unique-coverage audit pass landed at `6052c07`.
@@ -103,7 +103,7 @@ logs and the rdma_subsystem git head for progress and exit conditions.
 
 ```
 rdma_dma_engine     : full RTL + UVM + Phase D signoff
-rdma_sq_fetcher     : full RTL + UVM + Phase D signoff
+rdma_rq_fetcher     : full RTL + UVM + Phase D signoff
 rdma_cq_pusher      : full RTL + UVM + Phase D signoff
 rdma_run_manager    : full RTL + UVM + Phase D signoff + SVD
 ```
@@ -114,7 +114,7 @@ Common Phase A files passed `dv_bucket_format_check.py` for the IPs that
 have them. The DEBUG_LEVEL=1/2 dual-env contract is referenced in every
 DV_HARNESS.md. The OPQ + rbcam reference IPs are cited as the style
 guide in every DV_PLAN.md. The 64 B WQE / 4 KB-multiple span / 2-segment
-SQE / AXI4 internal-bus decisions are unchanged from `ARCHITECTURE_PLAN.md`.
+RQE / AXI4 internal-bus decisions are unchanged from `ARCHITECTURE_PLAN.md`.
 
 ## Independent git histories
 

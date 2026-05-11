@@ -3,7 +3,7 @@
 Status: **PLAN — pending review.** This is the integration-level RTL plan
 for the supercore. Per-IP RTL plans are in their own submodule folders:
 - `mu3e-ip-cores/rdma_dma_engine/RTL_PLAN.md`
-- `mu3e-ip-cores/rdma_sq_fetcher/RTL_PLAN.md`
+- `mu3e-ip-cores/rdma_rq_fetcher/RTL_PLAN.md`
 - `mu3e-ip-cores/rdma_cq_pusher/RTL_PLAN.md`
 - `mu3e-ip-cores/rdma_run_manager/RTL_PLAN.md`
 
@@ -117,7 +117,7 @@ module rdma_subsystem_top #(
                                                          | rdma_run_manager   |
    s_axil_*  ----------------------------> AXI4-Lite --->| (CSR + dispatch FSM)|
                                                          |                    |
-                            +-- sqe AXIS <----- m_axis ---|                    |
+                            +-- rqe AXIS <----- m_axis ---|                    |
                             |                            +--------------------+
                             |                              ^   |
                             |                              |   v
@@ -125,7 +125,7 @@ module rdma_subsystem_top #(
                             |                              from cq_pusher
                             v
                       +-----------+
-                      | rdma_sq_  |---- m_axi_* (read) ----+
+                      | rdma_rq_  |---- m_axi_* (read) ----+
                       | fetcher   |                        |
                       +-----------+                        |
                                                            |
@@ -149,7 +149,7 @@ module rdma_subsystem_top #(
 ## 5. AXI4 internal crossbar (`rdma_subsystem_axi_xbar.sv`)
 
 Three AXI4 masters into one external host-DRAM bundle:
-- `sq_fetcher` — read-only (AR/R)
+- `rq_fetcher` — read-only (AR/R)
 - `dma_engine` — write-only (AW/W/B)
 - `cq_pusher` — write-only (AW/W/B)
 

@@ -86,7 +86,7 @@ module rdma_subsystem_top #(
     localparam int unsigned DMA_DBG2_META_W_CONST = 136;
     localparam int unsigned CQ_DBG_META_W_CONST   = 64;
 
-    logic                         sq_fetcher_reset_n;
+    logic                         rq_fetcher_reset_n;
     logic                         dma_engine_reset_n;
     logic                         cq_pusher_reset_n;
     logic                         run_manager_reset_n;
@@ -111,32 +111,32 @@ module rdma_subsystem_top #(
     logic                         rm_s_axil_rvalid;
     logic                         rm_s_axil_rready;
 
-    logic [63:0]                  sqf_cfg_sq_base;
-    logic [15:0]                  sqf_cfg_sq_depth;
-    logic                         sqf_cfg_enable;
-    logic                         sqf_sq_tail_dbl_pulse;
-    logic [15:0]                  sqf_sq_tail_dbl_value;
-    logic [WQE_BUS_W-1:0]         sqe_tdata;
-    logic                         sqe_tvalid;
-    logic                         sqe_tready;
-    logic                         sqe_tlast;
-    logic [15:0]                  sqe_tuser;
-    logic [31:0]                  sqf_cnt_sqe_fetched;
-    logic [15:0]                  sqf_cur_sq_head;
+    logic [63:0]                  rqf_cfg_rq_base;
+    logic [15:0]                  rqf_cfg_rq_depth;
+    logic                         rqf_cfg_enable;
+    logic                         rqf_rq_tail_dbl_pulse;
+    logic [15:0]                  rqf_rq_tail_dbl_value;
+    logic [WQE_BUS_W-1:0]         rqe_tdata;
+    logic                         rqe_tvalid;
+    logic                         rqe_tready;
+    logic                         rqe_tlast;
+    logic [15:0]                  rqe_tuser;
+    logic [31:0]                  rqf_cnt_rqe_fetched;
+    logic [15:0]                  rqf_cur_rq_head;
 
     logic                         dma_job_req;
     logic [63:0]                  dma_job_seg0_addr;
     logic [63:0]                  dma_job_seg0_span;
     logic [63:0]                  dma_job_seg1_addr;
     logic [63:0]                  dma_job_seg1_span;
-    logic [15:0]                  dma_job_sqe_id;
+    logic [15:0]                  dma_job_rqe_id;
     logic [15:0]                  dma_job_opcode;
     logic                         dma_job_done;
     logic [63:0]                  dma_job_bytes_written_total;
     logic [31:0]                  dma_job_seg0_bytes_written;
     logic [31:0]                  dma_job_seg1_bytes_written;
     logic [15:0]                  dma_job_status;
-    logic [15:0]                  dma_job_sqe_id_echo;
+    logic [15:0]                  dma_job_rqe_id_echo;
     logic [31:0]                  dma_job_event_count;
     logic [63:0]                  dma_job_first_event_ts;
     logic [63:0]                  dma_job_last_event_ts;
@@ -159,19 +159,19 @@ module rdma_subsystem_top #(
     logic [15:0]                  cqp_cq_tail;
     logic [31:0]                  cqp_cnt_cqe_posted;
 
-    logic [3:0]                   sq_axi_arid;
-    logic [63:0]                  sq_axi_araddr;
-    logic [7:0]                   sq_axi_arlen;
-    logic [2:0]                   sq_axi_arsize;
-    logic [1:0]                   sq_axi_arburst;
-    logic                         sq_axi_arvalid;
-    logic                         sq_axi_arready;
-    logic [3:0]                   sq_axi_rid;
-    logic [WQE_BUS_W-1:0]         sq_axi_rdata;
-    logic [1:0]                   sq_axi_rresp;
-    logic                         sq_axi_rlast;
-    logic                         sq_axi_rvalid;
-    logic                         sq_axi_rready;
+    logic [3:0]                   rq_axi_arid;
+    logic [63:0]                  rq_axi_araddr;
+    logic [7:0]                   rq_axi_arlen;
+    logic [2:0]                   rq_axi_arsize;
+    logic [1:0]                   rq_axi_arburst;
+    logic                         rq_axi_arvalid;
+    logic                         rq_axi_arready;
+    logic [3:0]                   rq_axi_rid;
+    logic [WQE_BUS_W-1:0]         rq_axi_rdata;
+    logic [1:0]                   rq_axi_rresp;
+    logic                         rq_axi_rlast;
+    logic                         rq_axi_rvalid;
+    logic                         rq_axi_rready;
 
     logic [3:0]                   dma_axi_awid;
     logic [63:0]                  dma_axi_awaddr;
@@ -207,7 +207,7 @@ module rdma_subsystem_top #(
     logic                         cq_axi_bvalid;
     logic                         cq_axi_bready;
 
-    logic [15:0]                  rm_dbg2_sidecar_sqe_id;
+    logic [15:0]                  rm_dbg2_sidecar_rqe_id;
     logic [31:0]                  rm_dbg2_sidecar_dma_done_seq;
     logic [31:0]                  rm_dbg2_sidecar_push_seq;
     logic [31:0]                  rm_dbg2_sidecar_retire_seq;
@@ -217,13 +217,13 @@ module rdma_subsystem_top #(
         rm_dbg2_sidecar_push_seq[15:0],
         rm_dbg2_sidecar_dma_done_seq[15:0],
         rm_dbg2_sidecar_retire_seq[15:0],
-        rm_dbg2_sidecar_sqe_id
+        rm_dbg2_sidecar_rqe_id
     };
 
     rdma_subsystem_reset_chain reset_chain_i (
         .clk                (clk),
         .reset_n            (reset_n),
-        .sq_fetcher_reset_n (sq_fetcher_reset_n),
+        .rq_fetcher_reset_n (rq_fetcher_reset_n),
         .dma_engine_reset_n (dma_engine_reset_n),
         .cq_pusher_reset_n  (cq_pusher_reset_n),
         .run_manager_reset_n(run_manager_reset_n),
@@ -300,31 +300,31 @@ module rdma_subsystem_top #(
         .s_axil_rresp                (rm_s_axil_rresp),
         .s_axil_rvalid               (rm_s_axil_rvalid),
         .s_axil_rready               (rm_s_axil_rready),
-        .sqf_cfg_sq_base             (sqf_cfg_sq_base),
-        .sqf_cfg_sq_depth            (sqf_cfg_sq_depth),
-        .sqf_cfg_enable              (sqf_cfg_enable),
-        .sqf_sq_tail_dbl_pulse       (sqf_sq_tail_dbl_pulse),
-        .sqf_sq_tail_dbl_value       (sqf_sq_tail_dbl_value),
-        .s_axis_sqe_tdata            (sqe_tdata),
-        .s_axis_sqe_tvalid           (sqe_tvalid),
-        .s_axis_sqe_tready           (sqe_tready),
-        .s_axis_sqe_tlast            (sqe_tlast),
-        .s_axis_sqe_tuser            (sqe_tuser),
-        .sqf_cnt_sqe_fetched         (sqf_cnt_sqe_fetched),
-        .sqf_cur_sq_head             (sqf_cur_sq_head),
+        .rqf_cfg_rq_base             (rqf_cfg_rq_base),
+        .rqf_cfg_rq_depth            (rqf_cfg_rq_depth),
+        .rqf_cfg_enable              (rqf_cfg_enable),
+        .rqf_rq_tail_dbl_pulse       (rqf_rq_tail_dbl_pulse),
+        .rqf_rq_tail_dbl_value       (rqf_rq_tail_dbl_value),
+        .s_axis_rqe_tdata            (rqe_tdata),
+        .s_axis_rqe_tvalid           (rqe_tvalid),
+        .s_axis_rqe_tready           (rqe_tready),
+        .s_axis_rqe_tlast            (rqe_tlast),
+        .s_axis_rqe_tuser            (rqe_tuser),
+        .rqf_cnt_rqe_fetched         (rqf_cnt_rqe_fetched),
+        .rqf_cur_rq_head             (rqf_cur_rq_head),
         .dma_job_req                 (dma_job_req),
         .dma_job_seg0_addr           (dma_job_seg0_addr),
         .dma_job_seg0_span           (dma_job_seg0_span),
         .dma_job_seg1_addr           (dma_job_seg1_addr),
         .dma_job_seg1_span           (dma_job_seg1_span),
-        .dma_job_sqe_id              (dma_job_sqe_id),
+        .dma_job_rqe_id              (dma_job_rqe_id),
         .dma_job_opcode              (dma_job_opcode),
         .dma_job_done                (dma_job_done),
         .dma_job_bytes_written_total (dma_job_bytes_written_total),
         .dma_job_seg0_bytes_written  (dma_job_seg0_bytes_written),
         .dma_job_seg1_bytes_written  (dma_job_seg1_bytes_written),
         .dma_job_status              (dma_job_status),
-        .dma_job_sqe_id_echo         (dma_job_sqe_id_echo),
+        .dma_job_rqe_id_echo         (dma_job_rqe_id_echo),
         .dma_job_event_count         (dma_job_event_count),
         .dma_job_first_event_ts      (dma_job_first_event_ts),
         .dma_job_last_event_ts       (dma_job_last_event_ts),
@@ -347,17 +347,17 @@ module rdma_subsystem_top #(
         .cqp_cnt_cqe_posted          (cqp_cnt_cqe_posted),
         .reset_counters_pulse        (reset_counters_pulse),
         .dbg_fsm_state               (),
-        .dbg_sqe_valid               (),
-        .dbg_sqe_ready               (),
+        .dbg_rqe_valid               (),
+        .dbg_rqe_ready               (),
         .dbg_dma_job_req             (),
         .dbg_dma_job_done            (),
         .dbg_cqe_valid               (),
         .dbg_cqe_ready               (),
         .dbg_ctrl_halt               (),
-        .dbg_sqe_accept_count        (),
+        .dbg_rqe_accept_count        (),
         .dbg_cqe_accept_count        (),
         .dbg2_sidecar_valid          (),
-        .dbg2_sidecar_sqe_id         (rm_dbg2_sidecar_sqe_id),
+        .dbg2_sidecar_rqe_id         (rm_dbg2_sidecar_rqe_id),
         .dbg2_sidecar_fetch_seq      (),
         .dbg2_sidecar_job_seq        (),
         .dbg2_sidecar_dma_done_seq   (rm_dbg2_sidecar_dma_done_seq),
@@ -365,46 +365,46 @@ module rdma_subsystem_top #(
         .dbg2_sidecar_retire_seq     (rm_dbg2_sidecar_retire_seq)
     );
 
-    rdma_sq_fetcher #(
+    rdma_rq_fetcher #(
         .WQE_BUS_W     (WQE_BUS_W),
-        .SQ_BURST_BEATS(1),
+        .RQ_BURST_BEATS(1),
         .DEBUG         (DEBUG_LEVEL)
-    ) sq_fetcher_i (
+    ) rq_fetcher_i (
         .clk                              (clk),
-        .reset_n                          (sq_fetcher_reset_n),
-        .cfg_sq_base                      (sqf_cfg_sq_base),
-        .cfg_sq_depth                     (sqf_cfg_sq_depth),
-        .cfg_enable                       (sqf_cfg_enable),
-        .sq_tail_dbl_pulse                (sqf_sq_tail_dbl_pulse),
-        .sq_tail_dbl_value                (sqf_sq_tail_dbl_value),
-        .m_axis_sqe_tdata                 (sqe_tdata),
-        .m_axis_sqe_tvalid                (sqe_tvalid),
-        .m_axis_sqe_tready                (sqe_tready),
-        .m_axis_sqe_tlast                 (sqe_tlast),
-        .m_axis_sqe_tuser                 (sqe_tuser),
-        .m_axi_arid                       (sq_axi_arid),
-        .m_axi_araddr                     (sq_axi_araddr),
-        .m_axi_arlen                      (sq_axi_arlen),
-        .m_axi_arsize                     (sq_axi_arsize),
-        .m_axi_arburst                    (sq_axi_arburst),
-        .m_axi_arvalid                    (sq_axi_arvalid),
-        .m_axi_arready                    (sq_axi_arready),
-        .m_axi_rid                        (sq_axi_rid),
-        .m_axi_rdata                      (sq_axi_rdata),
-        .m_axi_rresp                      (sq_axi_rresp),
-        .m_axi_rlast                      (sq_axi_rlast),
-        .m_axi_rvalid                     (sq_axi_rvalid),
-        .m_axi_rready                     (sq_axi_rready),
-        .cnt_sqe_fetched                  (sqf_cnt_sqe_fetched),
-        .cur_sq_head                      (sqf_cur_sq_head),
-        .dbg_cur_sq_head                  (),
-        .dbg_cur_sq_tail                  (),
-        .dbg_sqe_in_flight                (),
+        .reset_n                          (rq_fetcher_reset_n),
+        .cfg_rq_base                      (rqf_cfg_rq_base),
+        .cfg_rq_depth                     (rqf_cfg_rq_depth),
+        .cfg_enable                       (rqf_cfg_enable),
+        .rq_tail_dbl_pulse                (rqf_rq_tail_dbl_pulse),
+        .rq_tail_dbl_value                (rqf_rq_tail_dbl_value),
+        .m_axis_rqe_tdata                 (rqe_tdata),
+        .m_axis_rqe_tvalid                (rqe_tvalid),
+        .m_axis_rqe_tready                (rqe_tready),
+        .m_axis_rqe_tlast                 (rqe_tlast),
+        .m_axis_rqe_tuser                 (rqe_tuser),
+        .m_axi_arid                       (rq_axi_arid),
+        .m_axi_araddr                     (rq_axi_araddr),
+        .m_axi_arlen                      (rq_axi_arlen),
+        .m_axi_arsize                     (rq_axi_arsize),
+        .m_axi_arburst                    (rq_axi_arburst),
+        .m_axi_arvalid                    (rq_axi_arvalid),
+        .m_axi_arready                    (rq_axi_arready),
+        .m_axi_rid                        (rq_axi_rid),
+        .m_axi_rdata                      (rq_axi_rdata),
+        .m_axi_rresp                      (rq_axi_rresp),
+        .m_axi_rlast                      (rq_axi_rlast),
+        .m_axi_rvalid                     (rq_axi_rvalid),
+        .m_axi_rready                     (rq_axi_rready),
+        .cnt_rqe_fetched                  (rqf_cnt_rqe_fetched),
+        .cur_rq_head                      (rqf_cur_rq_head),
+        .dbg_cur_rq_head                  (),
+        .dbg_cur_rq_tail                  (),
+        .dbg_rqe_in_flight                (),
         .dbg_ar_pending                   (),
         .dbg_emit_backpressure_stall_cnt  (),
         .dbg_fsm_state                    (),
         .dbg2_sidecar_valid               (),
-        .dbg2_sidecar_sqe_id              (),
+        .dbg2_sidecar_rqe_id              (),
         .dbg2_sidecar_fetch_seq           (),
         .dbg2_sidecar_ring_slot           (),
         .dbg2_sidecar_doorbell_seq        ()
@@ -431,14 +431,14 @@ module rdma_subsystem_top #(
         .job_seg0_span          (dma_job_seg0_span),
         .job_seg1_addr          (dma_job_seg1_addr),
         .job_seg1_span          (dma_job_seg1_span),
-        .job_sqe_id             (dma_job_sqe_id),
+        .job_rqe_id             (dma_job_rqe_id),
         .job_opcode             (dma_job_opcode),
         .job_done               (dma_job_done),
         .job_bytes_written_total(dma_job_bytes_written_total),
         .job_seg0_bytes_written (dma_job_seg0_bytes_written),
         .job_seg1_bytes_written (dma_job_seg1_bytes_written),
         .job_status             (dma_job_status),
-        .job_sqe_id_echo        (dma_job_sqe_id_echo),
+        .job_rqe_id_echo        (dma_job_rqe_id_echo),
         .job_event_count        (dma_job_event_count),
         .job_first_event_ts     (dma_job_first_event_ts),
         .job_last_event_ts      (dma_job_last_event_ts),
@@ -537,19 +537,19 @@ module rdma_subsystem_top #(
     ) axi_xbar_i (
         .clk              (clk),
         .reset_n          (xbar_reset_n),
-        .sq_m_axi_arid    (sq_axi_arid),
-        .sq_m_axi_araddr  (sq_axi_araddr),
-        .sq_m_axi_arlen   (sq_axi_arlen),
-        .sq_m_axi_arsize  (sq_axi_arsize),
-        .sq_m_axi_arburst (sq_axi_arburst),
-        .sq_m_axi_arvalid (sq_axi_arvalid),
-        .sq_m_axi_arready (sq_axi_arready),
-        .sq_m_axi_rid     (sq_axi_rid),
-        .sq_m_axi_rdata   (sq_axi_rdata),
-        .sq_m_axi_rresp   (sq_axi_rresp),
-        .sq_m_axi_rlast   (sq_axi_rlast),
-        .sq_m_axi_rvalid  (sq_axi_rvalid),
-        .sq_m_axi_rready  (sq_axi_rready),
+        .rq_m_axi_arid    (rq_axi_arid),
+        .rq_m_axi_araddr  (rq_axi_araddr),
+        .rq_m_axi_arlen   (rq_axi_arlen),
+        .rq_m_axi_arsize  (rq_axi_arsize),
+        .rq_m_axi_arburst (rq_axi_arburst),
+        .rq_m_axi_arvalid (rq_axi_arvalid),
+        .rq_m_axi_arready (rq_axi_arready),
+        .rq_m_axi_rid     (rq_axi_rid),
+        .rq_m_axi_rdata   (rq_axi_rdata),
+        .rq_m_axi_rresp   (rq_axi_rresp),
+        .rq_m_axi_rlast   (rq_axi_rlast),
+        .rq_m_axi_rvalid  (rq_axi_rvalid),
+        .rq_m_axi_rready  (rq_axi_rready),
         .dma_m_axi_awid   (dma_axi_awid),
         .dma_m_axi_awaddr (dma_axi_awaddr),
         .dma_m_axi_awlen  (dma_axi_awlen),

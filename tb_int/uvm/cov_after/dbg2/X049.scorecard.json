@@ -11,8 +11,8 @@
   "cqe_count": 1,
   "last_cqe_status": 32,
   "last_cqe_bytes": 0,
-  "coverage_bin": "error_malformed_sqe_x049",
-  "contract_anchor": "DV_ERROR.md X049 cov:error_malformed_sqe_x049",
+  "coverage_bin": "error_malformed_rqe_x049",
+  "contract_anchor": "DV_ERROR.md X049 cov:error_malformed_rqe_x049",
   "unique_coverage_delta": 1,
   "duplicate_justification": "",
   "log_summary": {

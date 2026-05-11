@@ -6,7 +6,7 @@ class subsystem_coverage extends uvm_component;
 
   int unsigned case_num_cp;
   int unsigned bucket_cp;
-  int unsigned sq_depth_cp;
+  int unsigned rq_depth_cp;
   int unsigned cq_depth_cp;
   int unsigned seg_mode_cp;
   int unsigned term_mode_cp;
@@ -32,7 +32,7 @@ class subsystem_coverage extends uvm_component;
       bins g6 = {[97:112]};
       bins g7 = {[113:128]};
     }
-    cp_sq_depth: coverpoint sq_depth_cp {
+    cp_rq_depth: coverpoint rq_depth_cp {
       bins d2 = {2};
       bins d4 = {4};
       bins d16 = {16};
@@ -67,7 +67,7 @@ class subsystem_coverage extends uvm_component;
     }
     cross_bucket_term: cross cp_bucket, cp_term;
     cross_seg_term: cross cp_seg, cp_term;
-    cross_depths: cross cp_sq_depth, cp_cq_depth;
+    cross_depths: cross cp_rq_depth, cp_cq_depth;
     cross_debug_bucket: cross cp_debug, cp_bucket;
   endgroup
 
@@ -96,7 +96,7 @@ class subsystem_coverage extends uvm_component;
       "PROF": bucket_cp = 2;
       default: bucket_cp = 3;
     endcase
-    sq_depth_cp = cfg.sq_depth;
+    rq_depth_cp = cfg.rq_depth;
     cq_depth_cp = cfg.cq_depth;
     seg_mode_cp = cfg.seg1_used ? 1 : 0;
     term_mode_cp = cfg.term_mode;

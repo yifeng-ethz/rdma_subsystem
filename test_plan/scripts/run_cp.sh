@@ -181,7 +181,7 @@ data = {
     "bar1": {
         "CNT_OPQ_INPUT_W": total,
         "CNT_BYTES_WRITTEN": total * 4,
-        "CNT_SQE_CONSUMED": 1,
+        "CNT_RQE_CONSUMED": 1,
         "CNT_CQE_POSTED": 1,
         "CNT_HALT": 0,
         "EVENT_SKIP_EVENT_DMA_R": 0,

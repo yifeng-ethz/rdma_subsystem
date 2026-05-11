@@ -70,16 +70,16 @@ class subsystem_scoreboard extends uvm_component;
     host_write_count++;
   endfunction
 
-  function longint unsigned seg0_addr_for(input int unsigned sqe_id);
+  function longint unsigned seg0_addr_for(input int unsigned rqe_id);
     return 64'h0000_4000_0000_0000
-           + (longint'(sqe_id) << 20)
+           + (longint'(rqe_id) << 20)
            + (longint'(cfg.case_num) << 12);
   endfunction
 
   function void check_rx_bytes(input subsystem_cqe_t cqe);
     longint unsigned addr;
     int unsigned byte_count;
-    addr = seg0_addr_for(cqe.sqe_id);
+    addr = seg0_addr_for(cqe.rqe_id);
     byte_count = int'(cqe.bytes_written_total);
     if (byte_count > expected_bytes.size() - consumed_bytes) begin
       `uvm_error("SCB_BYTES", $sformatf("%s CQE bytes=%0d exceed source remaining=%0d",
@@ -95,8 +95,8 @@ class subsystem_scoreboard extends uvm_component;
       exp = expected_bytes[consumed_bytes + idx];
       if (got !== exp) begin
         `uvm_error("SCB_BYTES", $sformatf(
-          "%s byte mismatch sqe=%0d off=%0d got=0x%02h expected=0x%02h",
-          cfg.case_id, cqe.sqe_id, idx, got, exp))
+          "%s byte mismatch rqe=%0d off=%0d got=0x%02h expected=0x%02h",
+          cfg.case_id, cqe.rqe_id, idx, got, exp))
         mismatch_count++;
         return;
       end
@@ -109,12 +109,12 @@ class subsystem_scoreboard extends uvm_component;
     observed_txn++;
     last_cqe_status = cqe.status;
     last_cqe_bytes = cqe.bytes_written_total;
-    `uvm_info("SCB_CQE", $sformatf("%s CQE sqe_id=%0d status=0x%04h bytes=%0d seg0=%0d seg1=%0d",
-                                   cfg.case_id, cqe.sqe_id, cqe.status,
+    `uvm_info("SCB_CQE", $sformatf("%s CQE rqe_id=%0d status=0x%04h bytes=%0d seg0=%0d seg1=%0d",
+                                   cfg.case_id, cqe.rqe_id, cqe.status,
                                    cqe.bytes_written_total,
                                    cqe.seg0_bytes_written,
                                    cqe.seg1_bytes_written), UVM_LOW)
-    if (cfg.force_align_error || cfg.force_malformed_sqe) begin
+    if (cfg.force_align_error || cfg.force_malformed_rqe) begin
       if (!cqe.status[5]) begin
         `uvm_error("SCB_CQE", $sformatf("%s expected ALIGN_ERR/malformed status", cfg.case_id))
         mismatch_count++;

@@ -36,9 +36,9 @@ Historical formal note:
 | bug_id | class | severity | encounterability | status | first seen | commit | summary |
 |---|---|---|---|---|---|---|---|
 | [BUG-001-H](#bug-001-h-initial-tb-int-catalog-had-no-scorecard-or-ucdb-contract) | H | non-datapath-refactor | `directed-only (reporting flow)` | fixed | `tb_int` bootstrap | `pending` | Initial integration catalog needed generated scorecard, UCDB, and unique-coverage audit plumbing before cases could be evidenced. |
-| [BUG-002-H](#bug-002-h-host-axi-read-completer-held-the-first-r-beat-for-two-handshakes) | H | hard stuck error | `common (nominal SQE fetch)` | fixed | `B017` DEBUG=1 isolated | `pending` | The host AXI completer held the first read beat for two handshakes, corrupting the 512-bit SQE assembled by the DUT. |
-| [BUG-003-H](#bug-003-h-runtool-model-used-one-based-sqe-ids-and-unbounded-cq-tail-polling) | H | hard stuck error | `common (multi-SQE nominal drain)` | fixed | `B065` DEBUG=1 isolated | `pending` | The runtool model mismatched the RTL zero-based SQE id contract and polled CQ entries before the mirrored OPQ and CQ state had settled. |
-| [BUG-004-H](#bug-004-h-forced-halt-stress-used-an-unreachable-two-segment-pressure-profile) | H | soft error | `directed-only (forced halt pressure)` | fixed | `X115` DEBUG=1 regression | `pending` | Forced-HALT ERROR variants mixed a two-segment SQE with a pressure frame that could not reach the intended HALT path before timeout. |
+| [BUG-002-H](#bug-002-h-host-axi-read-completer-held-the-first-r-beat-for-two-handshakes) | H | hard stuck error | `common (nominal RQE fetch)` | fixed | `B017` DEBUG=1 isolated | `pending` | The host AXI completer held the first read beat for two handshakes, corrupting the 512-bit RQE assembled by the DUT. |
+| [BUG-003-H](#bug-003-h-runtool-model-used-one-based-rqe-ids-and-unbounded-cq-tail-polling) | H | hard stuck error | `common (multi-RQE nominal drain)` | fixed | `B065` DEBUG=1 isolated | `pending` | The runtool model mismatched the RTL zero-based RQE id contract and polled CQ entries before the mirrored OPQ and CQ state had settled. |
+| [BUG-004-H](#bug-004-h-forced-halt-stress-used-an-unreachable-two-segment-pressure-profile) | H | soft error | `directed-only (forced halt pressure)` | fixed | `X115` DEBUG=1 regression | `pending` | Forced-HALT ERROR variants mixed a two-segment RQE with a pressure frame that could not reach the intended HALT path before timeout. |
 
 ## 2026-05-10
 
@@ -84,15 +84,15 @@ Historical formal note:
   - `make -C tb_int/uvm DEBUG_LEVEL=1 TEST=test_b017_catalog CASE_ID=B017 run_one`
     on `2026-05-10`
 - Symptom:
-  - B017 posts one legal SQE and injects one OPQ frame, but the first CQE
-    observed by the run_tool model has `sqe_id=0`, `status=0x0020`,
+  - B017 posts one legal RQE and injects one OPQ frame, but the first CQE
+    observed by the run_tool model has `rqe_id=0`, `status=0x0020`,
     `bytes=0`, `seg0=0`, and `seg1=0`
   - the host AXI completer observes only two host writes, matching the CQE
     write split, and no DMA rx_buffer writes before the CQE
 - Root cause:
   - the host AXI completer advanced to the next read beat only after an extra
     clock following `m_axi_rready`, so the DUT saw beat 0 twice during a
-    two-beat 512-bit SQE fetch
+    two-beat 512-bit RQE fetch
   - the repeated beat duplicated `word0` into the upper half of the WQE and
     made the run-manager decode the opcode/span fields as malformed data
 - Fix status:
@@ -105,7 +105,7 @@ Historical formal note:
     - B017 DEBUG=1 isolated regression emits UVM_ERROR
       `expected EOE status got=0x0020`
     - diagnostic log includes
-      `TB_INT_DIAG SQE_ACCEPT ... opcode_id=0x0000400000111000 ...`
+      `TB_INT_DIAG RQE_ACCEPT ... opcode_id=0x0000400000111000 ...`
   - after_fix_outcome:
     - B017 DEBUG=1/2 isolated reruns pass and the full catalog sweeps include
       the B017 scorecards with `passed=true`
@@ -120,17 +120,17 @@ Historical formal note:
 - Commit:
   - pending
 
-### BUG-003-H: Runtool model used one-based SQE ids and unbounded CQ tail polling
+### BUG-003-H: Runtool model used one-based RQE ids and unbounded CQ tail polling
 - First seen in:
   - `make -C tb_int/uvm DEBUG_LEVEL=1 TEST=test_b065_catalog CASE_ID=B065 run_one`
     on `2026-05-10`
 - Symptom:
-  - back-to-back SQE cases could observe missing or mismatched CQEs even after
-    the single-SQE path was clean
+  - back-to-back RQE cases could observe missing or mismatched CQEs even after
+    the single-RQE path was clean
   - CQ polling sometimes read a tail slot before the corresponding CQ memory
     write had settled through the host completer
 - Root cause:
-  - the runtool model generated one-based SQE ids while the RTL and scoreboard
+  - the runtool model generated one-based RQE ids while the RTL and scoreboard
     use zero-based ring slots
   - the CQ poll loop tracked an unbounded software tail instead of the masked
     CQ ring tail and sampled CQ memory in the same scheduling window as the
@@ -139,18 +139,18 @@ Historical formal note:
   - state:
     - fixed in the tb_int runtool model and scoreboard expectations
   - mechanism:
-    - SQE generation now uses zero-based ids and the scoreboard address model
+    - RQE generation now uses zero-based ids and the scoreboard address model
       follows the same id contract
     - CQ polling masks the observed tail and waits for the CQ memory write to
       settle before reading the entry
   - before_fix_outcome:
     - B065 DEBUG=1 isolated regression failed with missing or mismatched CQE
-      evidence after posting multiple SQEs
+      evidence after posting multiple RQEs
   - after_fix_outcome:
     - B065 and the full DEBUG=1/2 catalog sweeps pass with matching
       `actual_txn_count` between debug levels
   - potential_hazard:
-    - low; the change aligns the TB model to the documented SQ/CQ ring
+    - low; the change aligns the TB model to the documented RQ/CQ ring
       contract and does not modify RTL
   - Claude Opus 4.7 xhigh review decision:
     - pending / not run in this turn
@@ -186,7 +186,7 @@ Historical formal note:
       bucket sweep records HALT-path scorecards
   - potential_hazard:
     - low; the bucket still drives directed forced-HALT pressure while staying
-      within a reachable SQE shape
+      within a reachable RQE shape
   - Claude Opus 4.7 xhigh review decision:
     - pending / not run in this turn
 - Runtime / coverage context:

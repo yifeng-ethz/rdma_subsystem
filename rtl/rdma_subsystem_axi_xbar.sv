@@ -2,7 +2,7 @@
 // Author  : Yifeng Wang (yifenwan@phys.ethz.ch)
 // Version : 26.1.0
 // Date    : 20260510
-// Change  : add Phase 1 AXI4 xbar with SQ read merge and CQ write split
+// Change  : add Phase 1 AXI4 xbar with RQ read merge and CQ write split
 
 `default_nettype none
 
@@ -15,19 +15,19 @@ module rdma_subsystem_axi_xbar #(
     input  wire logic                       clk,
     input  wire logic                       reset_n,
 
-    input  wire logic [3:0]                 sq_m_axi_arid,
-    input  wire logic [63:0]                sq_m_axi_araddr,
-    input  wire logic [7:0]                 sq_m_axi_arlen,
-    input  wire logic [2:0]                 sq_m_axi_arsize,
-    input  wire logic [1:0]                 sq_m_axi_arburst,
-    input  wire logic                       sq_m_axi_arvalid,
-    output logic                            sq_m_axi_arready,
-    output logic [3:0]                      sq_m_axi_rid,
-    output logic [WQE_BUS_W-1:0]            sq_m_axi_rdata,
-    output logic [1:0]                      sq_m_axi_rresp,
-    output logic                            sq_m_axi_rlast,
-    output logic                            sq_m_axi_rvalid,
-    input  wire logic                       sq_m_axi_rready,
+    input  wire logic [3:0]                 rq_m_axi_arid,
+    input  wire logic [63:0]                rq_m_axi_araddr,
+    input  wire logic [7:0]                 rq_m_axi_arlen,
+    input  wire logic [2:0]                 rq_m_axi_arsize,
+    input  wire logic [1:0]                 rq_m_axi_arburst,
+    input  wire logic                       rq_m_axi_arvalid,
+    output logic                            rq_m_axi_arready,
+    output logic [3:0]                      rq_m_axi_rid,
+    output logic [WQE_BUS_W-1:0]            rq_m_axi_rdata,
+    output logic [1:0]                      rq_m_axi_rresp,
+    output logic                            rq_m_axi_rlast,
+    output logic                            rq_m_axi_rvalid,
+    input  wire logic                       rq_m_axi_rready,
 
     input  wire logic [3:0]                 dma_m_axi_awid,
     input  wire logic [63:0]                dma_m_axi_awaddr,
@@ -191,9 +191,9 @@ module rdma_subsystem_axi_xbar #(
     assign cq_w_handshake         = m_axi_wvalid && m_axi_wready &&
                                     (write.state == WRITE_CQ_SENDING);
     assign cq_b_handshake         = cq_m_axi_bvalid && cq_m_axi_bready;
-    assign read_ar_handshake      = sq_m_axi_arvalid && sq_m_axi_arready;
+    assign read_ar_handshake      = rq_m_axi_arvalid && rq_m_axi_arready;
     assign read_r_handshake       = m_axi_rvalid && m_axi_rready;
-    assign read_response_handshake = sq_m_axi_rvalid && sq_m_axi_rready;
+    assign read_response_handshake = rq_m_axi_rvalid && rq_m_axi_rready;
 
     assign dma_m_axi_awready = write_select_dma && m_axi_awready;
     assign cq_m_axi_awready  = write_select_cq && m_axi_awready;
@@ -312,20 +312,20 @@ module rdma_subsystem_axi_xbar #(
         end
     end
 
-    assign sq_m_axi_arready = (read.state == READ_IDLING) && m_axi_arready;
-    assign m_axi_arid       = sq_m_axi_arid;
-    assign m_axi_araddr     = sq_m_axi_araddr;
+    assign rq_m_axi_arready = (read.state == READ_IDLING) && m_axi_arready;
+    assign m_axi_arid       = rq_m_axi_arid;
+    assign m_axi_araddr     = rq_m_axi_araddr;
     assign m_axi_arlen      = WQE_EXTERNAL_LEN_CONST;
     assign m_axi_arsize     = DMA_AXI_SIZE_CONST;
-    assign m_axi_arburst    = sq_m_axi_arburst;
-    assign m_axi_arvalid    = (read.state == READ_IDLING) && sq_m_axi_arvalid;
+    assign m_axi_arburst    = rq_m_axi_arburst;
+    assign m_axi_arvalid    = (read.state == READ_IDLING) && rq_m_axi_arvalid;
     assign m_axi_rready     = (read.state == READ_COLLECTING);
 
-    assign sq_m_axi_rid     = read.rid;
-    assign sq_m_axi_rdata   = read.rdata;
-    assign sq_m_axi_rresp   = read.rresp;
-    assign sq_m_axi_rlast   = (read.state == READ_RESPONDING);
-    assign sq_m_axi_rvalid  = (read.state == READ_RESPONDING);
+    assign rq_m_axi_rid     = read.rid;
+    assign rq_m_axi_rdata   = read.rdata;
+    assign rq_m_axi_rresp   = read.rresp;
+    assign rq_m_axi_rlast   = (read.state == READ_RESPONDING);
+    assign rq_m_axi_rvalid  = (read.state == READ_RESPONDING);
 
     always_ff @(posedge clk or negedge reset_n) begin : read_fsm
         if (!reset_n) begin
@@ -336,7 +336,7 @@ module rdma_subsystem_axi_xbar #(
                     if (read_ar_handshake) begin
                         read.rdata         <= '0;
                         read.rresp         <= AXI_RESP_OKAY_CONST;
-                        read.rid           <= sq_m_axi_arid;
+                        read.rid           <= rq_m_axi_arid;
                         read.beat_index    <= '0;
                         read.state         <= READ_COLLECTING;
                     end
@@ -378,8 +378,8 @@ module rdma_subsystem_axi_xbar #(
                 assert (cq_m_axi_wlast);
             end
             if (read_ar_handshake) begin
-                assert (sq_m_axi_arlen == 8'h00);
-                assert (sq_m_axi_arsize == $clog2(WQE_BUS_W / 8));
+                assert (rq_m_axi_arlen == 8'h00);
+                assert (rq_m_axi_arsize == $clog2(WQE_BUS_W / 8));
             end
             if (write_aw_handshake && write_select_cq) begin
                 assert (cq_m_axi_awlen == 8'h00);

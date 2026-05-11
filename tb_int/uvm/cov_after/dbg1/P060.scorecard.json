@@ -11,10 +11,10 @@
   "cqe_count": 2,
   "last_cqe_status": 1,
   "last_cqe_bytes": 48,
-  "coverage_bin": "prof_full_sq_depth_p060",
-  "contract_anchor": "DV_PROF.md P060 cov:prof_full_sq_depth_p060",
+  "coverage_bin": "prof_full_rq_depth_p060",
+  "contract_anchor": "DV_PROF.md P060 cov:prof_full_rq_depth_p060",
   "unique_coverage_delta": 0,
-  "duplicate_justification": "honest duplicate of P 49: same RTL contract anchor, unique stimulus and coverage token prof_full_sq_depth_p060",
+  "duplicate_justification": "honest duplicate of P 49: same RTL contract anchor, unique stimulus and coverage token prof_full_rq_depth_p060",
   "log_summary": {
     "mismatch_count": 0,
     "uvm_errors": 0

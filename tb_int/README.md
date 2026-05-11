@@ -3,7 +3,7 @@
 Integration UVM cosim for the four-IP RDMA subsystem.  The FEB is abstracted at
 the OPQ egress boundary; the source agent emits byte-level mu3e frames with OPQ
 K-character markers.  The run_tool behavior is modeled in SystemVerilog and
-owns host CSR/SQ/CQ sequencing.
+owns host CSR/RQ/CQ sequencing.
 
 Primary commands:
 

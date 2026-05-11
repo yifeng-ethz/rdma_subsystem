@@ -11,10 +11,10 @@
   "cqe_count": 1,
   "last_cqe_status": 17,
   "last_cqe_bytes": 48,
-  "coverage_bin": "edge_sq_wrap_e006",
-  "contract_anchor": "DV_EDGE.md E006 cov:edge_sq_wrap_e006",
+  "coverage_bin": "edge_rq_wrap_e006",
+  "contract_anchor": "DV_EDGE.md E006 cov:edge_rq_wrap_e006",
   "unique_coverage_delta": 0,
-  "duplicate_justification": "honest duplicate of E  1: same RTL contract anchor, unique stimulus and coverage token edge_sq_wrap_e006",
+  "duplicate_justification": "honest duplicate of E  1: same RTL contract anchor, unique stimulus and coverage token edge_rq_wrap_e006",
   "log_summary": {
     "mismatch_count": 0,
     "uvm_errors": 0

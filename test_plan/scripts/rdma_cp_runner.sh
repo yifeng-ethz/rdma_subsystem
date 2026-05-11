@@ -19,7 +19,7 @@
 #       0x1C EVENT_BUILD_STATUS_REGISTER_R     (rdma_csr_status)
 #       0x1D EVENT_BUILD_IDLE_NOT_HEADER_R     (rdma_cnt_opq_input_w)
 #       0x1E EVENT_BUILD_SKIP_EVENT_DMA_R      (rdma_cnt_bytes_written)
-#       0x1F EVENT_BUILD_CNT_EVENT_DMA_R       (rdma_cnt_sqe_consumed)
+#       0x1F EVENT_BUILD_CNT_EVENT_DMA_R       (rdma_cnt_rqe_consumed)
 #       0x20 EVENT_BUILD_TAG_FIFO_FULL_R       (rdma_cnt_cqe_posted)
 #       0x32 DMA_CNT_WORDS_REGISTER_R          (rdma_cnt_eoe_observed)
 #       0x33 SWB_COUNTER_REGISTER_R            (indexed by SWB_COUNTER_REGISTER_W=0x15)
@@ -314,7 +314,7 @@ read_status()      { rw_read 0x1c; }
 read_cnt_halt()    { rw_read 0x1b; }
 read_cnt_opq_w()   { rw_read 0x1d; }
 read_cnt_bytes_w() { rw_read 0x1e; }
-read_cnt_sqe()     { rw_read 0x1f; }
+read_cnt_rqe()     { rw_read 0x1f; }
 read_cnt_cqe()     { rw_read 0x20; }
 read_cnt_eoe()     { rw_read 0x32; }
 read_event_skip()  { rw_read 0x1e; }  # legacy alias
@@ -362,16 +362,16 @@ PY
 }
 
 write_traffic_builder_inputs() {
-  local opq_w_d="$1" bytes_w_d="$2" sqe_d="$3" cqe_d="$4" halt_d="$5" eoe_d="$6" skip_d="$7"
+  local opq_w_d="$1" bytes_w_d="$2" rqe_d="$3" cqe_d="$4" halt_d="$5" eoe_d="$6" skip_d="$7"
   local first_stage_delta="${FEB_RATE_EMULATOR_DELTA:-}"
   python3 - "${script_dir}" "${out_dir}" "${cohort}" "${matrix_id}" "${mode}" "${mask}" "${rate}" "${RUN_SECONDS}" \
-    "${opq_w_d}" "${bytes_w_d}" "${sqe_d}" "${cqe_d}" "${halt_d}" "${eoe_d}" "${skip_d}" "${first_stage_delta}" <<'PY'
+    "${opq_w_d}" "${bytes_w_d}" "${rqe_d}" "${cqe_d}" "${halt_d}" "${eoe_d}" "${skip_d}" "${first_stage_delta}" <<'PY'
 import json
 import sys
 from pathlib import Path
 
 script_dir, out_dir, cohort, matrix_id, mode, mask, rate, run_seconds = sys.argv[1:9]
-opq_w_d, bytes_w_d, sqe_d, cqe_d, halt_d, eoe_d, skip_d = [int(value) for value in sys.argv[9:16]]
+opq_w_d, bytes_w_d, rqe_d, cqe_d, halt_d, eoe_d, skip_d = [int(value) for value in sys.argv[9:16]]
 first_stage_text = sys.argv[16]
 sys.path.insert(0, script_dir)
 from traffic_expectations import N_CHANNELS
@@ -402,7 +402,7 @@ counter_input = {
     "bar1": {
         "CNT_OPQ_INPUT_W": opq_w_d,
         "CNT_BYTES_WRITTEN": bytes_w_d,
-        "CNT_SQE_CONSUMED": sqe_d,
+        "CNT_RQE_CONSUMED": rqe_d,
         "CNT_CQE_POSTED": cqe_d,
         "CNT_HALT": halt_d,
         "EVENT_SKIP_EVENT_DMA_R": skip_d,
@@ -594,11 +594,11 @@ do_traffic() {
     printf 'ERROR: FEB hit-generator helper not executable: %s\n' "${FEB_HIT_GENERATOR}" >"${out_dir}/feb_hit_generator.log"
   fi
 
-  local opq_w_t0 bytes_w_t0 sqe_t0 cqe_t0 halt_t0 eoe_t0
+  local opq_w_t0 bytes_w_t0 rqe_t0 cqe_t0 halt_t0 eoe_t0
   local skip_t0 link_low_t0 link_low_t1 link_high_t0 link_high_t1
   opq_w_t0="$(read_cnt_opq_w || echo 0x0)"
   bytes_w_t0="$(read_cnt_bytes_w || echo 0x0)"
-  sqe_t0="$(read_cnt_sqe || echo 0x0)"
+  rqe_t0="$(read_cnt_rqe || echo 0x0)"
   cqe_t0="$(read_cnt_cqe || echo 0x0)"
   halt_t0="$(read_cnt_halt || echo 0x0)"
   eoe_t0="$(read_cnt_eoe || echo 0x0)"
@@ -610,10 +610,10 @@ do_traffic() {
 
   sleep "${RUN_SECONDS}"
 
-  local opq_w_t1 bytes_w_t1 sqe_t1 cqe_t1 halt_t1 eoe_t1 skip_t1
+  local opq_w_t1 bytes_w_t1 rqe_t1 cqe_t1 halt_t1 eoe_t1 skip_t1
   opq_w_t1="$(read_cnt_opq_w || echo 0x0)"
   bytes_w_t1="$(read_cnt_bytes_w || echo 0x0)"
-  sqe_t1="$(read_cnt_sqe || echo 0x0)"
+  rqe_t1="$(read_cnt_rqe || echo 0x0)"
   cqe_t1="$(read_cnt_cqe || echo 0x0)"
   halt_t1="$(read_cnt_halt || echo 0x0)"
   eoe_t1="$(read_cnt_eoe || echo 0x0)"
@@ -633,10 +633,10 @@ do_traffic() {
 	  run_control_stop_rc=$?
 	  set -e
 
-  local opq_w_d bytes_w_d sqe_d cqe_d halt_d eoe_d
+  local opq_w_d bytes_w_d rqe_d cqe_d halt_d eoe_d
   opq_w_d=$(( $(hex_to_dec "${opq_w_t1}") - $(hex_to_dec "${opq_w_t0}") ))
   bytes_w_d=$(( $(hex_to_dec "${bytes_w_t1}") - $(hex_to_dec "${bytes_w_t0}") ))
-  sqe_d=$(( $(hex_to_dec "${sqe_t1}") - $(hex_to_dec "${sqe_t0}") ))
+  rqe_d=$(( $(hex_to_dec "${rqe_t1}") - $(hex_to_dec "${rqe_t0}") ))
   cqe_d=$(( $(hex_to_dec "${cqe_t1}") - $(hex_to_dec "${cqe_t0}") ))
   halt_d=$(( $(hex_to_dec "${halt_t1}") - $(hex_to_dec "${halt_t0}") ))
   eoe_d=$(( $(hex_to_dec "${eoe_t1}") - $(hex_to_dec "${eoe_t0}") ))
@@ -653,12 +653,12 @@ do_traffic() {
     printf 'emulator_status_t0=%s\n' "${emu_status_t0}"
     printf 'emulator_status_t1=%s\n' "${emu_status_t1}"
     printf 'feb_rate_emulator_delta=%s\n' "${FEB_RATE_EMULATOR_DELTA}"
-    printf 't0 opq_w=%s bytes_w=%s sqe=%s cqe=%s halt=%s eoe=%s skip=%s link_low=%s link_high=%s\n' "${opq_w_t0}" "${bytes_w_t0}" "${sqe_t0}" "${cqe_t0}" "${halt_t0}" "${eoe_t0}" "${skip_t0}" "${link_low_t0}" "${link_high_t0}"
-    printf 't1 opq_w=%s bytes_w=%s sqe=%s cqe=%s halt=%s eoe=%s skip=%s link_low=%s link_high=%s\n' "${opq_w_t1}" "${bytes_w_t1}" "${sqe_t1}" "${cqe_t1}" "${halt_t1}" "${eoe_t1}" "${skip_t1}" "${link_low_t1}" "${link_high_t1}"
-    printf 'delta opq_w=%d bytes_w=%d sqe=%d cqe=%d halt=%d eoe=%d skip=%d\n' "${opq_w_d}" "${bytes_w_d}" "${sqe_d}" "${cqe_d}" "${halt_d}" "${eoe_d}" "${skip_d}"
+    printf 't0 opq_w=%s bytes_w=%s rqe=%s cqe=%s halt=%s eoe=%s skip=%s link_low=%s link_high=%s\n' "${opq_w_t0}" "${bytes_w_t0}" "${rqe_t0}" "${cqe_t0}" "${halt_t0}" "${eoe_t0}" "${skip_t0}" "${link_low_t0}" "${link_high_t0}"
+    printf 't1 opq_w=%s bytes_w=%s rqe=%s cqe=%s halt=%s eoe=%s skip=%s link_low=%s link_high=%s\n' "${opq_w_t1}" "${bytes_w_t1}" "${rqe_t1}" "${cqe_t1}" "${halt_t1}" "${eoe_t1}" "${skip_t1}" "${link_low_t1}" "${link_high_t1}"
+    printf 'delta opq_w=%d bytes_w=%d rqe=%d cqe=%d halt=%d eoe=%d skip=%d\n' "${opq_w_d}" "${bytes_w_d}" "${rqe_d}" "${cqe_d}" "${halt_d}" "${eoe_d}" "${skip_d}"
   } >"${out_dir}/counter_snapshots.txt"
 
-  write_traffic_builder_inputs "${opq_w_d}" "${bytes_w_d}" "${sqe_d}" "${cqe_d}" "${halt_d}" "${eoe_d}" "${skip_d}"
+  write_traffic_builder_inputs "${opq_w_d}" "${bytes_w_d}" "${rqe_d}" "${cqe_d}" "${halt_d}" "${eoe_d}" "${skip_d}"
 
   run_builder counter_chain python3 "${script_dir}/check_counter_lossless.py" \
     --input "${out_dir}/counter_input.json" \

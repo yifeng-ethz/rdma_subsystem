@@ -1,27 +1,27 @@
 {
   "chains": {
     "counter_chain": {
-      "detail": "opq_w_d=0_bytes_w_d=0_sqe_d=0_cqe_d=0_halt_d=0_eoe_d=0_skip=0_run=1s",
+      "detail": "opq_w_d=0_bytes_w_d=0_rqe_d=0_cqe_d=0_halt_d=0_eoe_d=0_skip=0_run=1s",
       "stage": "C9",
       "status": "PASS"
     },
     "latency": {
-      "detail": "opq_w_d=0_bytes_w_d=0_sqe_d=0_cqe_d=0_halt_d=0_eoe_d=0_skip=0_run=1s",
+      "detail": "opq_w_d=0_bytes_w_d=0_rqe_d=0_cqe_d=0_halt_d=0_eoe_d=0_skip=0_run=1s",
       "stage": "L5",
       "status": "PASS"
     },
     "offline_analysis": {
-      "detail": "opq_w_d=0_bytes_w_d=0_sqe_d=0_cqe_d=0_halt_d=0_eoe_d=0_skip=0_run=1s",
+      "detail": "opq_w_d=0_bytes_w_d=0_rqe_d=0_cqe_d=0_halt_d=0_eoe_d=0_skip=0_run=1s",
       "stage": "A3",
       "status": "PASS"
     },
     "offline_chain": {
-      "detail": "opq_w_d=0_bytes_w_d=0_sqe_d=0_cqe_d=0_halt_d=0_eoe_d=0_skip=0_run=1s",
+      "detail": "opq_w_d=0_bytes_w_d=0_rqe_d=0_cqe_d=0_halt_d=0_eoe_d=0_skip=0_run=1s",
       "stage": "O4",
       "status": "PASS"
     },
     "rate_chain": {
-      "detail": "opq_w_d=0_bytes_w_d=0_sqe_d=0_cqe_d=0_halt_d=0_eoe_d=0_skip=0_run=1s",
+      "detail": "opq_w_d=0_bytes_w_d=0_rqe_d=0_cqe_d=0_halt_d=0_eoe_d=0_skip=0_run=1s",
       "stage": "R6",
       "status": "PASS"
     }

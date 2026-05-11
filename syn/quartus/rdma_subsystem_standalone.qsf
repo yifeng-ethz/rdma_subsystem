@@ -25,9 +25,9 @@ set_global_assignment -name SYSTEMVERILOG_FILE ../../rtl/rdma_subsystem_pkg.sv
 set_global_assignment -name SYSTEMVERILOG_FILE ../../rtl/rdma_subsystem_reset_chain.sv
 set_global_assignment -name SYSTEMVERILOG_FILE ../../rtl/rdma_subsystem_axi_xbar.sv
 set_global_assignment -name SYSTEMVERILOG_FILE ../../rtl/rdma_subsystem_csr_decoder.sv
-set_global_assignment -name SYSTEMVERILOG_FILE ../../../rdma_sq_fetcher/rtl/rdma_sq_ring_state.sv
-set_global_assignment -name SYSTEMVERILOG_FILE ../../../rdma_sq_fetcher/rtl/rdma_sq_axi_reader.sv
-set_global_assignment -name SYSTEMVERILOG_FILE ../../../rdma_sq_fetcher/rtl/rdma_sq_fetcher.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../../../rdma_rq_fetcher/rtl/rdma_rq_ring_state.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../../../rdma_rq_fetcher/rtl/rdma_rq_axi_reader.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../../../rdma_rq_fetcher/rtl/rdma_rq_fetcher.sv
 set_global_assignment -name SYSTEMVERILOG_FILE ../../../rdma_dma_engine/rtl/rdma_dma_packer.sv
 set_global_assignment -name SYSTEMVERILOG_FILE ../../../rdma_dma_engine/rtl/rdma_dma_data_fifo.sv
 set_global_assignment -name SYSTEMVERILOG_FILE ../../../rdma_dma_engine/rtl/rdma_dma_writer.sv

@@ -7,7 +7,7 @@
 | Coverpoint | Bins | Contract |
 |---|---|---|
 | run_state | idle, preparing, running, stopping, stopped | DV_PLAN_INT.md section 3.1 |
-| sq_depth | 2, 4, 16, 256, 4096, 65536 | ARCHITECTURE_PLAN.md section 6 |
+| rq_depth | 2, 4, 16, 256, 4096, 65536 | ARCHITECTURE_PLAN.md section 6 |
 | cq_depth | 2, 4, 16, 256, 4096, 65536 | ARCHITECTURE_PLAN.md section 6 |
 | seg_mode | single, two_segment, boundary_hit | ARCHITECTURE_PLAN.md section 5 |
 | termination | EOE, FULL, ALIGN_ERR, HALT | ARCHITECTURE_PLAN.md section 5 |
@@ -20,7 +20,7 @@
 |---|---|
 | run_state x termination | legal stop and error outcomes in each host state |
 | seg_mode x termination | EOE/FULL/error behavior across segment layouts |
-| sq_depth x cq_depth x doorbell_coalesce | ring pointer and credit interaction |
+| rq_depth x cq_depth x doorbell_coalesce | ring pointer and credit interaction |
 | axi_profile x termination | host latency/error influence on completion status |
 | debug_level x case_bucket | dbg1/dbg2 parity for every bucket |
 

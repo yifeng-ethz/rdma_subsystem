@@ -2,9 +2,9 @@
 ../../../rdma_dma_engine/rtl/rdma_dma_engine.sv
 ../../../rdma_dma_engine/rtl/rdma_dma_packer.sv
 ../../../rdma_dma_engine/rtl/rdma_dma_writer.sv
-../../../rdma_sq_fetcher/rtl/rdma_sq_axi_reader.sv
-../../../rdma_sq_fetcher/rtl/rdma_sq_fetcher.sv
-../../../rdma_sq_fetcher/rtl/rdma_sq_ring_state.sv
+../../../rdma_rq_fetcher/rtl/rdma_rq_axi_reader.sv
+../../../rdma_rq_fetcher/rtl/rdma_rq_fetcher.sv
+../../../rdma_rq_fetcher/rtl/rdma_rq_ring_state.sv
 ../../../rdma_cq_pusher/rtl/rdma_cq_axi_writer.sv
 ../../../rdma_cq_pusher/rtl/rdma_cq_msix.sv
 ../../../rdma_cq_pusher/rtl/rdma_cq_pusher.sv

@@ -53,7 +53,7 @@ RTL_SRCS_RAW := $(sort $(wildcard $(IP_DIR)/rtl/*.sv))
 RTL_SRCS := $(if $(wildcard $(RTL_PKG)),$(RTL_PKG) $(filter-out $(RTL_PKG),$(RTL_SRCS_RAW)),$(RTL_SRCS_RAW))
 SIBLING_RTL_SRCS := \
   $(sort $(wildcard $(IP_DIR)/../rdma_dma_engine/rtl/*.sv)) \
-  $(sort $(wildcard $(IP_DIR)/../rdma_sq_fetcher/rtl/*.sv)) \
+  $(sort $(wildcard $(IP_DIR)/../rdma_rq_fetcher/rtl/*.sv)) \
   $(sort $(wildcard $(IP_DIR)/../rdma_cq_pusher/rtl/*.sv)) \
   $(sort $(wildcard $(IP_DIR)/../rdma_run_manager/rtl/*.sv))
 ifeq ($(strip $(RTL_SRCS)),)

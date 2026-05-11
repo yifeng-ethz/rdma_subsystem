@@ -25,7 +25,7 @@ package subsystem_case_pkg;
     bit [31:0] seg1_bytes_written;
     bit [31:0] seg0_bytes_written;
     bit [15:0] status;
-    bit [15:0] sqe_id;
+    bit [15:0] rqe_id;
     bit [31:0] flags;
     bit [63:0] event_count;
     bit [63:0] first_event_ts;
@@ -45,9 +45,9 @@ package subsystem_case_pkg;
     int unsigned case_num;
     int unsigned iter_count;
     int unsigned actual_txn_count;
-    int unsigned sq_depth;
+    int unsigned rq_depth;
     int unsigned cq_depth;
-    int unsigned n_pre_staged_sqe;
+    int unsigned n_pre_staged_rqe;
     int unsigned doorbell_coalesce_n;
     int unsigned frame_words;
     int unsigned opq_gap_cycles;
@@ -60,7 +60,7 @@ package subsystem_case_pkg;
     bit seg1_used;
     bit idle_only;
     bit force_align_error;
-    bit force_malformed_sqe;
+    bit force_malformed_rqe;
     bit force_halt;
     bit ctrl_halt_reenable;
     bit inject_reset;
@@ -79,9 +79,9 @@ package subsystem_case_pkg;
       case_num = 1;
       iter_count = 1;
       actual_txn_count = 1;
-      sq_depth = 16;
+      rq_depth = 16;
       cq_depth = 16;
-      n_pre_staged_sqe = 1;
+      n_pre_staged_rqe = 1;
       doorbell_coalesce_n = 1;
       frame_words = 6;
       opq_gap_cycles = 0;
@@ -94,7 +94,7 @@ package subsystem_case_pkg;
       seg1_used = 1'b0;
       idle_only = 1'b0;
       force_align_error = 1'b0;
-      force_malformed_sqe = 1'b0;
+      force_malformed_rqe = 1'b0;
       force_halt = 1'b0;
       ctrl_halt_reenable = 1'b0;
       inject_reset = 1'b0;
@@ -158,7 +158,7 @@ package subsystem_case_pkg;
         return "basic_cqe_fields";
       end
       "E": begin
-        if (num <= 16) return "edge_sq_wrap";
+        if (num <= 16) return "edge_rq_wrap";
         if (num <= 32) return "edge_cq_wrap";
         if (num <= 48) return "edge_span_quantum";
         if (num <= 64) return "edge_addr_alignment";
@@ -169,7 +169,7 @@ package subsystem_case_pkg;
       end
       "P": begin
         if (num <= 32) return "prof_sustained_opq";
-        if (num <= 64) return "prof_full_sq_depth";
+        if (num <= 64) return "prof_full_rq_depth";
         if (num <= 96) return "prof_axi_stalls";
         return "prof_long_soak";
       end
@@ -177,7 +177,7 @@ package subsystem_case_pkg;
         if (num <= 16) return "error_bresp";
         if (num <= 32) return "error_rresp";
         if (num <= 48) return "error_align";
-        if (num <= 64) return "error_malformed_sqe";
+        if (num <= 64) return "error_malformed_rqe";
         if (num <= 80) return "error_midrun_reset";
         if (num <= 96) return "error_halt_reenable";
         if (num <= 112) return "error_cq_full";
@@ -196,14 +196,14 @@ package subsystem_case_pkg;
     n = parse_case_num(case_id);
     cfg.case_num = n;
     depth_sel = '{2, 4, 16, 256, 4096, 65536};
-    cfg.sq_depth = depth_sel[(n - 1) % 6];
+    cfg.rq_depth = depth_sel[(n - 1) % 6];
     cfg.cq_depth = depth_sel[(n + 1) % 6];
-    if (cfg.sq_depth > 256)
-      cfg.sq_depth = 256;
+    if (cfg.rq_depth > 256)
+      cfg.rq_depth = 256;
     if (cfg.cq_depth > 256)
       cfg.cq_depth = 256;
     cfg.frame_words = 4 + (n % 9);
-    cfg.n_pre_staged_sqe = 1 + (n % 4);
+    cfg.n_pre_staged_rqe = 1 + (n % 4);
     cfg.doorbell_coalesce_n = 1 + (n % 4);
     cfg.opq_gap_cycles = n % 3;
     cfg.poll_cycles = 4 + (n % 8);
@@ -213,14 +213,14 @@ package subsystem_case_pkg;
     cfg.random_case = (case_id.getc(0) == "P") || (n > 64 && n <= 112);
     cfg.iter_count = cfg.random_case ? (4 + (n % 8)) : 1;
     cfg.actual_txn_count = cfg.random_case ? (2 + (n % 3)) : 1;
-    if (cfg.actual_txn_count > cfg.sq_depth)
-      cfg.actual_txn_count = cfg.sq_depth;
+    if (cfg.actual_txn_count > cfg.rq_depth)
+      cfg.actual_txn_count = cfg.rq_depth;
     cfg.seg1_used = (n % 5 == 0) || (n >= 49 && n <= 64);
     cfg.term_mode = (case_id.getc(0) == "B" && n >= 33 && n <= 48) ? TERM_FULL : TERM_EOE;
     cfg.idle_only = (case_id.getc(0) == "B" && n <= 16) ||
                     (case_id.getc(0) == "E" && n >= 65 && n <= 80);
     cfg.force_align_error = (case_id.getc(0) == "X" && n >= 33 && n <= 48);
-    cfg.force_malformed_sqe = (case_id.getc(0) == "X" && n >= 49 && n <= 64);
+    cfg.force_malformed_rqe = (case_id.getc(0) == "X" && n >= 49 && n <= 64);
     cfg.inject_reset = (case_id.getc(0) == "X" && n >= 65 && n <= 80);
     cfg.ctrl_halt_reenable = (case_id.getc(0) == "X" && n >= 81 && n <= 96);
     cfg.force_halt = (case_id.getc(0) == "X" && n >= 113);

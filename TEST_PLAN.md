@@ -165,7 +165,7 @@ the FEB SciFi sc_hub slave map):
 
 **SWB-side via BAR1** (already enumerated):
 
-- `CNT_OPQ_INPUT_W`, `CNT_SQE_CONSUMED`, `CNT_CQE_POSTED`,
+- `CNT_OPQ_INPUT_W`, `CNT_RQE_CONSUMED`, `CNT_CQE_POSTED`,
   `CNT_BYTES_WRITTEN`, `CNT_EOE_OBSERVED`, `CNT_HALT`
 - legacy `EVENT_SKIP_EVENT_DMA_R` (must read zero with the new
   rdma_subsystem datapath - any non-zero is a bug from the old code
@@ -326,7 +326,7 @@ mismatched pair stops the chain and identifies the offending stage.
 | CP-C5     | FEB hist IP       | histogram bin total (truthful pre/post-rbcam)    |
 | CP-C6     | FEB TX framer     | frames sent on link 2                            |
 | CP-C7     | SWB BAR1 `CNT_OPQ_INPUT_W` | 32b OPQ-ingress word counter             |
-| CP-C8     | SWB BAR1 `CNT_BYTES_WRITTEN` + `CNT_SQE_CONSUMED` | DMA-written bytes |
+| CP-C8     | SWB BAR1 `CNT_BYTES_WRITTEN` + `CNT_RQE_CONSUMED` | DMA-written bytes |
 | CP-C9     | SWB BAR1 `CNT_CQE_POSTED`  | CQEs produced                            |
 
 - **Pass at CP-Cn**: `count(Cn) == count(C_{n-1})` (exact for Modes A

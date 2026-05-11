@@ -20,7 +20,7 @@ package rdma_subsystem_pkg;
     localparam int unsigned AXIL_STRB_W_CONST              = AXIL_DATA_W_CONST / 8;
     localparam int unsigned OPQ_AXIS_DATA_W_CONST          = 36;
     localparam int unsigned OPQ_AXIS_USER_W_CONST          = 2;
-    localparam int unsigned SQE_ID_W_CONST                 = 16;
+    localparam int unsigned RQE_ID_W_CONST                 = 16;
     localparam int unsigned CQE_META_W_CONST               = 64;
     localparam int unsigned DMA_DBG2_META_W_CONST          = 136;
     localparam int unsigned CQ_MSIX_VECTOR_W_CONST         = 5;

@@ -11,8 +11,8 @@
   "cqe_count": 1,
   "last_cqe_status": 17,
   "last_cqe_bytes": 28,
-  "coverage_bin": "edge_sq_wrap_e001",
-  "contract_anchor": "DV_EDGE.md E001 cov:edge_sq_wrap_e001",
+  "coverage_bin": "edge_rq_wrap_e001",
+  "contract_anchor": "DV_EDGE.md E001 cov:edge_rq_wrap_e001",
   "unique_coverage_delta": 1,
   "duplicate_justification": "",
   "log_summary": {

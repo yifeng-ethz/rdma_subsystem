@@ -24,7 +24,7 @@ class CounterLosslessTests(unittest.TestCase):
             "bar1": {
                 "CNT_OPQ_INPUT_W": 0,
                 "CNT_BYTES_WRITTEN": 0,
-                "CNT_SQE_CONSUMED": 0,
+                "CNT_RQE_CONSUMED": 0,
                 "CNT_CQE_POSTED": 0,
                 "CNT_HALT": 0,
                 "EVENT_SKIP_EVENT_DMA_R": 0,

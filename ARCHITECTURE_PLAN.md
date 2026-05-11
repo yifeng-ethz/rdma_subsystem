@@ -12,11 +12,11 @@ Per-IP RTL details live in each IP's own `RTL_PLAN.md`.
 ## 1. Subsystem scope
 
 `rdma_subsystem` consumes **OPQ egress** (Avalon-ST, 36-bit, 1 source)
-and pushes hits into **host DRAM** under a Submission-Queue / Completion-Queue
+and pushes hits into **host DRAM** under a Receive-Queue / Completion-Queue
 contract (NVMe / RDMA-style):
 
-- Host posts SQEs that name a target host DRAM region and capacity.
-- The subsystem fetches SQEs from host DRAM, packs OPQ words, writes them
+- Host posts RQEs that name a target host DRAM region and capacity.
+- The subsystem fetches RQEs from host DRAM, packs OPQ words, writes them
   as bursts into the named host buffer.
 - When the buffer is filled or an end-of-event arrives, the subsystem
   writes a CQE into host DRAM and updates a CQ-tail register.
@@ -37,15 +37,15 @@ mu3e frame format already. **The subsystem does not translate them, does
 not assemble them into midas events, does not run a midas event_builder,
 and does not impose any DMA-event/end-of-event framing on top of the
 mu3e frame.** The DMA engine packs the 36-b OPQ stream into 256-b AXI4
-beats, writes the bytes verbatim into the SQE-named host rx_buffer, and
+beats, writes the bytes verbatim into the RQE-named host rx_buffer, and
 walks address forward by the bytes-written count. The `EOE` status bit
 in the CQE simply records that OPQ asserted eop while filling the
-SQE-named buffer; it is informational for the host (so the host can find
+RQE-named buffer; it is informational for the host (so the host can find
 mu3e-frame boundaries inside the rx_buffer if it wants to) and is not a
 DMA framing requirement. The `FULL` status bit records the orthogonal
-case where the SQE buffer ran out before OPQ closed a frame.
+case where the RQE buffer ran out before OPQ closed a frame.
 
-Consequence: the host's rx_buffer for an SQE is just a contiguous run of
+Consequence: the host's rx_buffer for an RQE is just a contiguous run of
 mu3e frame bytes. Any downstream midas event_builder lives in
 software, fed from the rx_buffer ring; it is not an FW concern.
 
@@ -64,12 +64,12 @@ Qsys subsystem via its own `*.qsys` / `*.tcl` and contains this
 |-------------------------------|----------|--------------------------------------------------------------|-------------------------------------------------|
 | `rdma_subsystem/`         | supercore | Subsystem assembly + architecture doc. No RTL of its own.    | This plan, `*.qsys`, `*.tcl`, integration TB.   |
 | `rdma_dma_engine/`             | IP        | Pure data mover. Drains data ring → host buffer (via AVMM).  | OPQ packer, data ring FIFO, write engine.       |
-| `rdma_sq_fetcher/`             | IP        | SQE puller. Fetches SQE from host SQ ring (via AVMM).        | SQ ring state, doorbell decode, sqe_out stream. |
+| `rdma_rq_fetcher/`             | IP        | RQE puller. Fetches RQE from host RQ ring (via AVMM).        | RQ ring state, doorbell decode, rqe_out stream. |
 | `rdma_cq_pusher/`              | IP        | CQE pusher. Writes CQE into host CQ ring (via AVMM).         | CQ ring state, MSI-X stub (Phase 2 wire).       |
-| `rdma_run_manager/`            | IP        | Coordinator. Hooks SQ-fetch → DMA → CQ-push. Owns top CSR.   | SQE.opcode dispatch, sequencing FSM, BAR1 CSR.  |
+| `rdma_run_manager/`            | IP        | Coordinator. Hooks RQ-fetch → DMA → CQ-push. Owns top CSR.   | RQE.opcode dispatch, sequencing FSM, BAR1 CSR.  |
 
 This split lets each IP be developed and signed off independently. The
-**run manager** is the only IP that knows about the SQ→DMA→CQ orchestration;
+**run manager** is the only IP that knows about the RQ→DMA→CQ orchestration;
 the other three are stateless workers that obey simple handshakes.
 
 ## 3. Subsystem dataflow
@@ -77,22 +77,22 @@ the other three are stateless workers that obey simple handshakes.
 ```
                            +--------------------+
                            | host DRAM (PCIe)   |
-                           |  SQ ring           |
+                           |  RQ ring           |
                            |  CQ ring           |
                            |  Data buffers      |
                            +--------------------+
                               ^   |       ^
                               |   v       |
-                AVMM read --> sq_fetcher --+
+                AVMM read --> rq_fetcher --+
                                           |
                                           v
                                   +-----------------+
-              run_manager <-------|  SQE stream     |
+              run_manager <-------|  RQE stream     |
                   |               +-----------------+
-                  | program(buf_addr, len, sqe_id)
+                  | program(buf_addr, len, rqe_id)
                   v
          OPQ ---> dma_engine ---------------> AVMM write to host buffer
-                  | done(bytes_written, status, sqe_id)
+                  | done(bytes_written, status, rqe_id)
                   v
          CQE ---> cq_pusher  ---------------> AVMM write to host CQ ring
                                               + update csr.CQ_TAIL
@@ -101,7 +101,7 @@ the other three are stateless workers that obey simple handshakes.
 Data plane (high BW, OPQ-side cycles): `OPQ → dma_engine.packer → fifo →
 dma_engine.writer → AVMM`.
 
-Control plane (low BW, request/response): `host → csr.SQ_TAIL_DBL → sq_fetcher
+Control plane (low BW, request/response): `host → csr.RQ_TAIL_DBL → rq_fetcher
 → run_manager → dma_engine → run_manager → cq_pusher → host`.
 
 ## 4. Bus protocols (AXI4 throughout)
@@ -109,9 +109,9 @@ Control plane (low BW, request/response): `host → csr.SQ_TAIL_DBL → sq_fetch
 All inter-IP and external-memory interfaces use **AXI4 family** so the
 supercore can be assembled with non-Merlin / custom (or no) interconnect.
 - **AXI4-Lite** for the BAR1 CSR slave (run_manager).
-- **AXI4 (full)** for masters into host DRAM (sq_fetcher reads,
+- **AXI4 (full)** for masters into host DRAM (rq_fetcher reads,
   dma_engine writes, cq_pusher writes).
-- **AXI4-Stream** for point-to-point inter-IP streams (SQE bus, CQE bus,
+- **AXI4-Stream** for point-to-point inter-IP streams (RQE bus, CQE bus,
   OPQ→dma_engine data bus).
 
 A thin **AXI4 ↔ Avalon-MM bridge** sits between the IP block and the
@@ -122,20 +122,20 @@ Avalon-MM; the bridge wraps it as AXI4 for the IP-internal buses). Phase
 Default data widths:
 - **Data plane** (OPQ → dma_writer → AXI4 master): `DMA_DATA_W = 256` bits
   (matches Altera A10 HIP TLP path; one beat = 32 B = ½ cacheline).
-- **WQE plane** (sq_fetcher AXI4-Stream, cq_pusher AXI4-Stream, AXI4
-  master read/write to SQ/CQ rings): `WQE_BUS_W = 512` bits — one beat
+- **WQE plane** (rq_fetcher AXI4-Stream, cq_pusher AXI4-Stream, AXI4
+  master read/write to RQ/CQ rings): `WQE_BUS_W = 512` bits — one beat
   carries one full 64 B WQE atomically.
 - **CSR**: AXI4-Lite `S_AXIL_DATA_W = 32`, `S_AXIL_ADDR_W = 8` (256-byte
   aperture).
 
-### `sq_fetcher → run_manager` (AXI4-Stream)
+### `rq_fetcher → run_manager` (AXI4-Stream)
 
 ```
-output [511:0] m_axis_sqe_tdata;     // one full SQE per beat
-output         m_axis_sqe_tvalid;
-input          m_axis_sqe_tready;
-output         m_axis_sqe_tlast;     // always 1
-output [15:0]  m_axis_sqe_tuser;     // sqe_id sideband (also in tdata)
+output [511:0] m_axis_rqe_tdata;     // one full RQE per beat
+output         m_axis_rqe_tvalid;
+input          m_axis_rqe_tready;
+output         m_axis_rqe_tlast;     // always 1
+output [15:0]  m_axis_rqe_tuser;     // rqe_id sideband (also in tdata)
 ```
 
 ### `run_manager → dma_engine` (job request — simple req/done)
@@ -146,14 +146,14 @@ output [63:0]  job_seg0_addr;
 output [63:0]  job_seg0_span;        // bytes, 4 KB multiple
 output [63:0]  job_seg1_addr;        // 0 if unused
 output [63:0]  job_seg1_span;        // 0 if unused
-output [15:0]  job_sqe_id;
+output [15:0]  job_rqe_id;
 output [15:0]  job_opcode;
 input          job_done;
 input  [63:0]  job_bytes_written_total;
 input  [31:0]  job_seg0_bytes_written;
 input  [31:0]  job_seg1_bytes_written;
 input  [15:0]  job_status;
-input  [15:0]  job_sqe_id_echo;
+input  [15:0]  job_rqe_id_echo;
 input  [31:0]  job_event_count;
 input  [63:0]  job_first_event_ts;
 input  [63:0]  job_last_event_ts;
@@ -166,7 +166,7 @@ output [511:0] s_axis_cqe_tdata;     // one full CQE per beat
 output         s_axis_cqe_tvalid;
 input          s_axis_cqe_tready;
 output         s_axis_cqe_tlast;     // always 1
-output [15:0]  s_axis_cqe_tuser;     // sqe_id (also in tdata)
+output [15:0]  s_axis_cqe_tuser;     // rqe_id (also in tdata)
 ```
 
 ### `OPQ → dma_engine` (AXI4-Stream, 36-bit)
@@ -179,21 +179,21 @@ input          s_axis_opq_tlast;     // = OPQ eop
 input  [1:0]   s_axis_opq_tuser;     // [0]=sop, [1]=reserved
 ```
 
-### Host-DRAM AXI4 masters (sq_fetcher, dma_engine, cq_pusher)
+### Host-DRAM AXI4 masters (rq_fetcher, dma_engine, cq_pusher)
 
 Standard AXI4 (full) signals: AW/W/B, AR/R channels with 64-bit address,
-configurable data width per IP (sq_fetcher 512b, dma_engine 256b,
+configurable data width per IP (rq_fetcher 512b, dma_engine 256b,
 cq_pusher 512b). Burst lengths capped to align with PCIe MPS (typically
 4-8 beats at 256 B or 512 B per burst).
 
 ## 5. WQE wire format (64 bytes = one host cacheline)
 
-All work-queue entries (SQE and CQE) are exactly **64 bytes** = the host
+All work-queue entries (RQE and CQE) are exactly **64 bytes** = the host
 PC's L1/L2/L3 cacheline width (verified on the deployment box, AMD
 Ryzen 9 3950X: 64 B coherency line at all levels). One WQE = one
 cacheline = atomic visibility across host/FW with no false sharing.
 
-### SQE (64 B, 8 × 64-bit words, host little-endian)
+### RQE (64 B, 8 × 64-bit words, host little-endian)
 
 ```
 | word | byte off | name        | width | description |
@@ -202,18 +202,18 @@ cacheline = atomic visibility across host/FW with no false sharing.
 | 1    | 0x08    | seg0_span   | 64    | seg-0 span in bytes, **4 KB multiple**, ≥ 4096 |
 | 2    | 0x10    | seg1_addr   | 64    | host phys addr of segment 1, **4 KB-aligned** (0 if unused) |
 | 3    | 0x18    | seg1_span   | 64    | seg-1 span in bytes, **4 KB multiple**, 0 if unused |
-| 4    | 0x20    | opcode_id   | 64    | `[15:0]=opcode`, `[31:16]=sqe_id`, `[63:32]=flags` |
+| 4    | 0x20    | opcode_id   | 64    | `[15:0]=opcode`, `[31:16]=rqe_id`, `[63:32]=flags` |
 | 5    | 0x28    | reserved0   | 64    | reserved (timestamps / mr_keys / future) |
 | 6    | 0x30    | reserved1   | 64    | reserved |
 | 7    | 0x38    | reserved2   | 64    | reserved |
 ```
 
-**Two-segment scatter semantics.** A single SQE may name 1 or 2
+**Two-segment scatter semantics.** A single RQE may name 1 or 2
 contiguous host-DRAM segments. The FW fills `seg0` first, and if the
 drain produces more bytes than `seg0_span` AND `seg1_span > 0`, it
 continues into `seg1`. This handles the case where the host's rx_buffer
-pool is non-contiguous and a 4 KB-multiple SQE crosses one boundary,
-without forcing the host to post 2 separate SQEs.
+pool is non-contiguous and a 4 KB-multiple RQE crosses one boundary,
+without forcing the host to post 2 separate RQEs.
 
 Constraints (FW asserts these, returns `ALIGN_ERR` in CQE if violated):
 - `seg{0,1}_addr & 0xFFF == 0` (4 KB-aligned)
@@ -234,7 +234,7 @@ Opcodes:
 | 0    | 0x00    | bytes_written_total   | 64         | total bytes written across both segments |
 | 1    | 0x08    | seg0_bytes_written    | 32 (low)   | bytes actually written into seg0 |
 |      |         | seg1_bytes_written    | 32 (high)  | bytes actually written into seg1 |
-| 2    | 0x10    | status_id             | 64         | `[15:0]=status`, `[31:16]=sqe_id`, `[63:32]=flags` |
+| 2    | 0x10    | status_id             | 64         | `[15:0]=status`, `[31:16]=rqe_id`, `[63:32]=flags` |
 | 3    | 0x18    | event_count           | 64         | # of OPQ end-of-event boundaries observed in this drain |
 | 4    | 0x20    | first_event_ts        | 64         | OPQ-side timestamp of first event in drain (debug) |
 | 5    | 0x28    | last_event_ts         | 64         | OPQ-side timestamp of last event in drain (latency) |
@@ -265,16 +265,16 @@ sideband to the run manager which surfaces them in its CSR.
 | 0x04   | META              | RW    | meta_sel + read mux: VERSION/DATE/GIT/INSTANCE |
 | 0x08   | CTRL              | RW    | bit0=enable, bit1=reset_counters, bit2=halt |
 | 0x0C   | STATUS            | RO    | sub-IP busy bits + halted bit |
-| 0x10   | SQ_BASE_LO        | RW    | host SQ ring base addr [31:0] |
-| 0x14   | SQ_BASE_HI        | RW    | host SQ ring base addr [63:32] |
-| 0x18   | SQ_DEPTH          | RW    | # of SQEs in ring (power of 2) |
-| 0x1C   | SQ_TAIL_DBL       | WO    | host doorbell — write new tail |
+| 0x10   | RQ_BASE_LO        | RW    | host RQ ring base addr [31:0] |
+| 0x14   | RQ_BASE_HI        | RW    | host RQ ring base addr [63:32] |
+| 0x18   | RQ_DEPTH          | RW    | # of RQEs in ring (power of 2) |
+| 0x1C   | RQ_TAIL_DBL       | WO    | host doorbell — write new tail |
 | 0x20   | CQ_BASE_LO        | RW    | host CQ ring base addr [31:0] |
 | 0x24   | CQ_BASE_HI        | RW    | host CQ ring base addr [63:32] |
 | 0x28   | CQ_DEPTH          | RW    | # of CQEs in ring |
 | 0x2C   | CQ_TAIL           | RO    | FW's CQ producer pointer (host poll target) |
 | 0x30   | CQ_HEAD_DBL       | WO    | host doorbell — read pointer credit |
-| 0x34   | CNT_SQE_CONSUMED  | RO    | from sq_fetcher |
+| 0x34   | CNT_RQE_CONSUMED  | RO    | from rq_fetcher |
 | 0x38   | CNT_CQE_POSTED    | RO    | from cq_pusher |
 | 0x3C   | CNT_BYTES_WRITTEN | RO    | from dma_engine |
 | 0x40   | CNT_OPQ_INPUT_W   | RO    | from dma_engine.packer |
@@ -288,8 +288,8 @@ already serves OPQ CSRs) and via **PCIe BAR1** (production driver).
 
 | Phase | Sub-IPs touched | Validation surface |
 |------:|-----------------|--------------------|
-| Phase 1 — semi-permanent | All four (`dma_engine`, `sq_fetcher`, `cq_pusher`, `run_manager`) implemented with **AXI4 master stub** for the host side (SV `host_model_pkg.sv` AXI4 completer in cosim). 64 B WQE, 2-segment SQE, AXI4-Stream inter-IP — all final structural pieces. | Per-IP unit cosim + subsystem-level cosim under `tb_int/feb_swb_corun_rdma/`. |
-| Phase 2 — permanent / RDMA | Insert thin **AXI4 ↔ Avalon-MM bridge** between each IP's AXI4 master and the existing Altera A10 PCIe HIP (Avalon-MM-side completer). Add MSI-X in `cq_pusher`. Add SQ prefetch in `sq_fetcher`. Optional: switch to a Vivado/Versal target by replacing the bridge with a native AXI4-PCIe core — IPs unchanged. | Hardware integration into `swb_block.vhd` (or a new Qsys/AXI subsystem). |
+| Phase 1 — semi-permanent | All four (`dma_engine`, `rq_fetcher`, `cq_pusher`, `run_manager`) implemented with **AXI4 master stub** for the host side (SV `host_model_pkg.sv` AXI4 completer in cosim). 64 B WQE, 2-segment RQE, AXI4-Stream inter-IP — all final structural pieces. | Per-IP unit cosim + subsystem-level cosim under `tb_int/feb_swb_corun_rdma/`. |
+| Phase 2 — permanent / RDMA | Insert thin **AXI4 ↔ Avalon-MM bridge** between each IP's AXI4 master and the existing Altera A10 PCIe HIP (Avalon-MM-side completer). Add MSI-X in `cq_pusher`. Add RQ prefetch in `rq_fetcher`. Optional: switch to a Vivado/Versal target by replacing the bridge with a native AXI4-PCIe core — IPs unchanged. | Hardware integration into `swb_block.vhd` (or a new Qsys/AXI subsystem). |
 
 The structural break is Phase 1 → Phase 2 only at the master-side adapter
 shim. No core FSM changes between phases. Because all internal buses are
@@ -328,20 +328,20 @@ legacy one):
 - DUT = subsystem assembly (4 IPs wired per §3-4) + real OPQ instance
   (from `opq_upstream_4lane_native_sv`).
 - Host model from `tb/uvm/host_model_pkg.sv` — owns AVMM completer,
-  posts SQEs, polls CQ.
+  posts RQEs, polls CQ.
 - FEB stimulus from existing TB infrastructure (reuse `feb_swb_corun`
   generator helpers).
 - Conservation invariants:
   - `sum(injected hit bytes) == sum(host buffer bytes after drain) + halt_bytes`
-  - `cnt_sqe_consumed == cnt_cqe_posted` after drain
-  - For each (sqe_id) issued, exactly one cqe with that sqe_id observed.
+  - `cnt_rqe_consumed == cnt_cqe_posted` after drain
+  - For each (rqe_id) issued, exactly one cqe with that rqe_id observed.
 
 ## 10. Risks & open architectural questions
 
 - **Single QP vs N QPs**: Phase 1 = 1 QP. Add `N_QP` parameter on each
   sub-IP from day 1, default 1, so Phase 2 can scale without RTL changes.
 - **AVMM data width**: 256b (matches OPQ packer + Altera bridge preference).
-- **Per-SQE byte budget**: host-controlled via `buf_len_bytes`. No FW cap
+- **Per-RQE byte budget**: host-controlled via `buf_len_bytes`. No FW cap
   (simpler semantics; host responsible for sizing).
 - **PCIe completer availability**: Phase 2 needs an `altera_avalon_mm_bridge`
   + `altera_pcie_a10_hip` inbound write/read window. Confirm before Phase 2.
@@ -360,7 +360,7 @@ versioned independently. Push to remote once Phase 1 is complete.
 
 - Per-IP plans (sibling submodules at `mu3e-ip-cores/<ip>/RTL_PLAN.md`):
   - `rdma_dma_engine/RTL_PLAN.md`
-  - `rdma_sq_fetcher/RTL_PLAN.md`
+  - `rdma_rq_fetcher/RTL_PLAN.md`
   - `rdma_cq_pusher/RTL_PLAN.md`
   - `rdma_run_manager/RTL_PLAN.md`
 - Existing OPQ CSR access: `make ip-opq-csr-*` in `musip_2604`.

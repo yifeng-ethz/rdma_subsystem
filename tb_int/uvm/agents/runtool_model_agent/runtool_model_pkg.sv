@@ -12,16 +12,16 @@ package runtool_model_pkg;
   localparam bit [7:0] CSR_META_CONST              = 8'h04;
   localparam bit [7:0] CSR_CTRL_CONST              = 8'h08;
   localparam bit [7:0] CSR_STATUS_CONST            = 8'h0c;
-  localparam bit [7:0] CSR_SQ_BASE_LO_CONST        = 8'h10;
-  localparam bit [7:0] CSR_SQ_BASE_HI_CONST        = 8'h14;
-  localparam bit [7:0] CSR_SQ_DEPTH_CONST          = 8'h18;
-  localparam bit [7:0] CSR_SQ_TAIL_DBL_CONST       = 8'h1c;
+  localparam bit [7:0] CSR_RQ_BASE_LO_CONST        = 8'h10;
+  localparam bit [7:0] CSR_RQ_BASE_HI_CONST        = 8'h14;
+  localparam bit [7:0] CSR_RQ_DEPTH_CONST          = 8'h18;
+  localparam bit [7:0] CSR_RQ_TAIL_DBL_CONST       = 8'h1c;
   localparam bit [7:0] CSR_CQ_BASE_LO_CONST        = 8'h20;
   localparam bit [7:0] CSR_CQ_BASE_HI_CONST        = 8'h24;
   localparam bit [7:0] CSR_CQ_DEPTH_CONST          = 8'h28;
   localparam bit [7:0] CSR_CQ_TAIL_CONST           = 8'h2c;
   localparam bit [7:0] CSR_CQ_HEAD_DBL_CONST       = 8'h30;
-  localparam bit [7:0] CSR_CNT_SQE_CONSUMED_CONST  = 8'h34;
+  localparam bit [7:0] CSR_CNT_RQE_CONSUMED_CONST  = 8'h34;
   localparam bit [7:0] CSR_CNT_CQE_POSTED_CONST    = 8'h38;
   localparam bit [7:0] CSR_CNT_BYTES_WRITTEN_CONST = 8'h3c;
   localparam bit [7:0] CSR_CNT_OPQ_INPUT_W_CONST   = 8'h40;
@@ -47,7 +47,7 @@ package runtool_model_pkg;
     uvm_analysis_port #(runtool_state_e) state_ap;
     uvm_analysis_port #(subsystem_cqe_t) cqe_ap;
     runtool_state_e state;
-    bit [63:0] sq_base;
+    bit [63:0] rq_base;
     bit [63:0] cq_base;
     int unsigned cq_head;
     int unsigned last_cq_tail;
@@ -57,7 +57,7 @@ package runtool_model_pkg;
       state_ap = new("state_ap", this);
       cqe_ap = new("cqe_ap", this);
       state = RUN_IDLE;
-      sq_base = 64'h0000_1000_0000_0000;
+      rq_base = 64'h0000_1000_0000_0000;
       cq_base = 64'h0000_2000_0000_0000;
       cq_head = 0;
       last_cq_tail = 0;
@@ -118,33 +118,33 @@ package runtool_model_pkg;
       cfg.vif.s_axil_rready <= 1'b0;
     endtask
 
-    function bit [511:0] make_sqe(input subsystem_case_cfg case_cfg,
-                                  input int unsigned sqe_id);
-      bit [511:0] sqe;
+    function bit [511:0] make_rqe(input subsystem_case_cfg case_cfg,
+                                  input int unsigned rqe_id);
+      bit [511:0] rqe;
       bit [63:0] seg0_addr;
       bit [63:0] seg1_addr;
       bit [63:0] seg0_span;
       bit [63:0] seg1_span;
-      sqe = '0;
+      rqe = '0;
       seg0_addr = 64'h0000_4000_0000_0000
-                  + (longint'(sqe_id) << 20)
+                  + (longint'(rqe_id) << 20)
                   + (longint'(case_cfg.case_num) << 12);
       seg1_addr = seg0_addr + 64'h0000_0000_0001_0000;
       seg0_span = 64'h1000;
       seg1_span = case_cfg.seg1_used ? 64'h1000 : 64'h0;
       if (case_cfg.force_align_error)
         seg0_addr[3:0] = 4'h4;
-      if (case_cfg.force_malformed_sqe)
+      if (case_cfg.force_malformed_rqe)
         seg0_span = 64'h0;
-      sqe[63:0] = seg0_addr;
-      sqe[127:64] = seg0_span;
-      sqe[191:128] = seg1_addr;
-      sqe[255:192] = seg1_span;
-      sqe[319:256] = {32'h0, sqe_id[15:0], case_cfg.force_malformed_sqe ? 16'h0 : 16'h0001};
-      sqe[383:320] = 64'h5255_4e54_4f4f_4c00 | sqe_id;
-      sqe[447:384] = 64'h5351_455f_494e_5400 | case_cfg.case_num;
-      sqe[511:448] = 64'h0000_0000_0000_0000;
-      return sqe;
+      rqe[63:0] = seg0_addr;
+      rqe[127:64] = seg0_span;
+      rqe[191:128] = seg1_addr;
+      rqe[255:192] = seg1_span;
+      rqe[319:256] = {32'h0, rqe_id[15:0], case_cfg.force_malformed_rqe ? 16'h0 : 16'h0001};
+      rqe[383:320] = 64'h5255_4e54_4f4f_4c00 | rqe_id;
+      rqe[447:384] = 64'h5351_455f_494e_5400 | case_cfg.case_num;
+      rqe[511:448] = 64'h0000_0000_0000_0000;
+      return rqe;
     endfunction
 
     function subsystem_cqe_t read_cqe(input longint unsigned addr);
@@ -155,7 +155,7 @@ package runtool_model_pkg;
       cqe.seg0_bytes_written = raw[95:64];
       cqe.seg1_bytes_written = raw[127:96];
       cqe.status = raw[143:128];
-      cqe.sqe_id = raw[159:144];
+      cqe.rqe_id = raw[159:144];
       cqe.flags = raw[191:160];
       cqe.event_count = raw[255:192];
       cqe.first_event_ts = raw[319:256];
@@ -167,22 +167,22 @@ package runtool_model_pkg;
 
     task program_rings(input subsystem_case_cfg case_cfg);
       axil_write(CSR_CTRL_CONST, 32'h0000_0002);
-      axil_write(CSR_SQ_BASE_LO_CONST, sq_base[31:0]);
-      axil_write(CSR_SQ_BASE_HI_CONST, sq_base[63:32]);
-      axil_write(CSR_SQ_DEPTH_CONST, case_cfg.sq_depth[31:0]);
+      axil_write(CSR_RQ_BASE_LO_CONST, rq_base[31:0]);
+      axil_write(CSR_RQ_BASE_HI_CONST, rq_base[63:32]);
+      axil_write(CSR_RQ_DEPTH_CONST, case_cfg.rq_depth[31:0]);
       axil_write(CSR_CQ_BASE_LO_CONST, cq_base[31:0]);
       axil_write(CSR_CQ_BASE_HI_CONST, cq_base[63:32]);
       axil_write(CSR_CQ_DEPTH_CONST, case_cfg.cq_depth[31:0]);
     endtask
 
-    task post_sqes(input subsystem_case_cfg case_cfg,
+    task post_rqes(input subsystem_case_cfg case_cfg,
                    input int unsigned count);
-      bit [511:0] sqe;
+      bit [511:0] rqe;
       for (int unsigned idx = 0; idx < count; idx++) begin
-        sqe = make_sqe(case_cfg, idx);
-        cfg.mem.write_wqe512(sq_base + (longint'(idx) << 6), sqe);
+        rqe = make_rqe(case_cfg, idx);
+        cfg.mem.write_wqe512(rq_base + (longint'(idx) << 6), rqe);
       end
-      axil_write(CSR_SQ_TAIL_DBL_CONST, count[31:0]);
+      axil_write(CSR_RQ_TAIL_DBL_CONST, count[31:0]);
     endtask
 
     task poll_cq(input subsystem_case_cfg case_cfg,
@@ -216,15 +216,15 @@ package runtool_model_pkg;
 
     task execute_case(input subsystem_case_cfg case_cfg,
                       output int unsigned observed_txn);
-      int unsigned sqe_count;
+      int unsigned rqe_count;
       observed_txn = 0;
-      sqe_count = case_cfg.actual_txn_count;
+      rqe_count = case_cfg.actual_txn_count;
       set_state(RUN_PREPARING);
       program_rings(case_cfg);
       if (case_cfg.inject_bresp_error)
         ; // The host agent records injected responses; final error policy is DUT-owned.
       if (!case_cfg.idle_only)
-        post_sqes(case_cfg, sqe_count);
+        post_rqes(case_cfg, rqe_count);
       if (case_cfg.ctrl_halt_reenable)
         axil_write(CSR_CTRL_CONST, 32'h0000_0005);
       else
@@ -237,7 +237,7 @@ package runtool_model_pkg;
       if (!case_cfg.idle_only) begin
         int unsigned one_observed;
         repeat (64) @(posedge cfg.vif.clk);
-        for (int unsigned idx = 0; idx < sqe_count; idx++) begin
+        for (int unsigned idx = 0; idx < rqe_count; idx++) begin
           cfg.opq.enqueue_frame(case_cfg.frame_words, case_cfg.opq_gap_cycles, idx + case_cfg.case_num);
           repeat (case_cfg.opq_gap_cycles + case_cfg.frame_words + 8) @(posedge cfg.vif.clk);
           poll_cq(case_cfg, 1, one_observed);

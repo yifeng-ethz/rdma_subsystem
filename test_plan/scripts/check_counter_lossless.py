@@ -53,7 +53,7 @@ def synthetic_input() -> dict[str, Any]:
         "bar1": {
             "CNT_OPQ_INPUT_W": total,
             "CNT_BYTES_WRITTEN": total * 4,
-            "CNT_SQE_CONSUMED": 1,
+            "CNT_RQE_CONSUMED": 1,
             "CNT_CQE_POSTED": 1,
             "CNT_HALT": 0,
             "EVENT_SKIP_EVENT_DMA_R": 0,
@@ -230,13 +230,13 @@ def check_conservation(data: dict[str, Any]) -> dict[str, Any]:
                     "header_overhead": header_overhead,
                 }
             )
-    if {"CNT_SQE_CONSUMED", "CNT_CQE_POSTED"}.issubset(counters) and not failures:
-        if counters["CNT_SQE_CONSUMED"] != counters["CNT_CQE_POSTED"]:
+    if {"CNT_RQE_CONSUMED", "CNT_CQE_POSTED"}.issubset(counters) and not failures:
+        if counters["CNT_RQE_CONSUMED"] != counters["CNT_CQE_POSTED"]:
             failures.append(
                 {
                     "stage": "C9",
                     "counter": "CNT_CQE_POSTED",
-                    "expected": counters["CNT_SQE_CONSUMED"],
+                    "expected": counters["CNT_RQE_CONSUMED"],
                     "observed": counters["CNT_CQE_POSTED"],
                 }
             )

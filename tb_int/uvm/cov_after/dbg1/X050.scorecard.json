@@ -11,10 +11,10 @@
   "cqe_count": 1,
   "last_cqe_status": 32,
   "last_cqe_bytes": 0,
-  "coverage_bin": "error_malformed_sqe_x050",
-  "contract_anchor": "DV_ERROR.md X050 cov:error_malformed_sqe_x050",
+  "coverage_bin": "error_malformed_rqe_x050",
+  "contract_anchor": "DV_ERROR.md X050 cov:error_malformed_rqe_x050",
   "unique_coverage_delta": 0,
-  "duplicate_justification": "honest duplicate of X 49: same RTL contract anchor, unique stimulus and coverage token error_malformed_sqe_x050",
+  "duplicate_justification": "honest duplicate of X 49: same RTL contract anchor, unique stimulus and coverage token error_malformed_rqe_x050",
   "log_summary": {
     "mismatch_count": 0,
     "uvm_errors": 0

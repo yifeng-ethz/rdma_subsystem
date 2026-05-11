@@ -85,9 +85,9 @@ module tb_top;
 
   always_ff @(posedge clk) begin
     if (tb_int_diag && dut_if.reset_n) begin
-      if (dut.sq_axi_arvalid && dut.sq_axi_arready) begin
-        $display("TB_INT_DIAG SQ_AR t=%0t addr=0x%016h len=%0d size=%0d",
-                 $time, dut.sq_axi_araddr, dut.sq_axi_arlen, dut.sq_axi_arsize);
+      if (dut.rq_axi_arvalid && dut.rq_axi_arready) begin
+        $display("TB_INT_DIAG RQ_AR t=%0t addr=0x%016h len=%0d size=%0d",
+                 $time, dut.rq_axi_araddr, dut.rq_axi_arlen, dut.rq_axi_arsize);
       end
       if (dut.m_axi_arvalid && dut.m_axi_arready) begin
         $display("TB_INT_DIAG HOST_AR t=%0t addr=0x%016h len=%0d size=%0d",
@@ -98,19 +98,19 @@ module tb_top;
                  $time, dut.m_axi_rlast, dut.axi_xbar_i.read.beat_index,
                  dut.m_axi_rdata[127:64], dut.m_axi_rdata[63:0]);
       end
-      if (dut.sq_axi_rvalid && dut.sq_axi_rready) begin
-        $display("TB_INT_DIAG SQ_R t=%0t last=%0b word4=0x%016h word0=0x%016h",
-                 $time, dut.sq_axi_rlast, dut.sq_axi_rdata[319:256],
-                 dut.sq_axi_rdata[63:0]);
+      if (dut.rq_axi_rvalid && dut.rq_axi_rready) begin
+        $display("TB_INT_DIAG RQ_R t=%0t last=%0b word4=0x%016h word0=0x%016h",
+                 $time, dut.rq_axi_rlast, dut.rq_axi_rdata[319:256],
+                 dut.rq_axi_rdata[63:0]);
       end
-      if (dut.sqe_tvalid && dut.sqe_tready) begin
-        $display("TB_INT_DIAG SQE_ACCEPT t=%0t tlast=%0b id=%0d opcode_id=0x%016h seg0_addr=0x%016h seg0_span=0x%016h",
-                 $time, dut.sqe_tlast, dut.sqe_tuser, dut.sqe_tdata[319:256],
-                 dut.sqe_tdata[63:0], dut.sqe_tdata[127:64]);
+      if (dut.rqe_tvalid && dut.rqe_tready) begin
+        $display("TB_INT_DIAG RQE_ACCEPT t=%0t tlast=%0b id=%0d opcode_id=0x%016h seg0_addr=0x%016h seg0_span=0x%016h",
+                 $time, dut.rqe_tlast, dut.rqe_tuser, dut.rqe_tdata[319:256],
+                 dut.rqe_tdata[63:0], dut.rqe_tdata[127:64]);
       end
       if (dut.dma_job_req) begin
         $display("TB_INT_DIAG DMA_JOB t=%0t id=%0d opcode=0x%04h seg0=0x%016h span0=%0d",
-                 $time, dut.dma_job_sqe_id, dut.dma_job_opcode,
+                 $time, dut.dma_job_rqe_id, dut.dma_job_opcode,
                  dut.dma_job_seg0_addr, dut.dma_job_seg0_span);
       end
       if (dut.cqe_tvalid && dut.cqe_tready) begin

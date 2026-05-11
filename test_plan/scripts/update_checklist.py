@@ -248,7 +248,7 @@ def enforce_real_traffic_gate(
     if data.get("real_traffic") is True or "real_traffic=1" in detail:
         return status, stage, detail
     if data.get("evidence_kind") == "run_ledger":
-        zero_detail = "opq_w_d=0" in detail or "bytes_w_d=0" in detail or "sqe_d=0" in detail
+        zero_detail = "opq_w_d=0" in detail or "bytes_w_d=0" in detail or "rqe_d=0" in detail
         if zero_detail or "run=1s" in detail:
             return (
                 "FAIL_AT_C1",
