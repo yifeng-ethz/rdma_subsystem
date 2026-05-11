@@ -1,6 +1,6 @@
 # `rdma_subsystem` Onboard FEB + SWB Test Plan
 
-Status: **CHECKPOINT LIST — pending review.**
+Status: **CLOSED on real silicon — 631/631 S0..S9 PASS, 320 S10 PENDING (optional, skipped).** See `PHASE_STATUS.md` and `test_plan/CHECKLIST.md`; closure commits are `c5d739b` (CHECKLIST refresh against DMA-FIFO SWB SOF) and `0ee3976` (initial real-silicon evidence flip) in this repo, plus `online_sc` `49765aac3` (AXI4-W -> DMA-FIFO bridge) and `19b6251b6` (rdma_subsystem SWB integration).
 
 Hardware target: SWB (Arria 10 DE5 card, `1172:0004`) loaded with the
 new `rdma_subsystem` datapath + FEB SciFi at SWB link 2 on teferi.
