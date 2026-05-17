@@ -195,7 +195,7 @@ add_display_item $TAB_INTERFACES "Host AXI4" GROUP
 add_display_item $TAB_INTERFACES "MSI-X" GROUP
 add_html_text "Clock / Reset" clk_rst_html {<html>One clock input <b>clk</b> and active-low reset input <b>reset_n</b>. The wrapper generates per-block reset deassertion synchronizers.</html>}
 add_html_text "BAR1 CSR" csr_html {<html>AXI4-Lite slave, 32-bit data, 8-bit byte address. The supercore decoder passes all traffic to rdma_run_manager, which owns the CSR map and SVD.</html>}
-add_html_text "OPQ Stream" opq_html {<html>AXI4-Stream sink for OPQ egress. TDATA is 36 bits with {datak[3:0], data[31:0]}; TUSER[0] carries SOP and TLAST carries OPQ EOP.</html>}
+add_html_text "OPQ Stream" opq_html {<html>AXI4-Stream sink for OPQ egress. TDATA is 36 bits with {datak[3:0], data[31:0]}; TUSER[0] carries SOP and TLAST carries OPQ EOP. TREADY is asserted only when the active RQE rxbuffer has more than one maximum OPQ frame available and the PCIe posted-write path reports more than one maximum OPQ frame of credit.</html>}
 add_html_text "Host AXI4" host_html {<html>Single AXI4 master toward host DRAM. Internal RQ/CQ 512-bit cacheline transactions are adapted to the 256-bit host data path by rdma_subsystem_axi_xbar.</html>}
 add_html_text "MSI-X" msix_html {<html>Phase 1 exposes the MSI-X conduit but the embedded CQ pusher keeps msix_req low. Phase 2 replaces the quiet stub with real interrupt generation.</html>}
 
@@ -244,6 +244,11 @@ proc elaborate {} {
     add_interface_port opq_in s_axis_opq_tready tready Output 1
     add_interface_port opq_in s_axis_opq_tlast tlast Input 1
     add_interface_port opq_in s_axis_opq_tuser tuser Input 2
+
+    add_interface pcie_posted_write_credit conduit end
+    add_common_interface_props pcie_posted_write_credit
+    add_interface_port pcie_posted_write_credit pcie_posted_write_credit_valid credit_valid Input 1
+    add_interface_port pcie_posted_write_credit pcie_posted_write_credit_words credit_words Input 32
 
     add_interface host_axi axi4 master
     add_common_interface_props host_axi

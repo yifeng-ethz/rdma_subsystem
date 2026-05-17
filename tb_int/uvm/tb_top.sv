@@ -28,6 +28,8 @@ module tb_top;
     .s_axis_opq_tready(dut_if.s_axis_opq_tready),
     .s_axis_opq_tlast(dut_if.s_axis_opq_tlast),
     .s_axis_opq_tuser(dut_if.s_axis_opq_tuser),
+    .pcie_posted_write_credit_valid(dut_if.pcie_posted_write_credit_valid),
+    .pcie_posted_write_credit_words(dut_if.pcie_posted_write_credit_words),
     .s_axil_awaddr(dut_if.s_axil_awaddr),
     .s_axil_awvalid(dut_if.s_axil_awvalid),
     .s_axil_awready(dut_if.s_axil_awready),

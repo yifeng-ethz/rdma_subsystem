@@ -28,6 +28,7 @@ class subsystem_scoreboard extends uvm_component;
   int unsigned mismatch_count;
   byte unsigned expected_bytes[$];
   int unsigned consumed_bytes;
+  localparam longint unsigned RXBUFFER_RQE_STRIDE_BYTES_CONST = 64'h0000_0000_0080_0000;
 
   function new(string name, uvm_component parent);
     super.new(name, parent);
@@ -72,7 +73,7 @@ class subsystem_scoreboard extends uvm_component;
 
   function longint unsigned seg0_addr_for(input int unsigned rqe_id);
     return 64'h0000_4000_0000_0000
-           + (longint'(rqe_id) << 20)
+           + (longint'(rqe_id) * RXBUFFER_RQE_STRIDE_BYTES_CONST)
            + (longint'(cfg.case_num) << 12);
   endfunction
 

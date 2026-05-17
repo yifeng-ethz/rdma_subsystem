@@ -13,6 +13,8 @@ interface rdma_subsystem_if #(
   logic                       s_axis_opq_tready;
   logic                       s_axis_opq_tlast;
   logic [1:0]                 s_axis_opq_tuser;
+  logic                       pcie_posted_write_credit_valid;
+  logic [31:0]                pcie_posted_write_credit_words;
 
   logic [7:0]                 s_axil_awaddr;
   logic                       s_axil_awvalid;
@@ -95,6 +97,8 @@ interface rdma_subsystem_if #(
     m_axi_rresp   <= 2'b00;
     m_axi_rlast   <= 1'b0;
     m_axi_rvalid  <= 1'b0;
+    pcie_posted_write_credit_valid <= 1'b1;
+    pcie_posted_write_credit_words <= 32'hffff_ffff;
   endtask
 endinterface
 

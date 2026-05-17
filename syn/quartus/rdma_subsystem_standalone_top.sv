@@ -21,6 +21,8 @@ module rdma_subsystem_standalone_top #(
     logic                       s_axis_opq_tready;
     logic                       s_axis_opq_tlast;
     logic [1:0]                 s_axis_opq_tuser;
+    logic                       pcie_posted_write_credit_valid;
+    logic [31:0]                pcie_posted_write_credit_words;
     logic [7:0]                 s_axil_awaddr;
     logic                       s_axil_awvalid;
     logic                       s_axil_awready;
@@ -128,6 +130,8 @@ module rdma_subsystem_standalone_top #(
     assign s_axis_opq_tvalid = stim_counter[0] || stim_counter[4];
     assign s_axis_opq_tlast  = (stim_counter[6:0] == 7'h7f);
     assign s_axis_opq_tuser  = {1'b0, (stim_counter[4:0] == 5'h00)};
+    assign pcie_posted_write_credit_valid = 1'b1;
+    assign pcie_posted_write_credit_words = 32'hffff_ffff;
 
     assign s_axil_awvalid = (stim_counter[2:0] == 3'b001);
     assign s_axil_wstrb   = 4'hf;
@@ -168,6 +172,8 @@ module rdma_subsystem_standalone_top #(
         .s_axis_opq_tready (s_axis_opq_tready),
         .s_axis_opq_tlast  (s_axis_opq_tlast),
         .s_axis_opq_tuser  (s_axis_opq_tuser),
+        .pcie_posted_write_credit_valid(pcie_posted_write_credit_valid),
+        .pcie_posted_write_credit_words(pcie_posted_write_credit_words),
         .s_axil_awaddr     (s_axil_awaddr),
         .s_axil_awvalid    (s_axil_awvalid),
         .s_axil_awready    (s_axil_awready),

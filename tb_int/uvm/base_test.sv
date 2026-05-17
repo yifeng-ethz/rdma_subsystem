@@ -40,6 +40,7 @@ class rdma_subsystem_base_test extends uvm_test;
       `uvm_fatal("BASE", "Missing rdma_subsystem_if")
     vif.reset_n <= 1'b0;
     vif.init_master_side();
+    vif.init_completer_side();
     repeat (12) @(posedge vif.clk);
     vif.reset_n <= 1'b1;
     repeat (8) @(posedge vif.clk);

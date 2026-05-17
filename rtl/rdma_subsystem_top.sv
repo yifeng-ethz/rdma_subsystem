@@ -1,8 +1,9 @@
 // File name: rdma_subsystem_top.sv
 // Author  : Yifeng Wang (yifenwan@phys.ethz.ch)
-// Version : 26.1.0
-// Date    : 20260510
-// Change  : wire RDMA supercore top around four sibling IPs and xbar
+// Version : 26.1.1
+// Date    : 20260517
+// Change  : size the OPQ-to-DMA buffer for four maximum OPQ frames and require
+//           active RQE rxbuffer plus PCIe posted-write credit before OPQ ready.
 
 `default_nettype none
 
@@ -29,6 +30,9 @@ module rdma_subsystem_top #(
     output logic                            s_axis_opq_tready,
     input  wire logic                       s_axis_opq_tlast,
     input  wire logic [1:0]                 s_axis_opq_tuser,
+
+    input  wire logic                       pcie_posted_write_credit_valid,
+    input  wire logic [31:0]                pcie_posted_write_credit_words,
 
     input  wire logic [7:0]                 s_axil_awaddr,
     input  wire logic                       s_axil_awvalid,
@@ -83,8 +87,30 @@ module rdma_subsystem_top #(
     input  wire logic                       msix_ack
 );
 
-    localparam int unsigned DMA_DBG2_META_W_CONST = 136;
-    localparam int unsigned CQ_DBG_META_W_CONST   = 64;
+    localparam int unsigned DMA_DBG2_META_W_CONST          = 136;
+    localparam int unsigned CQ_DBG_META_W_CONST            = 64;
+    localparam int unsigned OPQ_N_SHD_CONST                = 128;
+    localparam int unsigned OPQ_N_HIT_CONST                = 255;
+    localparam int unsigned OPQ_HDR_WORDS_CONST            = 5;
+    localparam int unsigned OPQ_SHD_WORDS_CONST            = 1;
+    localparam int unsigned OPQ_TRL_WORDS_CONST            = 1;
+    localparam int unsigned OPQ_MAX_FRAME_WORDS_CONST      =
+        ((OPQ_N_HIT_CONST + OPQ_SHD_WORDS_CONST) * OPQ_N_SHD_CONST) +
+        OPQ_HDR_WORDS_CONST + OPQ_TRL_WORDS_CONST;
+    localparam int unsigned RDMA_DMA_OPQ_WORDS_PER_BEAT_CONST =
+        DMA_DATA_W / 32;
+    localparam int unsigned RDMA_DMA_MAX_FRAME_BEATS_CONST =
+        (OPQ_MAX_FRAME_WORDS_CONST + RDMA_DMA_OPQ_WORDS_PER_BEAT_CONST - 1) /
+        RDMA_DMA_OPQ_WORDS_PER_BEAT_CONST;
+    localparam int unsigned RDMA_DMA_MIN_CREDIT_WORDS_CONST =
+        4 * OPQ_MAX_FRAME_WORDS_CONST;
+    localparam int unsigned RDMA_DMA_MIN_CREDIT_BEATS_CONST =
+        (RDMA_DMA_MIN_CREDIT_WORDS_CONST + RDMA_DMA_OPQ_WORDS_PER_BEAT_CONST - 1) /
+        RDMA_DMA_OPQ_WORDS_PER_BEAT_CONST;
+    localparam int unsigned RDMA_DMA_FIFO_DEPTH_CONST =
+        1 << $clog2(RDMA_DMA_MIN_CREDIT_BEATS_CONST);
+    localparam int unsigned RDMA_DMA_FIFO_ALMOST_FULL_THRESHOLD_CONST =
+        RDMA_DMA_FIFO_DEPTH_CONST - RDMA_DMA_MAX_FRAME_BEATS_CONST;
 
     logic                         rq_fetcher_reset_n;
     logic                         dma_engine_reset_n;
@@ -414,8 +440,9 @@ module rdma_subsystem_top #(
         .DMA_DATA_W                (DMA_DATA_W),
         .MAX_BURST_BEATS           (16),
         .SEG_QUANTUM_BYTES         (4096),
-        .FIFO_DEPTH                (256),
-        .FIFO_ALMOST_FULL_THRESHOLD(192),
+        .FIFO_DEPTH                (RDMA_DMA_FIFO_DEPTH_CONST),
+        .FIFO_ALMOST_FULL_THRESHOLD(RDMA_DMA_FIFO_ALMOST_FULL_THRESHOLD_CONST),
+        .MAX_FRAME_WORDS           (OPQ_MAX_FRAME_WORDS_CONST),
         .DBG2_META_W               (DMA_DBG2_META_W_CONST),
         .DEBUG_LEVEL               (DEBUG_LEVEL)
     ) dma_engine_i (
@@ -442,6 +469,8 @@ module rdma_subsystem_top #(
         .job_event_count        (dma_job_event_count),
         .job_first_event_ts     (dma_job_first_event_ts),
         .job_last_event_ts      (dma_job_last_event_ts),
+        .pcie_posted_write_credit_valid(pcie_posted_write_credit_valid),
+        .pcie_posted_write_credit_words(pcie_posted_write_credit_words),
         .m_axi_awid             (dma_axi_awid),
         .m_axi_awaddr           (dma_axi_awaddr),
         .m_axi_awlen            (dma_axi_awlen),

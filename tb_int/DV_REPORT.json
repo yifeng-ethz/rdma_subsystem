@@ -86279,7 +86279,7 @@
       "planned_cases": 128
     }
   },
-  "date": "2026-05-11",
+  "date": "2026-05-17",
   "dut_name": "rdma_subsystem_top",
   "failed_cases": [],
   "implementation_summary": {
@@ -120111,9 +120111,9 @@
     "DEBUG_LEVELS": "1,2",
     "DUT_IMPL": "rtl",
     "FEB": "abstracted OPQ source",
-    "SPAN_QUANTUM": "4096",
     "RQE_BYTES": "64",
     "RQE_SEGMENTS": "2",
+    "SPAN_QUANTUM": "4096",
     "probe_only_exclusions": "",
     "runtool_model": "software-behavioral SV agent"
   },

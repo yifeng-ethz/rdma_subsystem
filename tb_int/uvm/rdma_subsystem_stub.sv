@@ -15,6 +15,9 @@ module rdma_subsystem_top #(
   input  logic                       s_axis_opq_tlast,
   input  logic [1:0]                 s_axis_opq_tuser,
 
+  input  logic                       pcie_posted_write_credit_valid,
+  input  logic [31:0]                pcie_posted_write_credit_words,
+
   input  logic [7:0]                 s_axil_awaddr,
   input  logic                       s_axil_awvalid,
   output logic                       s_axil_awready,

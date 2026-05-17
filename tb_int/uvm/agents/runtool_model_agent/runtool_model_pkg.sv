@@ -27,6 +27,15 @@ package runtool_model_pkg;
   localparam bit [7:0] CSR_CNT_OPQ_INPUT_W_CONST   = 8'h40;
   localparam bit [7:0] CSR_CNT_HALT_CONST          = 8'h44;
   localparam bit [7:0] CSR_CNT_EOE_OBSERVED_CONST  = 8'h48;
+  // Gen3 x8 PCIe APP bandwidth is 256 bits at 250 MHz = 8 GB/s.
+  // A 10 ms host RQ replenish jitter therefore needs 80,000,000 bytes,
+  // rounded to the next power of two: 128 MiB aggregate posted rxbuffer.
+  // Do not require one RQE to cover this full budget. Model SGL as at most two
+  // 2 MiB huge-page segments per RQE; many posted RQEs cover the aggregate.
+  localparam bit [63:0] RXBUFFER_FULL_BYTES_CONST       = 64'h0000_0000_0800_0000;
+  localparam bit [63:0] RXBUFFER_RQE_BYTES_CONST        = 64'h0000_0000_0020_0000;
+  localparam bit [63:0] RXBUFFER_SGL_SEG_BYTES_CONST    = 64'h0000_0000_0020_0000;
+  localparam bit [63:0] RXBUFFER_RQE_STRIDE_BYTES_CONST = 64'h0000_0000_0080_0000;
 
   class runtool_model_cfg extends uvm_object;
     `uvm_object_utils(runtool_model_cfg)
@@ -127,11 +136,11 @@ package runtool_model_pkg;
       bit [63:0] seg1_span;
       rqe = '0;
       seg0_addr = 64'h0000_4000_0000_0000
-                  + (longint'(rqe_id) << 20)
+                  + (longint'(rqe_id) * RXBUFFER_RQE_STRIDE_BYTES_CONST)
                   + (longint'(case_cfg.case_num) << 12);
-      seg1_addr = seg0_addr + 64'h0000_0000_0001_0000;
-      seg0_span = 64'h1000;
-      seg1_span = case_cfg.seg1_used ? 64'h1000 : 64'h0;
+      seg1_addr = seg0_addr + RXBUFFER_SGL_SEG_BYTES_CONST;
+      seg0_span = case_cfg.seg1_used ? RXBUFFER_SGL_SEG_BYTES_CONST : RXBUFFER_RQE_BYTES_CONST;
+      seg1_span = case_cfg.seg1_used ? RXBUFFER_SGL_SEG_BYTES_CONST : 64'h0;
       if (case_cfg.force_align_error)
         seg0_addr[3:0] = 4'h4;
       if (case_cfg.force_malformed_rqe)
